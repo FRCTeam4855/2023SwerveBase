@@ -5,10 +5,12 @@ import frc.robot.Subsystems.SwerveDriveSystem;
 
 public class SwerveDriveMoveForward extends CommandBase {
     private final SwerveDriveSystem swerveDriveSystem;
+    private double distance = 0;
     private double initialEncoderValue = 0;
-    public SwerveDriveMoveForward(SwerveDriveSystem initialSwerveDriveSystem) {
+    public SwerveDriveMoveForward(SwerveDriveSystem initialSwerveDriveSystem, double initialDistance) {
         super();
         swerveDriveSystem = initialSwerveDriveSystem;
+        distance = initialDistance;
         addRequirements(swerveDriveSystem);
     }
 
@@ -19,13 +21,13 @@ public class SwerveDriveMoveForward extends CommandBase {
 
     @Override
     public void execute() {
-        swerveDriveSystem.moveForward(100);
+        swerveDriveSystem.moveForward();
         //swerveDriveSystem.stop();
     }
 
     @Override
     public boolean isFinished() {
-        return Math.abs(swerveDriveSystem.getEncoderFL() - initialEncoderValue) > 100;
+        return Math.abs(swerveDriveSystem.getEncoderFL() - initialEncoderValue) > distance;
     }
     
 }

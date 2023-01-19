@@ -1,38 +1,39 @@
 package frc.robot;
+import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.XboxController.Button;
 
 public class Constants {
     //Constants ++++++++++++
     public static final double JOYSTK_DZONE = .17;                  // global deadzone for all controllers
-    public static final double LOW_GOAL_SPEED = 2300;               // velocity setpoint for flywheel launching into low goal
-    public static final double HIGH_GOAL_SPEED = 3550;              // velocity setpoint for flywheel launching into high goal at mid-field
     public static final double DRIVE_INIT_SPD = 0.50;               // multiplier
     public static final double DRIVE_SLOW_SPD = 0.35;               // multiplier
-    public static final double CLIMB_ENCODER_LIMIT_LEFT = 2500;     // prevents the left climber arm from running past this encoder value
-    public static final double CLIMB_ENCODER_LIMIT_RIGHT = 2500;    // prevents the right climber arm from running past this encoder value
 
     // Conversions +++++++++
     public static final double RELATIVE_ENC_TO_FT = 7.4; //0.660715;//7.928591; //0.03666658; // converts relative encoder units on neo to inches
 
     //@@@@@@@@@
-    //JOYSTICK to XBOX CONTROLLER KEY GUIDE (not code, just reference)
-    // AXIS 0 = left stick X
-    // AXIS 1 = left stick Y
-    // AXIS 2 = left trigger 
-    // AXIS 3 = right trigger
-    // AXIS 4 = right stick X
-    // AXIS 5 = right stick Y
-
-    // BUTTON 1 = Xbox A
-    // BUTTON 2 = Xbox B
-    // BUTTON 3 = Xbox X
-    // BUTTON 4 = Xbox Y
+    //COPY FROM
+    // public class XboxController extends GenericHID {
+    //     /** Represents a digital button on an XboxController. */
+    //     public enum Button {
+    //       kLeftBumper(5),
+    //       kRightBumper(6),
+    //       kLeftStick(9),
+    //       kRightStick(10),
+    //       kA(1),
+    //       kB(2),
+    //       kX(3),
+    //       kY(4),
+    //       kBack(7),
+    //       kStart(8);
     //@@@@@@@@@@
 
     // Driver Mappings +++++
-    public static final int GYRO_RESET = 4; //Y
-    public static final int ENCODER_RESET = 2; //B
-    public static final int ORIENTATION_TOGGLE = 3; //X
-    public static final int DR_SPD_LIMITER = 6;
-    public static final int TEST_PID_ROTATE = 1;
+    public static final int GYRO_RESET_Y = 4; //Y
+    public static final int ENCODER_RESET_B = 2; //B
+    public static final int ORIENTATION_TOGGLE_X = 3; //X
+    public static final int DRV_SPD_LIMITER_RB = 6;
+    public static final int TEST_PID_ROTATE_A = 1;
+    
     
 }

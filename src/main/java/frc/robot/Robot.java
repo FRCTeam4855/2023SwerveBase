@@ -5,26 +5,18 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-// this works
-
 package frc.robot;
 import static frc.robot.Constants.*;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
 
-/**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the 
- * project. E
- */ 
 public class Robot extends TimedRobot { 
  
   double theta_radians; //theta_radians is difference the angle the robot is at, and the zerod angle
@@ -38,8 +30,8 @@ public class Robot extends TimedRobot {
   private String m_autoSelected; //This selects between the two autonomous
   public SendableChooser<String> m_chooser = new SendableChooser<>(); //creates the ability to switch between autons on SmartDashboard
 
-  Joystick joystick = new Joystick(0);
-  Joystick operator = new Joystick(1); 
+  XboxController xboxDriver = new XboxController(0);
+  XboxController xboxOperator = new XboxController(1); 
   AHRS gyro = new AHRS(SPI.Port.kMXP); //defines the gyro
   SwerveDriveSystem driveSystem = new SwerveDriveSystem();
   
@@ -58,7 +50,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Shoot High Leave Tarmac", kAuton2);
     m_chooser.addOption("Shoot High Intake Cargo", kAuton3);
     m_chooser.addOption("Shoot 2 High Leave Tarmac", kAuton4);
-    SmartDashboard.putData(m_chooser); //displays the auton options //maybe move to autonomousInit
+    SmartDashboard.putData(m_chooser); //displays the auton options in shuffleboard
   }
 
   /**
@@ -73,13 +65,14 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
 
     SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); //Displays Front Left Wheel Encoder Values
-    SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder Values
-    SmartDashboard.putNumber("Encoder BR", driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder Values
-    SmartDashboard.putNumber("Encoder FR", driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder Values
+    //SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder Values
+    //SmartDashboard.putNumber("Encoder BR", driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder Values
+    //SmartDashboard.putNumber("Encoder FR", driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder Values
     SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
-    SmartDashboard.putBoolean("Driver Oriented", driverOriented);
+    SmartDashboard.putBoolean("Driver Oriented", driverOriented); //shows true/false for driver oriented
     SmartDashboard.putNumber("Gyro Get Raw", gyro.getYaw()); //pulls gyro values
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
+    CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler will never run, and the command framework will not work
   }
 
   @Override
@@ -92,7 +85,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected(); //conects the auton options and the switch method where the autons are written
+    m_autoSelected = m_chooser.getSelected(); //pulls auton option selected from shuffleboard
     SmartDashboard.putString("auton selected", m_autoSelected); //displays which auton is currently running
     driveSystem.resetRelativeEncoders();
     gyro.reset();
@@ -101,22 +94,20 @@ public class Robot extends TimedRobot {
     // swerveDriveMoveForward.schedule();
   }
 
-  final double kP = 0.3;
-  double encoderSetpoint = 0;
+  // final double kP = 0.3;
+  // double encoderSetpoint = 0;
 
   @Override
   public void autonomousPeriodic() {
     driveSystem.moveManual(autox1, autoy1, autox2, 0);
-    //CommandScheduler.getInstance().run();   
-    //these values are inverted so negative and positive are reversed
 
       driveSystem.resetRelativeEncoders();
-      encoderSetpoint = 1;  
-    double encoderPositionFT = driveSystem.getRelativeEncoderFT();
-    double driverError = encoderSetpoint - encoderPositionFT;
-    double outputSpeed = kP * driverError;
-    driveSystem.moveManual(autox1, outputSpeed, autox2, 0);
-    SmartDashboard.putNumber("outputSpeed", outputSpeed);
+      // encoderSetpoint = 1;  
+    // double encoderPositionFT = driveSystem.getRelativeEncoderFT();
+    // double driverError = encoderSetpoint - encoderPositionFT;
+    // double outputSpeed = kP * driverError;
+    // driveSystem.moveManual(autox1, outputSpeed, autox2, 0);
+    // SmartDashboard.putNumber("outputSpeed", outputSpeed);
     switch (m_autoSelected) {      
       case kAuton1: 
       default: 
@@ -143,13 +134,13 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() { 
-    double x1 = -joystick.getRawAxis(0); //connects the left and right drive movements to the drive controllers left x-axis
-    double x2 = -joystick.getRawAxis(4); //connects the spinning drive movements to the drive controllers right x-axis
-    double y1 = -joystick.getRawAxis(1); //connects the forwards and backwards drive movements to the drive controllers left y-axis
-    // if (joystick.getRawButton(1)) { //button A
+    double x1 = -xboxDriver.getRawAxis(0); //connects the left and right drive movements to the drive controllers left x-axis
+    double x2 = -xboxDriver.getRawAxis(4); //connects the spinning drive movements to the drive controllers right x-axis
+    double y1 = -xboxDriver.getRawAxis(1); //connects the forwards and backwards drive movements to the drive controllers left y-axis
+    // if (xboxDriver.getRawButton(1)) { //button A
     //   driveSystem.resetRelativeEncoders();
     //   encoderSetpoint = 10;
-    // }else if (joystick.getRawButton(ENCODER_RESET)) { //button B
+    // }else if (xboxDriver.getRawButton(ENCODER_RESET)) { //button B
     //   encoderSetpoint = 0;
     // }   
     // double encoderPositionFT = driveSystem.getRelativeEncoderFT();
@@ -157,7 +148,7 @@ public class Robot extends TimedRobot {
     // double outputSpeed = kP * driverError;
     // driveSystem.moveManual(x1, outputSpeed, x2, 0);
     // SmartDashboard.putNumber("outputSpeed", outputSpeed);    
-    //Driver Controller
+
     //this tells the robot when it should be driverOriented or robotOriented
     if (driverOriented) {
       theta_radians = gyro.getYaw() * Math.PI / 180; //driverOriented
@@ -165,39 +156,38 @@ public class Robot extends TimedRobot {
 
     // Drive the robot
     Wheel.SpeedSetting driveSpeed = Wheel.SpeedSetting.NORMAL;
-    if (joystick.getRawButton(6)) driveSpeed = Wheel.SpeedSetting.TURBO;
-    if (joystick.getRawAxis(2) > .5) driveSpeed = Wheel.SpeedSetting.PRECISE;
+    if (xboxDriver.getRawButton(DRV_SPD_LIMITER_RB)) driveSpeed = Wheel.SpeedSetting.TURBO;
+    if (xboxDriver.getRawAxis(2) > .5) driveSpeed = Wheel.SpeedSetting.PRECISE;
     driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
 
-    if (joystick.getRawButton(TEST_PID_ROTATE) && (gyro.getYaw()) > 5){
+    if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && (gyro.getYaw()) > 5){
       driveSystem.moveManual(0, 0, (-Math.abs(gyro.getYaw())/180) - .1, theta_radians, driveSpeed);
     }
-      else if (joystick.getRawButton(TEST_PID_ROTATE) && (gyro.getYaw()) < -5 ){
+      else if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && (gyro.getYaw()) < -5 ){
         driveSystem.moveManual(0, 0, (Math.abs(gyro.getYaw())/180) + .1, theta_radians, driveSpeed);
       }
-      else {
-        driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);  
-    }
-    //TODO look at axis2
+      // else {
+      //   driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);  
+    // }
     
     // Reset the relative encoders if you press B button
-    // if (joystick.getRawButtonPressed(ENCODER_RESET)) {
-    //   driveSystem.resetRelativeEncoders();
-    // }
+    if (xboxDriver.getRawButtonPressed(ENCODER_RESET_B)) {
+      driveSystem.resetRelativeEncoders();
+    }
 
     //zeros the gyro if you press the Y button
-    if (joystick.getRawButtonPressed(GYRO_RESET)) { 
+    if (xboxDriver.getRawButtonPressed(GYRO_RESET_Y)) { 
       gyro.reset();
     }
 
-    //This turns driver oriented on or off when x is pressed
-    if (joystick.getRawButtonPressed(ORIENTATION_TOGGLE)){
+    //This toggles driver oriented on or off when x is pressed
+    if (xboxDriver.getRawButtonPressed(ORIENTATION_TOGGLE_X)){
       driverOriented = !driverOriented;
     }
   }
-  /**s
-   * This function is called periodically during test mode.
-   */
+  
+   
+  //This function is called periodically during test mode.
   @Override
   public void testPeriodic() {
 

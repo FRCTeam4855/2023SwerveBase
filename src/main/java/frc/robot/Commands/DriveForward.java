@@ -19,7 +19,7 @@ public class DriveForward extends CommandBase{
 
     @Override
     public void execute() {
-        swerveDriveSystem.moveForward(4);
+        swerveDriveSystem.moveForward();
     }
 
     @Override

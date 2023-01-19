@@ -84,32 +84,32 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
     }
 
     @Override
-    public void moveForward(double distance) { 
-        SwerveOutput swerve = Swerve.convertControllerToSwerve(0, -.5, 0, 0);
+    public void moveForward() { 
+        SwerveOutput swerve = Swerve.convertControllerToSwerve(0, -1, 0, 0);
         this.moveWheels(swerve);
     }
     @Override
-    public void moveBackward(double distance) {
+    public void moveBackward() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 1, 0, 0);
         this.moveWheels(swerve);
     }
     @Override
-    public void moveLeft(double distance) {
+    public void moveLeft() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(1, 0, 0, 0);
         this.moveWheels(swerve);
     }
     @Override
-    public void moveRight(double distance) {
+    public void moveRight() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(-1, 0, 0, 0);
         this.moveWheels(swerve);
     }
     @Override
-    public void spinClockwise(double degrees) {
+    public void spinClockwise() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, -1, 0);
         this.moveWheels(swerve); 
     }
     @Override
-    public void spinCounterclockwise(double degrees) {
+    public void spinCounterclockwise() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, 1, 0);
         this.moveWheels(swerve);
     }

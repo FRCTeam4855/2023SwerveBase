@@ -12,40 +12,41 @@ public class BasicMovements extends SubsystemBase implements GenericDriveSystem{
     double x2 = 0;
 
     @Override
-    public void moveForward(double distance) {
-        driveValues.moveManual(x1, y1, x2, 0);
-        if (distance > driveValues.getRelativeEncoderFT()) {
-            y1 = 0;
-        } else { // when less than or equal to run
-            y1 = .4;
-        }
+    public void moveForward() {
+    //     driveValues.moveManual(x1, y1, x2, 0);
+    //     if (distance > driveValues.getRelativeEncoderFT()) {
+    //         y1 = 0;
+    //     } else { // when less than or equal to run
+    //         y1 = .4;
+    //     }
+    // }
     }
 
     @Override
-    public void moveBackward(double distance) {
+    public void moveBackward() {
         
     }
 
     @Override
-    public void moveLeft(double distance) {
+    public void moveLeft() {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void moveRight(double distance) {
+    public void moveRight() {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void spinClockwise(double degrees) {
+    public void spinClockwise() {
         // TODO Auto-generated method stub
         
     }
 
     @Override
-    public void spinCounterclockwise(double degrees) {
+    public void spinCounterclockwise() {
         // TODO Auto-generated method stub
         
     }
