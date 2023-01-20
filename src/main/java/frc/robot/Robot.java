@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
+import frc.robot.Commands.Pidtest;
+
 
 public class Robot extends TimedRobot { 
  
@@ -38,6 +40,7 @@ public class Robot extends TimedRobot {
   double autox1 = 0; //defines left and right movement for auton
   double autox2 = 0; //defines spinning movement for auton
   double autoy1 = 0; //defines forward and backward movement for auton
+  boolean isBalancing = false;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -70,8 +73,10 @@ public class Robot extends TimedRobot {
     //SmartDashboard.putNumber("Encoder FR", driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder Values
     SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
     SmartDashboard.putBoolean("Driver Oriented", driverOriented); //shows true/false for driver oriented
-    SmartDashboard.putNumber("Gyro Get Raw", gyro.getYaw()); //pulls gyro values
+    SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); //pulls yaw value
+    SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); //pulls Pitch value
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
+    SmartDashboard.putBoolean("Balancing", isBalancing); //shows true if robot is attempting to balance
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler will never run, and the command framework will not work
   }
 
@@ -99,7 +104,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    driveSystem.moveManual(autox1, autoy1, autox2, 0);
+    driveSystem.moveManual(autox1, autoy1, autox2, 0, 1);
 
       driveSystem.resetRelativeEncoders();
       // encoderSetpoint = 1;  
@@ -125,6 +130,7 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     driveSystem.resetRelativeEncoders();
     gyro.reset();
+    gyro.zeroYaw();
   }
   /**
    * This function is called periodically during operator control.
@@ -134,9 +140,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() { 
-    double x1 = -xboxDriver.getRawAxis(0); //connects the left and right drive movements to the drive controllers left x-axis
-    double x2 = -xboxDriver.getRawAxis(4); //connects the spinning drive movements to the drive controllers right x-axis
-    double y1 = -xboxDriver.getRawAxis(1); //connects the forwards and backwards drive movements to the drive controllers left y-axis
+    double x1 = xboxDriver.getRawAxis(0); //connects the left and right drive movements to the drive controllers left x-axis
+    double x2 = xboxDriver.getRawAxis(4); //connects the spinning drive movements to the drive controllers right x-axis
+    double y1 = xboxDriver.getRawAxis(1); //connects the forwards and backwards drive movements to the drive controllers left y-axis
     // if (xboxDriver.getRawButton(1)) { //button A
     //   driveSystem.resetRelativeEncoders();
     //   encoderSetpoint = 10;
@@ -160,15 +166,13 @@ public class Robot extends TimedRobot {
     if (xboxDriver.getRawAxis(2) > .5) driveSpeed = Wheel.SpeedSetting.PRECISE;
     driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
 
-    if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && (gyro.getYaw()) > 5){
-      driveSystem.moveManual(0, 0, (-Math.abs(gyro.getYaw())/180) - .1, theta_radians, driveSpeed);
+    if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && Math.abs(gyro.getPitch()) > 2){
+      isBalancing = true;
+      driveSystem.moveManual(0, (gyro.getPitch()/-40), 0 , theta_radians, driveSpeed);
+    } else {
+      isBalancing = false;
     }
-      else if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && (gyro.getYaw()) < -5 ){
-        driveSystem.moveManual(0, 0, (Math.abs(gyro.getYaw())/180) + .1, theta_radians, driveSpeed);
-      }
-      // else {
-      //   driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);  
-    // }
+
     
     // Reset the relative encoders if you press B button
     if (xboxDriver.getRawButtonPressed(ENCODER_RESET_B)) {
