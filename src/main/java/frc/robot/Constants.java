@@ -34,6 +34,8 @@ public class Constants {
     public static final int ORIENTATION_TOGGLE_X = 3; //X
     public static final int DRV_SPD_LIMITER_RB = 6;
     public static final int TEST_PID_ROTATE_A = 1;
+
+    public static final int SCHEDULE_INITIAL_COMMAND_LB = 5;
     
     
 }

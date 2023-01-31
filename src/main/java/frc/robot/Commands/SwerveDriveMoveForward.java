@@ -1,6 +1,7 @@
 package frc.robot.Commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants;
 import frc.robot.Subsystems.SwerveDriveSystem;
 
 public class SwerveDriveMoveForward extends CommandBase {
@@ -27,7 +28,7 @@ public class SwerveDriveMoveForward extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return Math.abs(swerveDriveSystem.getEncoderFL() - initialEncoderValue) > distance;
+        return Math.abs(swerveDriveSystem.getEncoderFL() - initialEncoderValue) > (distance * Constants.RELATIVE_ENC_TO_FT);
     }
     
 }

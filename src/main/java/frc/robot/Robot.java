@@ -13,10 +13,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Subsystems.PrettyLights;
 import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
+import frc.robot.Commands.LightsOnCommand;
 import frc.robot.Commands.Pidtest;
+import frc.robot.Commands.SwerveDriveMoveForward;
 
 
 public class Robot extends TimedRobot { 
@@ -36,6 +41,7 @@ public class Robot extends TimedRobot {
   XboxController xboxOperator = new XboxController(1); 
   AHRS gyro = new AHRS(SPI.Port.kMXP); //defines the gyro
   SwerveDriveSystem driveSystem = new SwerveDriveSystem();
+  private PrettyLights prettyLights1 = new PrettyLights();
   
   double autox1 = 0; //defines left and right movement for auton
   double autox2 = 0; //defines spinning movement for auton
@@ -77,6 +83,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); //pulls Pitch value
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
     SmartDashboard.putBoolean("Balancing", isBalancing); //shows true if robot is attempting to balance
+
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler will never run, and the command framework will not work
   }
 
@@ -131,6 +138,8 @@ public class Robot extends TimedRobot {
     driveSystem.resetRelativeEncoders();
     gyro.reset();
     gyro.zeroYaw();
+
+    prettyLights1.setLEDs(PrettyLights.BLUE_VIOLET);
   }
   /**
    * This function is called periodically during operator control.
@@ -187,6 +196,25 @@ public class Robot extends TimedRobot {
     //This toggles driver oriented on or off when x is pressed
     if (xboxDriver.getRawButtonPressed(ORIENTATION_TOGGLE_X)){
       driverOriented = !driverOriented;
+    }
+
+    if (xboxOperator.getRawButtonPressed(SCHEDULE_INITIAL_COMMAND_LB)) {
+     
+      Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
+      Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
+      Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
+      Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
+      Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
+      
+      CommandScheduler.getInstance().schedule(
+        setupInitialLights
+          .andThen(new WaitCommand(5))
+          .andThen(setupPostMoveLights)
+          .andThen(new WaitCommand(5))
+          .andThen(middleLights)
+          .andThen(new WaitCommand(5))
+          .andThen(lightsAtTheEnd) 
+        );
     }
   }
   
