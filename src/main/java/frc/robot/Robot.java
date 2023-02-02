@@ -22,9 +22,28 @@ import frc.robot.Subsystems.Wheel;
 import frc.robot.Commands.LightsOnCommand;
 import frc.robot.Commands.Pidtest;
 import frc.robot.Commands.SwerveDriveMoveForward;
+import edu.wpi.first.cameraserver.CameraServer;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
+
+
+
 
 
 public class Robot extends TimedRobot { 
+  // Creates UsbCamera and MjpegServer [1] and connects them
+CameraServer.startAutomaticCapture();
+
+// Creates the CvSink and connects it to the UsbCamera
+CvSink cvSink = CameraServer.getVideo();
+
+// Creates the CvSource and MjpegServer [2] and connects them
+CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
+
+
+  
  
   double theta_radians; //theta_radians is difference the angle the robot is at, and the zerod angle
   boolean driverOriented = true; //where the robot is in driver oriented or not
