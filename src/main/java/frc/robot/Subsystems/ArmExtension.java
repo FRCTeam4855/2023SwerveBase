@@ -13,4 +13,4 @@ public class ArmExtension {
 //TODO assign channel numbers
     DigitalInput armExtentionLimitOne = new DigitalInput(0);
     DigitalInput armExtentionLimitTwo = new DigitalInput(0);
-}
+} 
