@@ -14,4 +14,6 @@ public class ArmRotation {
 //TODO assign channel numbers
     DigitalInput armRotationLimitOne = new DigitalInput(0);
     DigitalInput armRotationLimitTwo = new DigitalInput(0);
+
+    //TODO JK: move limit switches to ArmExtension and add absolute encoder here instead
 }

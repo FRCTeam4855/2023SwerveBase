@@ -7,9 +7,28 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Subsystems.PneumaticsBase.*;
 
 public class IntakePaws extends SubsystemBase {
-    //TODO assign channel numbers
-    DoubleSolenoid pawLeft = new DoubleSolenoid(0, PneumaticsModuleType.REVPH, 0, 0);
-    DoubleSolenoid pawRight = new DoubleSolenoid(0, PneumaticsModuleType.REVPH, 0, 0);
+
+    DoubleSolenoid pawLeft = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 1, 2);
+    DoubleSolenoid pawRight = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 3, 4);
+
+    public void setLeftPawOpen() {
+        pawLeft.set(Value.kForward);        
+    }
+
+    public void setLeftPawClose() {
+        pawLeft.set(Value.kReverse);
+    }
+
+    public boolean isLeftPawOpen() {
+        return pawLeft.get() == Value.kForward;
+    }
+
+    public boolean isLeftPawClose() {
+        return pawLeft.get() == Value.kReverse;
+    }
+
+//TODO JK: do the same thing for rightPaw
 }
