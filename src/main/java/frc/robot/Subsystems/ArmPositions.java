@@ -1,6 +1,6 @@
 package frc.robot.Subsystems;
 
-import frc.robot.Subsystems.Actuators;
+import frc.robot.Subsystems.IntakePaws;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 public class ArmPositions {
     //TODO: write code for arm positions
-    Actuators actuators = new Actuators();
+    IntakePaws actuators = new IntakePaws();
     /* 
     if (button == cone-button):
         highConePosition()
@@ -20,7 +20,7 @@ public class ArmPositions {
         pass;
 */
     public void highConePosition() {
-        actuators.actuatorOne.set(Value.kreverse);
+        actuators.actuatorOne.set(Value.kReverse);
     }
 
     

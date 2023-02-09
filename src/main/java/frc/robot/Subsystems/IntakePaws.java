@@ -6,9 +6,10 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class Actuators {
+public class IntakePaws extends SubsystemBase {
     //TODO assign channel numbers
-    DoubleSolenoid actuatorOne = new DoubleSolenoid(0, PneumaticsModuleType.REVPH, 0, 0);
-    DoubleSolenoid actuatorTwo = new DoubleSolenoid(0, PneumaticsModuleType.REVPH, 0, 0);
+    DoubleSolenoid pawLeft = new DoubleSolenoid(0, PneumaticsModuleType.REVPH, 0, 0);
+    DoubleSolenoid pawRight = new DoubleSolenoid(0, PneumaticsModuleType.REVPH, 0, 0);
 }
