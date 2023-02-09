@@ -34,7 +34,7 @@ import edu.wpi.first.cscore.CvSource;
 
 public class Robot extends TimedRobot { 
   // Creates UsbCamera and MjpegServer [1] and connects them
-CameraServer.startAutomaticCapture();
+//CameraServer.startAutomaticCapture();
 
 // Creates the CvSink and connects it to the UsbCamera
 CvSink cvSink = CameraServer.getVideo();
