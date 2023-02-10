@@ -5,15 +5,11 @@ package frc.robot.Subsystems;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 public class ArmRotation {
-    //TODO assign device id
-    CANSparkMax armRotationOne = new CANSparkMax(0, MotorType.kBrushless);
-    CANSparkMax armRotationTwo = new CANSparkMax(0, MotorType.kBrushless);
-//TODO assign channel numbers
-    DigitalInput armRotationLimitOne = new DigitalInput(0);
-    DigitalInput armRotationLimitTwo = new DigitalInput(0);
-
-    //TODO JK: move limit switches to ArmExtension and add absolute encoder here instead
+    CANSparkMax armRotationOne = new CANSparkMax(11, MotorType.kBrushless);
+    CANSparkMax armRotationTwo = new CANSparkMax(12, MotorType.kBrushless);
+    DutyCycleEncoder armAbsEncoder = new DutyCycleEncoder(99); // placeholder number
+    //TODO ADD A NUMBER TO CHANNEL
 }

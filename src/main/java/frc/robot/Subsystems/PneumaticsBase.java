@@ -6,7 +6,7 @@ import edu.wpi.first.wpilibj.PneumaticsModuleType;
 
 public class PneumaticsBase extends SubsystemBase  {   
 
-    public static final int REV_PH_MODULE = 10;
+    public static final int REV_PH_MODULE = 10; // CAN ID for REV PH
 
     private Compressor compressor = new Compressor(REV_PH_MODULE, PneumaticsModuleType.REVPH);
     //compressor beginning 2023 is ENABLED by default in closed-loop system
@@ -15,7 +15,7 @@ public class PneumaticsBase extends SubsystemBase  {
         compressor.disable();
     }
 
-    public void setCOmpressorOn() {
+    public void setCompressorOn() {
         compressor.enableDigital();
     }
 

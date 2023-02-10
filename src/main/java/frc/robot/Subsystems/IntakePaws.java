@@ -30,5 +30,17 @@ public class IntakePaws extends SubsystemBase {
         return pawLeft.get() == Value.kReverse;
     }
 
-//TODO JK: do the same thing for rightPaw
+    public void setRightPawOpen() {
+        pawRight.set(Value.kForward);
+    }
+    public void setRightPawClose() {
+        pawRight.set(Value.kReverse);
+    }
+    public boolean isRightPawOpen() {
+        return pawRight.get() == Value.kForward;
+    }
+    public boolean isRightPawClose() {
+        return pawRight.get() == Value.kReverse;
+    }
+
 }

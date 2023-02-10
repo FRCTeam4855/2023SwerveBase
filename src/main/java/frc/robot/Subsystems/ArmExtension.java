@@ -8,9 +8,10 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 public class ArmExtension {
-    //TODO assign device id
-    CANSparkMax armExtension = new CANSparkMax(0, MotorType.kBrushless);
-//TODO assign channel numbers
-    DigitalInput armExtentionLimitOne = new DigitalInput(0);
-    DigitalInput armExtentionLimitTwo = new DigitalInput(0);
+    CANSparkMax armExtension = new CANSparkMax(9, MotorType.kBrushless);
+    DigitalInput armExtentionLimitOne = new DigitalInput(5);
+    DigitalInput armExtentionLimitTwo = new DigitalInput(6);
+    // Limit switchs
+    DigitalInput armRotationLimitOne = new DigitalInput(7);
+    DigitalInput armRotationLimitTwo = new DigitalInput(8);
 } 
