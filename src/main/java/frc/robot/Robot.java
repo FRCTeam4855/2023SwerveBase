@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import frc.robot.Subsystems.IntakePaws;
 import frc.robot.Subsystems.PrettyLights;
 import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
@@ -29,18 +30,10 @@ import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
 
 
-
+// Florida man was here
 
 
 public class Robot extends TimedRobot { 
-  // Creates UsbCamera and MjpegServer [1] and connects them
-//CameraServer.startAutomaticCapture();
-
-// Creates the CvSink and connects it to the UsbCamera
-CvSink cvSink = CameraServer.getVideo();
-
-// Creates the CvSource and MjpegServer [2] and connects them
-CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
 
 
   
@@ -61,6 +54,7 @@ CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
   AHRS gyro = new AHRS(SPI.Port.kMXP); //defines the gyro
   SwerveDriveSystem driveSystem = new SwerveDriveSystem();
   private PrettyLights prettyLights1 = new PrettyLights();
+  IntakePaws intakePaws = new IntakePaws();
   
   double autox1 = 0; //defines left and right movement for auton
   double autox2 = 0; //defines spinning movement for auton
@@ -73,6 +67,8 @@ CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
    */
   @Override
   public void robotInit() {
+    intakePaws.setRightPawOpen();
+    intakePaws.setLeftPawOpen();
 
     m_chooser.setDefaultOption("Leave Tarmac", kAuton1);
     m_chooser.addOption("Shoot High Leave Tarmac", kAuton2);
@@ -158,7 +154,7 @@ CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
     gyro.reset();
     gyro.zeroYaw();
 
-    prettyLights1.setLEDs(PrettyLights.BLUE_VIOLET);
+    prettyLights1.setLEDs(PrettyLights.BPM_RAINBOWPALETTE);
   }
   /**
    * This function is called periodically during operator control.
@@ -183,6 +179,7 @@ CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
     // driveSystem.moveManual(x1, outputSpeed, x2, 0);
     // SmartDashboard.putNumber("outputSpeed", outputSpeed);    
 
+    //Driver Controlls
     //this tells the robot when it should be driverOriented or robotOriented
     if (driverOriented) {
       theta_radians = gyro.getYaw() * Math.PI / 180; //driverOriented
@@ -217,20 +214,40 @@ CvSource outputStream = CameraServer.putVideo("Blur", 640, 480);
       driverOriented = !driverOriented;
     }
 
+    //Operator Controlls
+
+    //toggle paws open and closed
+    if (xboxOperator.getRawButtonPressed(1)) {
+      if (intakePaws.isRightPawOpen() && intakePaws.isLeftPawOpen()) {
+        intakePaws.setRightPawClose();
+        intakePaws.setLeftPawClose();
+        prettyLights1.setLEDs(PrettyLights.SKY_BLUE);
+      } else {
+        if (intakePaws.isRightPawClose() && intakePaws.isLeftPawClose()) {
+          intakePaws.setRightPawOpen();
+          intakePaws.setLeftPawOpen();
+          prettyLights1.setLEDs(PrettyLights.LAWN_GREEN);
+        }
+      }
+    }
+
     if (xboxOperator.getRawButtonPressed(SCHEDULE_INITIAL_COMMAND_LB)) {
      
       Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
       Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
       Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
       Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
+      Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
       Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
       
       CommandScheduler.getInstance().schedule(
         setupInitialLights
-          .andThen(new WaitCommand(5))
+          .andThen(new WaitCommand(2))
           .andThen(setupPostMoveLights)
-          .andThen(new WaitCommand(5))
+          .andThen(new WaitCommand(2))
           .andThen(middleLights)
+          .andThen(new WaitCommand(2))
+          .andThen(floridaMansLights)
           .andThen(new WaitCommand(5))
           .andThen(lightsAtTheEnd) 
         );
