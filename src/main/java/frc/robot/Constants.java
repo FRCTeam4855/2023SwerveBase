@@ -36,6 +36,10 @@ public class Constants {
     public static final int TEST_PID_ROTATE_A = 1;
 
     public static final int SCHEDULE_INITIAL_COMMAND_LB = 5;
+    //Operator
+    public static final int PAWS_TOGGLEBOTH_A = 1;
+    public static final int PAW_TOGGLELEFT_B = 2;
+    public static final int PAW_TOGGLERIGHT_X = 3;
     
     
 }

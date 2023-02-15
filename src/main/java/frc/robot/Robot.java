@@ -217,7 +217,7 @@ public class Robot extends TimedRobot {
     //Operator Controlls
 
     //toggle paws open and closed
-    if (xboxOperator.getRawButtonPressed(1)) {
+    if (xboxOperator.getRawButtonPressed(PAWS_TOGGLEBOTH_A)) {
       if (intakePaws.isRightPawOpen() && intakePaws.isLeftPawOpen()) {
         intakePaws.setRightPawClose();
         intakePaws.setLeftPawClose();
@@ -229,6 +229,13 @@ public class Robot extends TimedRobot {
           prettyLights1.setLEDs(PrettyLights.LAWN_GREEN);
         }
       }
+    }
+
+    if (xboxOperator.getRawButtonPressed(PAW_TOGGLELEFT_B)) {
+intakePaws.setLeftPawToggle();
+    }
+    if (xboxOperator.getRawButtonPressed(PAW_TOGGLERIGHT_X)) {
+intakePaws.setRightPawToggle();
     }
 
     if (xboxOperator.getRawButtonPressed(SCHEDULE_INITIAL_COMMAND_LB)) {
