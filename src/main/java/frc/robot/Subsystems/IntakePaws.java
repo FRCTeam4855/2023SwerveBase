@@ -11,8 +11,8 @@ import static frc.robot.Subsystems.PneumaticsBase.*;
 
 public class IntakePaws extends SubsystemBase {
 
-    DoubleSolenoid pawLeft = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 1, 2);
-    DoubleSolenoid pawRight = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 3, 4);
+    DoubleSolenoid pawLeft = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 0, 1);
+    DoubleSolenoid pawRight = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 2, 3);
 
     public void setLeftPawOpen() {
         pawLeft.set(Value.kForward);        
@@ -20,6 +20,10 @@ public class IntakePaws extends SubsystemBase {
 
     public void setLeftPawClose() {
         pawLeft.set(Value.kReverse);
+    }
+
+    public void setLeftPawToggle() {
+        pawLeft.toggle();
     }
 
     public boolean isLeftPawOpen() {
@@ -36,6 +40,11 @@ public class IntakePaws extends SubsystemBase {
     public void setRightPawClose() {
         pawRight.set(Value.kReverse);
     }
+
+    public void setRightPawToggle() {
+        pawRight.toggle();
+    }
+    
     public boolean isRightPawOpen() {
         return pawRight.get() == Value.kForward;
     }
