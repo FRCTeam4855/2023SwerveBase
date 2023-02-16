@@ -20,11 +20,15 @@ import frc.robot.Subsystems.IntakePaws;
 import frc.robot.Subsystems.PrettyLights;
 import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
+import frc.robot.Subsystems.limeLight;
 import frc.robot.Commands.LightsOnCommand;
 import frc.robot.Commands.Pidtest;
 import frc.robot.Commands.SwerveDriveMoveForward;
 import edu.wpi.first.cameraserver.CameraServer;
-
+import frc.robot.Subsystems.limeLight.*;
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.cscore.CvSink;
 import edu.wpi.first.cscore.CvSource;
@@ -87,6 +91,9 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    // Limelight code
+    // SmartDashboard.putNumber("LimelightX", limeLight.LimeLight_Test);
+	  // SmartDashboard.putNumber("LimelightY", limeLight.;
 
     SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); //Displays Front Left Wheel Encoder Values
     //SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder Values

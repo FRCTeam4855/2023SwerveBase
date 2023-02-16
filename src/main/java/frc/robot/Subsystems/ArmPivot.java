@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 public class ArmPivot {
   CANSparkMax armPivotOne = new CANSparkMax(11, MotorType.kBrushless);
   CANSparkMax armPivotTwo = new CANSparkMax(12, MotorType.kBrushless);
-  DutyCycleEncoder armAbsEncoder = new DutyCycleEncoder(1337)); // placeholder number
+  DutyCycleEncoder armAbsEncoder = new DutyCycleEncoder(1337); // placeholder number
   //TODO ADD A NUMBER TO CHANNEL
 
   public void setPivotDirectionForward() {
