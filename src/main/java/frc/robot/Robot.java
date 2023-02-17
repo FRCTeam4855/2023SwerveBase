@@ -25,7 +25,7 @@ import frc.robot.Commands.LightsOnCommand;
 import frc.robot.Commands.Pidtest;
 import frc.robot.Commands.SwerveDriveMoveForward;
 import edu.wpi.first.cameraserver.CameraServer;
-import frc.robot.Subsystems.limeLight.*;
+import frc.robot.Subsystems.limeLight;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -105,6 +105,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); //pulls Pitch value
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
     SmartDashboard.putBoolean("Balancing", isBalancing); //shows true if robot is attempting to balance
+    
 
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler will never run, and the command framework will not work
   }
@@ -123,9 +124,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putString("auton selected", m_autoSelected); //displays which auton is currently running
     driveSystem.resetRelativeEncoders();
     gyro.reset();
-    // CommandScheduler.getInstance().setDefaultCommand(driveSystem, new SwerveDriveStop(driveSystem));
-    // SwerveDriveMoveForward swerveDriveMoveForward = new SwerveDriveMoveForward(driveSystem);
-    // swerveDriveMoveForward.schedule();
   }
 
   // final double kP = 0.3;
@@ -133,10 +131,16 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    driveSystem.moveManual(autox1, autoy1, autox2, 0, 1);
+    // driveSystem.moveManual(autox1, autoy1, autox2, 0, 1);
+    Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
+    Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
+    Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
+    Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
+    Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
+    Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
 
-      driveSystem.resetRelativeEncoders();
-      // encoderSetpoint = 1;  
+    //   driveSystem.resetRelativeEncoders();
+    //   encoderSetpoint = 1;  
     // double encoderPositionFT = driveSystem.getRelativeEncoderFT();
     // double driverError = encoderSetpoint - encoderPositionFT;
     // double outputSpeed = kP * driverError;
@@ -144,6 +148,19 @@ public class Robot extends TimedRobot {
     // SmartDashboard.putNumber("outputSpeed", outputSpeed);
     switch (m_autoSelected) {      
       case kAuton1: 
+      
+      CommandScheduler.getInstance().schedule(
+        
+        setupInitialLights,moveForward
+          // .andThen(new WaitCommand(2))
+          // .andThen(setupPostMoveLights)
+          // .andThen(new WaitCommand(2))
+          // .andThen(middleLights)
+          // .andThen(new WaitCommand(2))
+          // .andThen(floridaMansLights)
+          // .andThen(new WaitCommand(5))
+          // .andThen(lightsAtTheEnd) 
+        );
       default: 
       break;
       case kAuton2:
@@ -245,28 +262,28 @@ intakePaws.setLeftPawToggle();
 intakePaws.setRightPawToggle();
     }
 
-    if (xboxOperator.getRawButtonPressed(SCHEDULE_INITIAL_COMMAND_LB)) {
+    // if (xboxOperator.getRawButtonPressed(SCHEDULE_INITIAL_COMMAND_LB)) {
      
-      Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
-      Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
-      Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
-      Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
-      Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
-      Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
+      // Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
+      // Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
+      // Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
+      // Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
+      // Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
+      // Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
       
-      CommandScheduler.getInstance().schedule(
-        setupInitialLights
-          .andThen(new WaitCommand(2))
-          .andThen(setupPostMoveLights)
-          .andThen(new WaitCommand(2))
-          .andThen(middleLights)
-          .andThen(new WaitCommand(2))
-          .andThen(floridaMansLights)
-          .andThen(new WaitCommand(5))
-          .andThen(lightsAtTheEnd) 
-        );
+      // CommandScheduler.getInstance().schedule(
+      //   setupInitialLights
+      //     .andThen(new WaitCommand(2))
+      //     .andThen(setupPostMoveLights)
+      //     .andThen(new WaitCommand(2))
+      //     .andThen(middleLights)
+      //     .andThen(new WaitCommand(2))
+      //     .andThen(floridaMansLights)
+      //     .andThen(new WaitCommand(5))
+      //     .andThen(lightsAtTheEnd) 
+      //   );
     }
-  }
+  
   
    
   //This function is called periodically during test mode.
