@@ -3,10 +3,6 @@ package frc.robot.Subsystems;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-//import edu.wpi.first.wpilibj.motorcontrol.Spark;
-
-//import edu.wpi.first.wpilibj.motorcontrol.Spark;
-
 public class PrettyLights extends SubsystemBase {
     public final static double RAINBOW_RAINBOWPALETTE = -.99;
     public final static double RAINBOW_PARTYPALETTE = -.97;
@@ -114,16 +110,6 @@ public class PrettyLights extends SubsystemBase {
 
       
 // C1 is purple and C2 is gold
-    // double pattern = C1_AND_C2_SINELON;
-    
-    /**
-     * Creates an instance of the Blinkin driver.
-     * @param s the PWM port of the driver.
-     */
-    // public PrettyLights(int s) {
-    //     leds = new Spark(s);
-    // }
-
     /**
      * Sets the LEDs to a certain color. This function won't work when the robot is disabled.
      * @param color the color to set the lights to, coordinated with the constants set as static in the Blinkin class
@@ -137,8 +123,8 @@ public class PrettyLights extends SubsystemBase {
      * Gets the current display pattern of the LEDs.
      * @return a number between -1 and 1 corresponding to the current pattern
      */
-    // public double getLEDs() {
-    //     return pattern;
-    // }
+    public double getLEDs() {
+        return pattern;
+    }
     
 }

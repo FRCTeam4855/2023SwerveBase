@@ -15,33 +15,18 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Subsystems.IntakePaws;
 import frc.robot.Subsystems.PrettyLights;
 import frc.robot.Subsystems.SwerveDriveSystem;
+import frc.robot.Subsystems.TempMotor;
 import frc.robot.Subsystems.Wheel;
-import frc.robot.Subsystems.limeLight;
+import frc.robot.Subsystems.Limelight;
+import frc.robot.Commands.CenterToLimelight;
 import frc.robot.Commands.LightsOnCommand;
-import frc.robot.Commands.Pidtest;
 import frc.robot.Commands.SwerveDriveMoveForward;
-import edu.wpi.first.cameraserver.CameraServer;
-import frc.robot.Subsystems.limeLight;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableEntry;
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.cameraserver.CameraServer;
-import edu.wpi.first.cscore.CvSink;
-import edu.wpi.first.cscore.CvSource;
-
-
-// Florida man was here
-
 
 public class Robot extends TimedRobot { 
 
-
-  
- 
   double theta_radians; //theta_radians is difference the angle the robot is at, and the zerod angle
   boolean driverOriented = true; //where the robot is in driver oriented or not
 
@@ -52,18 +37,28 @@ public class Robot extends TimedRobot {
 
   private String m_autoSelected; //This selects between the two autonomous
   public SendableChooser<String> m_chooser = new SendableChooser<>(); //creates the ability to switch between autons on SmartDashboard
-
   XboxController xboxDriver = new XboxController(0);
   XboxController xboxOperator = new XboxController(1); 
   AHRS gyro = new AHRS(SPI.Port.kMXP); //defines the gyro
   SwerveDriveSystem driveSystem = new SwerveDriveSystem();
-  private PrettyLights prettyLights1 = new PrettyLights();
   IntakePaws intakePaws = new IntakePaws();
-  
+  private Limelight limelight = new Limelight();
   double autox1 = 0; //defines left and right movement for auton
   double autox2 = 0; //defines spinning movement for auton
   double autoy1 = 0; //defines forward and backward movement for auton
   boolean isBalancing = false;
+
+  //command related declarations
+  private PrettyLights prettyLights1 = new PrettyLights();
+  Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
+  Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
+  Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
+  Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
+  Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
+  Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
+  private TempMotor tempMotor1 = new TempMotor();
+  Command setupCenterToLimelight = new CenterToLimelight(tempMotor1);
+  
 
   /**
    * This function is run when the robot is first started up and should be
@@ -71,14 +66,14 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
     intakePaws.setRightPawOpen();
     intakePaws.setLeftPawOpen();
-
     m_chooser.setDefaultOption("Leave Tarmac", kAuton1);
     m_chooser.addOption("Shoot High Leave Tarmac", kAuton2);
     m_chooser.addOption("Shoot High Intake Cargo", kAuton3);
     m_chooser.addOption("Shoot 2 High Leave Tarmac", kAuton4);
-    SmartDashboard.putData(m_chooser); //displays the auton options in shuffleboard
+    SmartDashboard.putData(m_chooser); //displays the auton options in shuffleboard, put in init block
   }
 
   /**
@@ -91,10 +86,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
-    // Limelight code
-    // SmartDashboard.putNumber("LimelightX", limeLight.LimeLight_Test);
-	  // SmartDashboard.putNumber("LimelightY", limeLight.;
-
+    limelight.updateDashboard(); //runs block in limeight subsystem for periodic update
     SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); //Displays Front Left Wheel Encoder Values
     //SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder Values
     //SmartDashboard.putNumber("Encoder BR", driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder Values
@@ -105,6 +97,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); //pulls Pitch value
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
     SmartDashboard.putBoolean("Balancing", isBalancing); //shows true if robot is attempting to balance
+    SmartDashboard.putBoolean("LimelightLamp", limelight.isLimelightLampOn());
     
 
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler will never run, and the command framework will not work
@@ -132,12 +125,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() {
     // driveSystem.moveManual(autox1, autoy1, autox2, 0, 1);
-    Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
-    Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
-    Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
-    Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
-    Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
-    Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
 
     //   driveSystem.resetRelativeEncoders();
     //   encoderSetpoint = 1;  
@@ -177,9 +164,10 @@ public class Robot extends TimedRobot {
     driveSystem.resetRelativeEncoders();
     gyro.reset();
     gyro.zeroYaw();
-
     prettyLights1.setLEDs(PrettyLights.BPM_RAINBOWPALETTE);
   }
+
+
   /**
    * This function is called periodically during operator control.
    */
@@ -220,9 +208,18 @@ public class Robot extends TimedRobot {
       driveSystem.moveManual(0, (gyro.getPitch()/-40), 0 , theta_radians, driveSpeed);
     } else {
       isBalancing = false;
+    }    
+    if (xboxDriver.getRawButton(TEST_TOGGLE_LL_CAM_MODE_Y)){
+      CommandScheduler.getInstance().schedule(setupCenterToLimelight);
     }
+      //stealing this button
+    //   if (limelight.isLimelightLampOn()){
+    //     limelight.setLimelightLampOff();
+    //   } else {
+    //     limelight.setLimelightLampOn();
+    //   }
+    // }
 
-    
     // Reset the relative encoders if you press B button
     if (xboxDriver.getRawButtonPressed(ENCODER_RESET_B)) {
       driveSystem.resetRelativeEncoders();
@@ -283,9 +280,7 @@ intakePaws.setRightPawToggle();
       //     .andThen(lightsAtTheEnd) 
       //   );
     }
-  
-  
-   
+
   //This function is called periodically during test mode.
   @Override
   public void testPeriodic() {

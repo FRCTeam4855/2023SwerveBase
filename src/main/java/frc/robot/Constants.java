@@ -1,6 +1,4 @@
 package frc.robot;
-import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.XboxController.Button;
 
 public class Constants {
     //Constants ++++++++++++
@@ -40,6 +38,7 @@ public class Constants {
     public static final int PAWS_TOGGLEBOTH_A = 1;
     public static final int PAW_TOGGLELEFT_B = 2;
     public static final int PAW_TOGGLERIGHT_X = 3;
+    public static final int TEST_TOGGLE_LL_CAM_MODE_Y = 4;
     
     
 }
