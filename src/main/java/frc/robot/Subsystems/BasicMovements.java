@@ -11,15 +11,12 @@ public class BasicMovements extends SubsystemBase implements GenericDriveSystem{
     double x1 = 0;
     double x2 = 0;
 
+
+
     @Override
     public void moveForward() {
-    //     driveValues.moveManual(x1, y1, x2, 0);
-    //     if (distance > driveValues.getRelativeEncoderFT()) {
-    //         y1 = 0;
-    //     } else { // when less than or equal to run
-    //         y1 = .4;
-    //     }
-    // }
+        // TODO Map very basic (and slow) movements to these for use in auton commands
+        // TODO NOTE: we will need to impliment a (distance) argument to these so the robot know how far to go and commands know when to stop
     }
 
     @Override
@@ -29,31 +26,31 @@ public class BasicMovements extends SubsystemBase implements GenericDriveSystem{
 
     @Override
     public void moveLeft() {
-        // TODO Auto-generated method stub
+
         
     }
 
     @Override
     public void moveRight() {
-        // TODO Auto-generated method stub
+
         
     }
 
     @Override
     public void spinClockwise() {
-        // TODO Auto-generated method stub
+
         
     }
 
     @Override
     public void spinCounterclockwise() {
-        // TODO Auto-generated method stub
+
         
     }
 
     @Override
     public void stop() {
-        // TODO Auto-generated method stub
+
         
     }
     

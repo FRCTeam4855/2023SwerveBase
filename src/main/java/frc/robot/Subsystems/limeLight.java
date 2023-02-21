@@ -45,6 +45,8 @@ public class Limelight extends SubsystemBase {
     }
 }
 
+//TODO set options, buttons, and logic to change between pipelines 0 and 1
+
   public static void setLimelightPipeToAprilTag() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("limelight-rams");

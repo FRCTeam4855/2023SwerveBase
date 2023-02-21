@@ -4,14 +4,18 @@ package frc.robot.Subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 public class ArmExtension {
     CANSparkMax armExtension = new CANSparkMax(9, MotorType.kBrushless);
-    DigitalInput armExtentionLimitOne = new DigitalInput(5);
-    DigitalInput armExtentionLimitTwo = new DigitalInput(6);
-    // Limit switchs
-    DigitalInput armRotationLimitOne = new DigitalInput(7);
-    DigitalInput armRotationLimitTwo = new DigitalInput(8);
+    AnalogInput lidarsSensor = new AnalogInput(0);
+    double LIDAR_RANGE_MAX = 0; //TODO find value on 2023 bot
+    double LIDAR_RANGE_MIN = 1; //TODO find value on 2023 bot
+
+
+    //TODO add methods for controling (basically what we have for arm pivot)
+    //TODO modify methods to only work within certain lidar range
+
+    //TODO make boolean methods for setpoints
+
 } 

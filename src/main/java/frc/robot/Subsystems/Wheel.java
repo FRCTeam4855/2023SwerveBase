@@ -92,7 +92,7 @@ public class Wheel {
 
     // Can take in a speed setting and modify the motor speed given
     public void setSpeed(double motorSpeed, SpeedSetting speedSetting) {
-        if (speedSetting == SpeedSetting.NORMAL) motorSpeed *= DRIVE_INIT_SPD;
+        if (speedSetting == SpeedSetting.NORMAL) motorSpeed *= DRIVE_DEFAULT_SPD;
         if (speedSetting == SpeedSetting.PRECISE) motorSpeed *= DRIVE_SLOW_SPD;
         setSpeed(motorSpeed);
     }

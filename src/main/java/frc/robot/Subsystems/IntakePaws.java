@@ -14,6 +14,7 @@ public class IntakePaws extends SubsystemBase {
     DoubleSolenoid pawLeft = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 0, 1);
     DoubleSolenoid pawRight = new DoubleSolenoid(REV_PH_MODULE, PneumaticsModuleType.REVPH, 2, 3);
 
+    //LEFT<<<<<<<<
     public void setLeftPawOpen() {
         pawLeft.set(Value.kForward);        
     }
@@ -27,13 +28,14 @@ public class IntakePaws extends SubsystemBase {
     }
 
     public boolean isLeftPawOpen() {
-        return pawLeft.get() == Value.kForward;
+        return pawLeft.get() == Value.kForward; //TODO verify if open and closed match with forward reverse on 2023 bot
     }
 
     public boolean isLeftPawClose() {
         return pawLeft.get() == Value.kReverse;
     }
 
+    //RIGHT>>>>>>>>
     public void setRightPawOpen() {
         pawRight.set(Value.kForward);
     }

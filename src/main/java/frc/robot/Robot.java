@@ -171,34 +171,23 @@ public class Robot extends TimedRobot {
   /**
    * This function is called periodically during operator control.
    */
-  //  final double kP = 0.1;
-  //  double encoderSetpoint = 0;
+
 
   @Override
   public void teleopPeriodic() { 
     double x1 = xboxDriver.getRawAxis(0); //connects the left and right drive movements to the drive controllers left x-axis
     double x2 = xboxDriver.getRawAxis(4); //connects the spinning drive movements to the drive controllers right x-axis
     double y1 = xboxDriver.getRawAxis(1); //connects the forwards and backwards drive movements to the drive controllers left y-axis
-    // if (xboxDriver.getRawButton(1)) { //button A
-    //   driveSystem.resetRelativeEncoders();
-    //   encoderSetpoint = 10;
-    // }else if (xboxDriver.getRawButton(ENCODER_RESET)) { //button B
-    //   encoderSetpoint = 0;
-    // }   
-    // double encoderPositionFT = driveSystem.getRelativeEncoderFT();
-    // double driverError = encoderSetpoint - encoderPositionFT;
-    // double outputSpeed = kP * driverError;
-    // driveSystem.moveManual(x1, outputSpeed, x2, 0);
-    // SmartDashboard.putNumber("outputSpeed", outputSpeed);    
 
-    //Driver Controlls
+
+    //Driver Controls
     //this tells the robot when it should be driverOriented or robotOriented
     if (driverOriented) {
-      theta_radians = gyro.getYaw() * Math.PI / 180; //driverOriented
-    } else theta_radians = 0; //robotOriented
+      theta_radians = gyro.getYaw() * Math.PI / 180; //FieldOriented (whatever encoder 0 value is = forward)
+    } else theta_radians = 0; //RobotOriented (robot front=forward)
 
     // Drive the robot
-    Wheel.SpeedSetting driveSpeed = Wheel.SpeedSetting.NORMAL;
+    Wheel.SpeedSetting driveSpeed = Wheel.SpeedSetting.NORMAL; //sets speed back to normal every 20ms
     if (xboxDriver.getRawButton(DRV_SPD_LIMITER_RB)) driveSpeed = Wheel.SpeedSetting.TURBO;
     if (xboxDriver.getRawAxis(2) > .5) driveSpeed = Wheel.SpeedSetting.PRECISE;
     driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);

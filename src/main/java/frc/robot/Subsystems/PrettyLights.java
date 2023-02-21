@@ -104,6 +104,7 @@ public class PrettyLights extends SubsystemBase {
     public final static double GRAY = .95;
     public final static double DARK_GRAY = .97;
     public final static double BLACK = .99;
+    
     double pattern = PrettyLights.C1_AND_C2_SINELON;
 
     public Spark leds = new Spark(8);

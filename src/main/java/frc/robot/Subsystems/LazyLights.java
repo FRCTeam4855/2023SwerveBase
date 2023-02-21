@@ -3,8 +3,8 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 
 public class LazyLights {
-
-    //jk work in progress
+    //JK work in progress
+    //For Controlling WS2812b LEDs without a blinkin
 
     private int LAZY_LED_PORT = 3; // MUST BE PWM **NOT** ON MXP
     private int LAZY_LED_LENGTH = 60;

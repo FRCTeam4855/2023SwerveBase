@@ -6,7 +6,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class TempMotor extends SubsystemBase {
-
+    //for testbench testing purposes, delete
     public CANSparkMax aTempMotor = new CANSparkMax(14, MotorType.kBrushless);
 
 
