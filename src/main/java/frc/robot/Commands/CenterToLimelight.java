@@ -25,7 +25,6 @@ public class CenterToLimelight extends CommandBase {
     public void initialize() {
         Limelight.setLimelightLampOn();
         Limelight.setLimelightPipeToAprilTag();
-        tempMotor.setTempMotorSpeed(0);
         NetworkTableInstance.getDefault().getTable("limelight-rams").getEntry("ledMode").setNumber(3);
     }
 
@@ -33,7 +32,6 @@ public class CenterToLimelight extends CommandBase {
     public void execute() {
         double tx = NetworkTableInstance.getDefault().getTable("limelight-rams").getEntry("tx").getDouble(0);
         heading_error = -tx;
-        SmartDashboard.putNumber("CenterToLimelight X Value", tx);
         if (Math.abs(heading_error) > heading_setpoint) {
             if (heading_error < 0) {
                 tempMotor.setTempMotorSpeed(Kp * heading_error + min_command);
