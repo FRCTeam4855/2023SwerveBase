@@ -109,5 +109,18 @@ public class Limelight extends SubsystemBase {
     SmartDashboard.putBoolean("Limelight in AprilTag Mode", isLimelightOnAprilTagMode());
   }
 
-  // // TODO : add button options for lamps
+  // // // TODO : add button options for lamps
+  // //TODO set options, buttons, and logic to change between pipelines 0 and 1
+  // public void pipelineButtons() {
+  //   if (XboxController.getRawButtonPressed(button)) {
+  //     turnONLamp
+  //   } else if (XboxController.getRawButtonPressed(button)) {
+  //     turnOffLampLight
+  //   };
+  //   if (XboxController.getRawButtonPressed(button)) {
+  //     PipelinieTwo
+  //   } else if (XboxController.getRawButtonPressed(button)) {
+  //     PipelineOne
+  //   };
+  
 }

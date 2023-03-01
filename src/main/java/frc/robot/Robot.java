@@ -180,7 +180,8 @@ public class Robot extends TimedRobot {
     double y1 = xboxDriver.getRawAxis(1); //connects the forwards and backwards drive movements to the drive controllers left y-axis
 
 
-    //Driver Controls
+    //*******Driver Controls*********
+
     //this tells the robot when it should be driverOriented or robotOriented
     if (driverOriented) {
       theta_radians = gyro.getYaw() * Math.PI / 180; //FieldOriented (whatever encoder 0 value is = forward)
@@ -198,6 +199,7 @@ public class Robot extends TimedRobot {
     } else {
       isBalancing = false;
     }    
+
     if (xboxDriver.getRawButton(TEST_TOGGLE_LL_CAM_MODE_Y)){
       CommandScheduler.getInstance().schedule(setupCenterToLimelight);
     }
@@ -224,7 +226,7 @@ public class Robot extends TimedRobot {
       driverOriented = !driverOriented;
     }
 
-    //Operator Controlls
+    //*******Operator Controls********
 
     //toggle paws open and closed
     if (xboxOperator.getRawButtonPressed(PAWS_TOGGLEBOTH_A)) {
