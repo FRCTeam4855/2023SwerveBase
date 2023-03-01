@@ -1,17 +1,13 @@
 package frc.robot.Subsystems;
-//1 neo
-
-//2 limit switches(physical), one for max and one for min
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.AnalogInput;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-public class ArmExtension {
+public class ArmExtension extends SubsystemBase{
     CANSparkMax armExtension = new CANSparkMax(9, MotorType.kBrushless);
-    AnalogInput lidarsSensor = new AnalogInput(0);
-    double LIDAR_RANGE_MAX = 0; // TODO find value on 2023 bot
-    double LIDAR_RANGE_MIN = 1; // TODO find value on 2023 bot
+    double LIDAR_RANGE_MAX = 0; // maximum limit for arm extension TODO find value on 2023 bot
+    double LIDAR_RANGE_MIN = 1; // minimum limit for arm extension TODO find value on 2023 bot
 
 //     // TODO add methods for controling (basically what we have for arm pivot)
 // public void armExtender() {

@@ -14,7 +14,7 @@ public class ArmPivot extends SubsystemBase{
   double pivotSetpoint;
   CANSparkMax armPivotOne = new CANSparkMax(11, MotorType.kBrushless);
   CANSparkMax armPivotTwo = new CANSparkMax(12, MotorType.kBrushless);
-  DutyCycleEncoder armAbsEncoder = new DutyCycleEncoder(1337); // placeholder number
+  DutyCycleEncoder armAbsEncoder = new DutyCycleEncoder(4); // placeholder number
   //TODO ADD A NUMBER TO CHANNEL
 
   public void setPivotDirectionForward() {
