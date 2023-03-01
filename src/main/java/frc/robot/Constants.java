@@ -11,6 +11,41 @@ public class Constants {
     // Conversions +++++++++
     public static final double RELATIVE_ENC_TO_FT = 7.4; //0.660715;//7.928591; //0.03666658; // converts relative encoder units on neo to inches
 
+<<<<<<< Updated upstream
+=======
+    //Sensor Ranges/Setpoints
+
+    public static final double LIDAR_SET_MAX = 1 ; //TODO find value on 2023 bot
+    public static final double LIDAR_SET_MIN = 1; //TODO find value on 2023 bot
+
+    public static final double ARM_EXTEND_CENTER_1 = 1; //center point for arm extension setpoints
+    public static final double ARM_EXTEND_CENTER_2 = 1; //TODO find these values on 2023 bot
+    public static final double ARM_EXTEND_CENTER_3 = 1;
+    public static final double ARM_EXTEND_CENTER_4 = 1;
+    public static final double ARM_EXTEND_CENTER_5 = 1;
+    public static final double ARM_EXTEND_SLOP = 1;    //acceptable range for arm extension setpoints
+
+    public static final double ARM_PIVOT_CENTER_1 = 1; //center point for arm extension setpoints
+    public static final double ARM_PIVOT_CENTER_2 = 1; //TODO find these values on 2023 bot
+    public static final double ARM_PIVOT_CENTER_3 = 1;
+    public static final double ARM_PIVOT_CENTER_4 = 1;
+    public static final double ARM_PIVOT_CENTER_5 = 1;
+    public static final double ARM_PIVOT_SLOP = 1;    //acceptable range for arm extension setpoints
+
+    public static enum ArmSetpoint {
+        One, Two, Three, Four, Five
+    }
+
+    //One = Interior bot, holding + traveling position
+    //Two = floor pickup and place
+    //Three = low cube
+    //Four = Low Cone, High Cube, Player Window
+    //Five = High Cone
+
+
+
+
+>>>>>>> Stashed changes
     //@@@@@@@@@
     //COPY FROM
     // public class XboxController extends GenericHID {
@@ -40,6 +75,11 @@ public class Constants {
     public static final int PAWS_TOGGLEBOTH_A = 1;
     public static final int PAW_TOGGLELEFT_B = 2;
     public static final int PAW_TOGGLERIGHT_X = 3;
+<<<<<<< Updated upstream
+=======
+    public static final int PLACEHOLDER_BALANCE_LB = 5;
+    public static final int TEST_TOGGLE_LL_CAM_MODE_Y = 4;
+>>>>>>> Stashed changes
     
     
 }

@@ -15,7 +15,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+<<<<<<< Updated upstream
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+=======
+import frc.robot.Subsystems.ArmExtension;
+import frc.robot.Subsystems.ArmPivot;
+>>>>>>> Stashed changes
 import frc.robot.Subsystems.IntakePaws;
 import frc.robot.Subsystems.PrettyLights;
 import frc.robot.Subsystems.SwerveDriveSystem;
@@ -39,10 +44,14 @@ import edu.wpi.first.cscore.CvSource;
 
 public class Robot extends TimedRobot { 
 
+<<<<<<< Updated upstream
 
   
  
   double theta_radians; //theta_radians is difference the angle the robot is at, and the zerod angle
+=======
+  public static double theta_radians; //theta_radians is difference the angle the robot is at, and the zerod angle
+>>>>>>> Stashed changes
   boolean driverOriented = true; //where the robot is in driver oriented or not
 
   private static final String kAuton1 = "Leave Tarmac"; 
@@ -52,18 +61,27 @@ public class Robot extends TimedRobot {
 
   private String m_autoSelected; //This selects between the two autonomous
   public SendableChooser<String> m_chooser = new SendableChooser<>(); //creates the ability to switch between autons on SmartDashboard
+<<<<<<< Updated upstream
 
   XboxController xboxDriver = new XboxController(0);
   XboxController xboxOperator = new XboxController(1); 
+=======
+  public XboxController xboxDriver = new XboxController(0);
+  public XboxController xboxOperator = new XboxController(1); 
+>>>>>>> Stashed changes
   AHRS gyro = new AHRS(SPI.Port.kMXP); //defines the gyro
   SwerveDriveSystem driveSystem = new SwerveDriveSystem();
   private PrettyLights prettyLights1 = new PrettyLights();
   IntakePaws intakePaws = new IntakePaws();
+<<<<<<< Updated upstream
   
+=======
+  private Limelight limelight = new Limelight();
+  private frc.robot.Subsystems.LidarSensor lidarSensor = new frc.robot.Subsystems.LidarSensor();
+>>>>>>> Stashed changes
   double autox1 = 0; //defines left and right movement for auton
   double autox2 = 0; //defines spinning movement for auton
   double autoy1 = 0; //defines forward and backward movement for auton
-  boolean isBalancing = false;
 
   /**
    * This function is run when the robot is first started up and should be
@@ -71,6 +89,10 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+<<<<<<< Updated upstream
+=======
+    lidarSensor.initlidarSensor();
+>>>>>>> Stashed changes
     intakePaws.setRightPawOpen();
     intakePaws.setLeftPawOpen();
 
@@ -78,7 +100,12 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Shoot High Leave Tarmac", kAuton2);
     m_chooser.addOption("Shoot High Intake Cargo", kAuton3);
     m_chooser.addOption("Shoot 2 High Leave Tarmac", kAuton4);
+<<<<<<< Updated upstream
     SmartDashboard.putData(m_chooser); //displays the auton options in shuffleboard
+=======
+    SmartDashboard.putData(m_chooser); //displays the auton options in shuffleboard, put in init block
+    
+>>>>>>> Stashed changes
   }
 
   /**
@@ -104,7 +131,15 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); //pulls yaw value
     SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); //pulls Pitch value
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
+<<<<<<< Updated upstream
     SmartDashboard.putBoolean("Balancing", isBalancing); //shows true if robot is attempting to balance
+=======
+    SmartDashboard.putBoolean("LimelightLamp", limelight.isLimelightLampOn());
+    SmartDashboard.putNumber("LidarDIstance", lidarSensor.getDistance());
+
+
+
+>>>>>>> Stashed changes
     
 
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler will never run, and the command framework will not work
@@ -215,12 +250,20 @@ public class Robot extends TimedRobot {
     if (xboxDriver.getRawAxis(2) > .5) driveSpeed = Wheel.SpeedSetting.PRECISE;
     driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
 
+<<<<<<< Updated upstream
     if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && Math.abs(gyro.getPitch()) > 2){
       isBalancing = true;
       driveSystem.moveManual(0, (gyro.getPitch()/-40), 0 , theta_radians, driveSpeed);
     } else {
       isBalancing = false;
     }
+=======
+    if (xboxDriver.getRawButton(TEST_TOGGLE_LL_CAM_MODE_Y)){
+      CommandScheduler.getInstance().schedule(setupCenterToLimelight);
+    }
+
+    
+>>>>>>> Stashed changes
 
     
     // Reset the relative encoders if you press B button
@@ -235,8 +278,11 @@ public class Robot extends TimedRobot {
 
     //This toggles driver oriented on or off when x is pressed
     if (xboxDriver.getRawButtonPressed(ORIENTATION_TOGGLE_X)){
-      driverOriented = !driverOriented;
+        driveSystem.moveManual(0, (gyro.getPitch()/-40), 0 , theta_radians, driveSpeed);
     }
+    // if (xboxOperator.getRawButtonPressed(PLACEHOLDER_BALANCE_LB)){
+    //   CommandScheduler.getInstance().schedule(setupBalancing);
+    //}
 
     //Operator Controlls
 

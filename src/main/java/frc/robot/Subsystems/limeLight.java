@@ -4,9 +4,13 @@ package frc.robot.Subsystems;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
+<<<<<<< Updated upstream
 import edu.wpi.first.networktables.NetworkTableValue;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController.Button;
+=======
+import edu.wpi.first.wpilibj.XboxController;
+>>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
@@ -50,11 +54,27 @@ public class limeLight extends TimedRobot{
 	// public double LimeLight_Test = 5;
 	// public void output (String double NetworkTableEntry) {
 
+<<<<<<< Updated upstream
 	@Override
 	public void robotPeriodic() {
 	SmartDashboard.putNumber("LimelightX", getTargetX());
 	SmartDashboard.putNumber("LimelightY", getTargetY());
 	}
 		// }
+=======
+//TODO set options, buttons, and logic to change between pipelines 0 and 1
+  public void pipelineButtons() {
+    if (XboxController.getRawButtonPressed(button)) {
+      turnONLamp
+    } else if (XboxController.getRawButtonPressed(button)) {
+      turnOffLampLight
+    };
+    if (XboxController.getRawButtonPressed(button)) {
+      PipelinieTwo
+    } else if (XboxController.getRawButtonPressed(button)) {
+      PipelineOne
+    };
+  }
+>>>>>>> Stashed changes
 
 }
