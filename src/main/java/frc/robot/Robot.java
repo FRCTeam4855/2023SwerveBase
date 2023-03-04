@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.Subsystems.ArmPivot;
 import frc.robot.Subsystems.IntakePaws;
 import frc.robot.Subsystems.PrettyLights;
 import frc.robot.Subsystems.SwerveDriveSystem;
@@ -47,6 +48,7 @@ public class Robot extends TimedRobot {
   double autox2 = 0; //defines spinning movement for auton
   double autoy1 = 0; //defines forward and backward movement for auton
   boolean isBalancing = false;
+  ArmPivot armPivot = new ArmPivot();
 
   //command related declarations
   private PrettyLights prettyLights1 = new PrettyLights();
@@ -178,6 +180,13 @@ public class Robot extends TimedRobot {
     double x1 = xboxDriver.getRawAxis(0); //connects the left and right drive movements to the drive controllers left x-axis
     double x2 = xboxDriver.getRawAxis(4); //connects the spinning drive movements to the drive controllers right x-axis
     double y1 = xboxDriver.getRawAxis(1); //connects the forwards and backwards drive movements to the drive controllers left y-axis
+
+    if (Math.abs((xboxOperator.getRawAxis(0))) > JOYSTK_DZONE){
+      armPivot.armPivotVariable(xboxOperator.getRawAxis(0)/8);
+    }else {
+      armPivot.setPivotStop();
+    }
+    SmartDashboard.getNumber("pivotpower", xboxOperator.getRawAxis(0));
 
 
     //*******Driver Controls*********

@@ -1,44 +1,47 @@
-package frc.robot.Subsystems;
+// package frc.robot.Subsystems;
+// //1 neo
 
-import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+// //2 limit switches(physical), one for max and one for min
 
-public class ArmExtension extends SubsystemBase{
-    CANSparkMax armExtension = new CANSparkMax(9, MotorType.kBrushless);
-    double LIDAR_RANGE_MAX = 0; // maximum limit for arm extension TODO find value on 2023 bot
-    double LIDAR_RANGE_MIN = 1; // minimum limit for arm extension TODO find value on 2023 bot
+// import com.revrobotics.CANSparkMax;
+// import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+// import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-//     // TODO add methods for controling (basically what we have for arm pivot)
-// public void armExtender() {
-//     if (LidarSensor value == number && armEntend <= armExtendLimit) {
-//         armExtend.set(1);
-//      };
-//  }
 
-//     public void armRetracter() {
-//         if (LidarSensor.value == number && armRetract <= armRetractLimit) {
-//             armRetract.set(-1);
-//         }
-//         ;
-//     }
+// // public class ArmExtension extends SubsystemBase {
+// //     CANSparkMax armExtension = new CANSparkMax(9, MotorType.kBrushless);
 
-//     public void armStopper() {
-//         if (LidarSensor.value == number) {
-//             armStop.set(0);
-//         }
-//         ;
-//     }
+// // }
 
-//     public void armExtensionVariable(double speed) {
-//         if (LidarSensor.value == number) {
-//             armExtVar.set(speed);
-//         }
-//         ;
-//     }
+// // public void armExtender() {
+// //     if (LidarSensor value == number && armEntend <= armExtendLimit) {
+// //         armExtend.set(1);
+// //      };
+// //  }
 
-    // TODO modify methods to only work within certain lidar range
+// //   public void armRetracter() {
+// //     if (LidarSensor.value == number && armRetract <= armRetractLimit) {
+// //         armRetract.set(-1);
+// //     };
+// //   }
+// //   public void armStopper() {
+// //     if (LidarSensor.value == number) {
+// //         armStop.set(0);
+// //     };
+// //   }
+// //   public void armExtensionVariable(double speed) {
+// //     if (LidarSensor.value == number ) {
+// //         armExtVar.set(speed);
+// //     };
+//   }
 
-    // TODO make boolean methods for setpoints
 
-}
+// // TODO make boolean methods for setpoints (???done???)
+//   public void setPointOne() {
+//     if (armExtender().value && ArmPivot.value != number)
+//         armExtension.value + increaseValue
+//         ArmPivot + increaseValue
+    
+//   } else {
+//     armStopper();
+//   };
