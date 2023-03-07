@@ -9,6 +9,8 @@ public class Constants {
     public static final double DRIVE_SLOW_SPD = 0.35;               // multiplier
     public static final double DRIVE_TURBO_SPD = 0.80;               // multiplier
     //TODO arrange with drive team what these values are on 2023 bot
+    //math for robot
+    public static final double DIST_BETWEEN_WHEELS = 27; // in inches  
 
     // Conversions +++++++++
     public static final double RELATIVE_ENC_TO_FT = 7.4; //0.660715;//7.928591; //0.03666658; // converts relative encoder units on neo to inches
@@ -75,8 +77,7 @@ public class Constants {
     public static final int PAWS_TOGGLEBOTH_A = 1;
     public static final int PAW_TOGGLELEFT_B = 2;
     public static final int PAW_TOGGLERIGHT_X = 3;
-
     public static final int TEST_TOGGLE_LL_CAM_MODE_Y = 4;
-    
+    public static final int SWAP_LL_PIPELINE_LB = 5;
     
 }

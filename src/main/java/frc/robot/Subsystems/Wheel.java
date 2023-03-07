@@ -94,6 +94,7 @@ public class Wheel {
     public void setSpeed(double motorSpeed, SpeedSetting speedSetting) {
         if (speedSetting == SpeedSetting.NORMAL) motorSpeed *= DRIVE_DEFAULT_SPD;
         if (speedSetting == SpeedSetting.PRECISE) motorSpeed *= DRIVE_SLOW_SPD;
+        if (speedSetting == SpeedSetting.TURBO) motorSpeed *= DRIVE_TURBO_SPD;
         setSpeed(motorSpeed);
     }
 
