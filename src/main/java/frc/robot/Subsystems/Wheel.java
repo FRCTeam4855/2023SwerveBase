@@ -20,8 +20,7 @@ public class Wheel {
     CANSparkMax driveController; //defines the motor controller for the wheel speeds
     CANSparkMax steerController; //defines the motor cotrollers for the wheel angles
     public DutyCycleEncoder absoluteEncoder; //defines the encoder
-    RelativeEncoder relativeEncoder; //defines a CAN encoder for the wheel //I don't think we need this
-
+    RelativeEncoder relativeEncoder; //defines a CAN encoder for the wheel 
     public double offSet0; //this an offset that is later used
 
     boolean isFlipped = false; //whether the wheels are flipped or not

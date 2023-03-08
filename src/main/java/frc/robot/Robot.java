@@ -12,6 +12,7 @@ import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -35,6 +36,7 @@ import frc.robot.Commands.SwerveDriveMoveLeft;
 import frc.robot.Commands.SwerveDriveMoveRight;
 import frc.robot.Commands.SwerveDriveTurnLeft;
 import frc.robot.Commands.SwerveDriveTurnRight;
+
 public class Robot extends TimedRobot {
 
   double theta_radians; // theta_radians is difference the angle the robot is at, and the zerod angle
@@ -50,7 +52,7 @@ public class Robot extends TimedRobot {
                                                                       // SmartDashboard
   XboxController xboxDriver = new XboxController(0);
   XboxController xboxOperator = new XboxController(1);
-  AHRS gyro = new AHRS(SPI.Port.kMXP); // defines the gyro
+  AHRS gyro = new AHRS(SerialPort.Port.kUSB); // defines the gyro
   SwerveDriveSystem driveSystem = new SwerveDriveSystem();
   IntakePaws intakePaws = new IntakePaws();
   private Limelight limelight = new Limelight();
@@ -68,7 +70,6 @@ public class Robot extends TimedRobot {
   Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
   Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
   Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
-
 
   /**
    * This function is run when the robot is first started up and should be
@@ -98,27 +99,27 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     limelight.updateDashboard(); // runs block in limeight subsystem for periodic update
-    SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Displays Front Left Wheel Encoder
-                                                                                    // Values
-    // SmartDashboard.putNumber("Encoder BL",
-    // driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder
-    // Values
-    // SmartDashboard.putNumber("Encoder BR",
-    // driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder
-    // Values
-    // SmartDashboard.putNumber("Encoder FR",
-    // driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder
-    // Values
+    // SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Displays Front Left Wheel Encoder
+    //                                                                                 // Values
+    // // SmartDashboard.putNumber("Encoder BL",
+    // // driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder
+    // // Values
+    // // SmartDashboard.putNumber("Encoder BR",
+    // // driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder
+    // // Values
+    // // SmartDashboard.putNumber("Encoder FR",
+    // // driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder
+    // // Values
 
-    SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
-    SmartDashboard.putBoolean("Driver Oriented", driverOriented); // shows true/false for driver oriented
-    SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); // pulls yaw value
-    SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); // pulls Pitch value
-    SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
-    SmartDashboard.putBoolean("Balancing", isBalancing); // shows true if robot is attempting to balance
-    SmartDashboard.putBoolean("LimelightLamp", limelight.isLimelightLampOn());
-
-
+    // SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
+    // SmartDashboard.putBoolean("Driver Oriented", driverOriented); // shows true/false for driver oriented
+    // SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); // pulls yaw value
+    // SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); // pulls Pitch value
+    // SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
+    // SmartDashboard.putBoolean("Balancing", isBalancing); // shows true if robot is attempting to balance
+    // SmartDashboard.putBoolean("LimelightLamp", limelight.isLimelightLampOn());
+    SmartDashboard.getNumber("Arm Encoder", armExtend.getExtensionPostion());
+    SmartDashboard.getNumber("pivotpower", xboxOperator.getRawAxis(0));
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler
                                           // will never run, and the command framework will not work
   }
@@ -216,15 +217,25 @@ public class Robot extends TimedRobot {
       driveSpeed = Wheel.SpeedSetting.PRECISE;
     driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
 
-    // if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && Math.abs(gyro.getPitch()) > 2) {
-    //   isBalancing = true;
-    //   driveSystem.moveManual(0, (gyro.getPitch() / -40), 0, theta_radians, driveSpeed);
+    // if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && Math.abs(gyro.getPitch()) >
+    // 2) {
+    // isBalancing = true;
+    // driveSystem.moveManual(0, (gyro.getPitch() / -40), 0, theta_radians,
+    // driveSpeed);
     // } else {
-    //   isBalancing = false;
+    // isBalancing = false;
     // }
 
-    if (xboxDriver.getRawButton(TEST_TOGGLE_LL_CAM_MODE_Y)) {
-      
+    if (xboxOperator.getRawButton(SWITCH_LLAPRILTAG_RB)) {
+      if (limelight.isLimelightOnAprilTagMode() == true) {
+        limelight.setLimelightPipeToRetroTape();
+      } else {
+        limelight.setLimelightPipeToAprilTag();
+      }
+    }
+
+    if (xboxOperator.getRawButton(SWITCH_LLRETROTAP_LB)) {
+      limelight.setLimelightPipeToRetroTape();
     }
     // stealing this button
     // if (limelight.isLimelightLampOn()){
@@ -271,17 +282,14 @@ public class Robot extends TimedRobot {
     } else {
       armPivot.setPivotStop();
     }
-    SmartDashboard.getNumber("pivotpower", xboxOperator.getRawAxis(0));
 
     if (Math.abs((xboxOperator.getRawAxis(4))) > JOYSTK_DZONE) {
-      armExtend.armExtendVariable(xboxOperator.getRawAxis(4) );
+      armExtend.armExtendVariable(xboxOperator.getRawAxis(4));
     } else {
       armExtend.armExtendVariable(0);
     }
 
-    //if (xboxOperator.getRawButtonPressed(SWAP_LL_PIPELINE_LB))
-      
-    
+    // if (xboxOperator.getRawButtonPressed(SWAP_LL_PIPELINE_LB))
 
     // if (xboxOperator.getRawButtonPressed(PAW_TOGGLELEFT_B)) {
     // intakePaws.setLeftPawToggle();
@@ -302,31 +310,32 @@ public class Robot extends TimedRobot {
       Command turnRight = new SwerveDriveTurnRight(driveSystem, 90);
       Command turnLeft = new SwerveDriveTurnLeft(driveSystem, 180);
       Command balance = new Balancing(driveSystem, gyro);
-      Command setupPostMoveLights = new LightsOnCommand(prettyLights1,PrettyLights.LARSONSCAN_RED);
-      Command middleLights = new LightsOnCommand(prettyLights1,PrettyLights.BLUE_GREEN);
+      Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
+      Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
       Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
       Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
       CommandScheduler.getInstance().schedule(
           setupPostMoveLights
-       /*   .andThen(new SwerveDriveTurnLeft(driveSystem, 45))
-          .andThen(new SwerveDriveMoveForward(driveSystem, 10))
-          .andThen(new SwerveDriveMoveRight(driveSystem, 6))
-          .andThen(new SwerveDriveTurnRight(driveSystem, 240))
-          .andThen(new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND))
-          .andThen(new SwerveDriveMoveForward(driveSystem, 16))
-          .andThen(new SwerveDriveMoveLeft(driveSystem, 8))
-          .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
-          .andThen(new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE))
-          .andThen(new SwerveDriveMoveRight(driveSystem, 14))
-         */ 
-         .andThen(new SwerveDriveMoveForward(driveSystem, 15))
-         .andThen(new SwerveDriveTurnLeft(driveSystem, 140))
-         .andThen(new SwerveDriveMoveBackward(driveSystem, 7))
-         .andThen(balance)
-      );
+              /*
+               * .andThen(new SwerveDriveTurnLeft(driveSystem, 45))
+               * .andThen(new SwerveDriveMoveForward(driveSystem, 10))
+               * .andThen(new SwerveDriveMoveRight(driveSystem, 6))
+               * .andThen(new SwerveDriveTurnRight(driveSystem, 240))
+               * .andThen(new LightsOnCommand(prettyLights1,
+               * PrettyLights.C1_AND_C2_END_TO_END_BLEND))
+               * .andThen(new SwerveDriveMoveForward(driveSystem, 16))
+               * .andThen(new SwerveDriveMoveLeft(driveSystem, 8))
+               * .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
+               * .andThen(new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE))
+               * .andThen(new SwerveDriveMoveRight(driveSystem, 14))
+               */
+              .andThen(new SwerveDriveMoveForward(driveSystem, 15))
+              .andThen(new SwerveDriveTurnLeft(driveSystem, 140))
+              .andThen(new SwerveDriveMoveBackward(driveSystem, 7))
+              .andThen(balance));
 
-          
-    };
+    }
+    ;
     // Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
     // Command setupInitialLights = new LightsOnCommand(prettyLights1,
     // PrettyLights.BPM_PARTYPALETTE);
@@ -355,7 +364,7 @@ public class Robot extends TimedRobot {
   // This function is called periodically during test mode.
   @Override
   public void testPeriodic() {
-     
+
   }
 
 }

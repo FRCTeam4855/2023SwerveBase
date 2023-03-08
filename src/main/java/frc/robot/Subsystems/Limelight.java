@@ -16,7 +16,7 @@ public class Limelight extends SubsystemBase {
     }
   }
 
-  public static void setLimelightLampOn() {
+  public void setLimelightLampOn() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("limelight-rams");
     NetworkTableEntry ledMode = table.getEntry("ledMode");
@@ -47,7 +47,7 @@ public class Limelight extends SubsystemBase {
 
 //TODO set options, buttons, and logic to change between pipelines 0 and 1
 
-  public static void setLimelightPipeToAprilTag() {
+  public void setLimelightPipeToAprilTag() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
     NetworkTable table = inst.getTable("limelight-rams");
     NetworkTableEntry pipeline = table.getEntry("pipeline");
@@ -60,6 +60,8 @@ public class Limelight extends SubsystemBase {
     NetworkTableEntry pipeline = table.getEntry("pipeline");
     pipeline.setNumber(1);
   }
+
+ 
 
   public void updateDashboard() {
     // ^^add this to robotPeriodic to run always

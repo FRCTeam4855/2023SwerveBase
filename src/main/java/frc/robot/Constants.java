@@ -78,6 +78,6 @@ public class Constants {
     public static final int PAW_TOGGLELEFT_B = 2;
     public static final int PAW_TOGGLERIGHT_X = 3;
     public static final int TEST_TOGGLE_LL_CAM_MODE_Y = 4;
-    public static final int SWAP_LL_PIPELINE_LB = 5;
-    
+    public static final int SWITCH_LLRETROTAP_LB = 5;
+    public static final int SWITCH_LLAPRILTAG_RB = 6;
 }
