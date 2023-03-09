@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class PrettyLights extends SubsystemBase {
+
     public final static double RAINBOW_RAINBOWPALETTE = -.99;
     public final static double RAINBOW_PARTYPALETTE = -.97;
     public final static double RAINBOW_OCEANPALETTE = -.95;
@@ -108,6 +109,7 @@ public class PrettyLights extends SubsystemBase {
     double pattern = PrettyLights.C1_AND_C2_SINELON;
 
     public Spark leds = new Spark(8);
+    
 
       
 // C1 is purple and C2 is gold
