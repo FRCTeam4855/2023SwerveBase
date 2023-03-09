@@ -1,6 +1,8 @@
 package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -33,10 +35,10 @@ public class Wheel {
         PRECISE, NORMAL, TURBO
     }
 
-    public Wheel(int driveControllerID, int steerControllerID, int absolutePort, double offSet1) {
+    public Wheel(int driveControllerID, int steerControllerID, DigitalInput input, double offSet1) {
         driveController = new CANSparkMax(driveControllerID, MotorType.kBrushless); //defining the motor controller for the wheel speeds and its port
         steerController = new CANSparkMax(steerControllerID, MotorType.kBrushless); //defining the motor controller for the wheel angles and its port
-        absoluteEncoder = new DutyCycleEncoder(absolutePort); //defining the encoder and its port
+        absoluteEncoder = new DutyCycleEncoder(input); //defining the encoder and its port
         relativeEncoder = driveController.getEncoder();//relativePort); //maybe add another int to Wheel for this, would it just be 0 1 2 and 3 in Robot.java
         offSet0 = offSet1; //offSet for wheels
     }

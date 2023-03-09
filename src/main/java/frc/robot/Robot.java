@@ -99,25 +99,19 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     limelight.updateDashboard(); // runs block in limeight subsystem for periodic update
-    // SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Displays Front Left Wheel Encoder
-    //                                                                                 // Values
-    // // SmartDashboard.putNumber("Encoder BL",
-    // // driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder
-    // // Values
-    // // SmartDashboard.putNumber("Encoder BR",
-    // // driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder
-    // // Values
-    // // SmartDashboard.putNumber("Encoder FR",
-    // // driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder
-    // // Values
+    SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Displays Front Left Wheel Encoder
+                                                                                    // Values
+    SmartDashboard.putNumber("Encoder BL",    driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder    Values
+    SmartDashboard.putNumber("Encoder BR",    driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder    Values
+    SmartDashboard.putNumber("Encoder FR",    driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder    Values
 
-    // SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
-    // SmartDashboard.putBoolean("Driver Oriented", driverOriented); // shows true/false for driver oriented
-    // SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); // pulls yaw value
-    // SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); // pulls Pitch value
-    // SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
-    // SmartDashboard.putBoolean("Balancing", isBalancing); // shows true if robot is attempting to balance
-    // SmartDashboard.putBoolean("LimelightLamp", limelight.isLimelightLampOn());
+    SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
+    SmartDashboard.putBoolean("Driver Oriented", driverOriented); // shows true/false for driver oriented
+    SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); // pulls yaw value
+    SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); // pulls Pitch value
+    SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
+    SmartDashboard.putBoolean("Balancing", isBalancing); // shows true if robot is attempting to balance
+    SmartDashboard.putBoolean("LimelightLamp", limelight.isLimelightLampOn());
     SmartDashboard.getNumber("Arm Encoder", armExtend.getExtensionPostion());
     SmartDashboard.getNumber("pivotpower", xboxOperator.getRawAxis(0));
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler
