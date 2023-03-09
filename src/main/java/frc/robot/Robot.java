@@ -20,7 +20,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Subsystems.ArmExtension;
+import frc.robot.Subsystems.ArmExtend;
 import frc.robot.Subsystems.ArmPivot;
 import frc.robot.Subsystems.IntakePaws;
 import frc.robot.Subsystems.PrettyLights;
@@ -61,7 +61,7 @@ public class Robot extends TimedRobot {
   double autoy1 = 0; // defines forward and backward movement for auton
   boolean isBalancing = false;
   ArmPivot armPivot = new ArmPivot();
-  ArmExtension armExtend = new ArmExtension();
+  ArmExtend armExtend = new ArmExtend();
   // command related declarations
   private PrettyLights prettyLights1 = new PrettyLights();
   Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
@@ -99,11 +99,15 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     limelight.updateDashboard(); // runs block in limeight subsystem for periodic update
+    armExtend.getExtensionPostion();
     SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Displays Front Left Wheel Encoder
                                                                                     // Values
-    SmartDashboard.putNumber("Encoder BL",    driveSystem.wheelBL.getAbsoluteValue()); //Displays Back Left Wheel Encoder    Values
-    SmartDashboard.putNumber("Encoder BR",    driveSystem.wheelBR.getAbsoluteValue()); //Displays Back Right Wheel Encoder    Values
-    SmartDashboard.putNumber("Encoder FR",    driveSystem.wheelFR.getAbsoluteValue()); //Displays Front Right Wheel Encoder    Values
+    SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); // Displays Back Left Wheel Encoder
+                                                                                    // Values
+    SmartDashboard.putNumber("Encoder BR", driveSystem.wheelBR.getAbsoluteValue()); // Displays Back Right Wheel Encoder
+                                                                                    // Values
+    SmartDashboard.putNumber("Encoder FR", driveSystem.wheelFR.getAbsoluteValue()); // Displays Front Right Wheel
+                                                                                    // Encoder Values
 
     SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
     SmartDashboard.putBoolean("Driver Oriented", driverOriented); // shows true/false for driver oriented
@@ -112,7 +116,6 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
     SmartDashboard.putBoolean("Balancing", isBalancing); // shows true if robot is attempting to balance
     SmartDashboard.putBoolean("LimelightLamp", limelight.isLimelightLampOn());
-    SmartDashboard.getNumber("Arm Encoder", armExtend.getExtensionPostion());
     SmartDashboard.getNumber("pivotpower", xboxOperator.getRawAxis(0));
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler
                                           // will never run, and the command framework will not work
@@ -136,6 +139,10 @@ public class Robot extends TimedRobot {
 
   // final double kP = 0.3;
   // double encoderSetpoint = 0;
+
+  // *************************
+  // ***autonomousPeriodic****
+  // *************************
 
   @Override
   public void autonomousPeriodic() {
@@ -181,21 +188,26 @@ public class Robot extends TimedRobot {
     gyro.reset();
     gyro.zeroYaw();
     prettyLights1.setLEDs(PrettyLights.BPM_RAINBOWPALETTE);
+    armExtend.initExtend();
   }
 
-  /**
-   * This function is called periodically during operator control.
-   */
+  // *************************
+  // *****teleopPeriodic******
+  // *************************
+  // This function is called periodically during operator control.
 
   @Override
   public void teleopPeriodic() {
+    armExtend.extendDaArm();
     double x1 = xboxDriver.getRawAxis(0); // connects the left and right drive movements to the drive controllers left
                                           // x-axis
     double x2 = xboxDriver.getRawAxis(4); // connects the spinning drive movements to the drive controllers right x-axis
     double y1 = xboxDriver.getRawAxis(1); // connects the forwards and backwards drive movements to the drive
                                           // controllers left y-axis
 
-    // *******Driver Controls*********
+    // *************************
+    // *****Driver Controls*****
+    // *************************
 
     // this tells the robot when it should be driverOriented or robotOriented
     if (driverOriented) {
@@ -210,34 +222,6 @@ public class Robot extends TimedRobot {
     if (xboxDriver.getRawAxis(2) > .5)
       driveSpeed = Wheel.SpeedSetting.PRECISE;
     driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
-
-    // if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && Math.abs(gyro.getPitch()) >
-    // 2) {
-    // isBalancing = true;
-    // driveSystem.moveManual(0, (gyro.getPitch() / -40), 0, theta_radians,
-    // driveSpeed);
-    // } else {
-    // isBalancing = false;
-    // }
-
-    if (xboxOperator.getRawButton(SWITCH_LLAPRILTAG_RB)) {
-      if (limelight.isLimelightOnAprilTagMode() == true) {
-        limelight.setLimelightPipeToRetroTape();
-      } else {
-        limelight.setLimelightPipeToAprilTag();
-      }
-    }
-
-    if (xboxOperator.getRawButton(SWITCH_LLRETROTAP_LB)) {
-      limelight.setLimelightPipeToRetroTape();
-    }
-    // stealing this button
-    // if (limelight.isLimelightLampOn()){
-    // limelight.setLimelightLampOff();
-    // } else {
-    // limelight.setLimelightLampOn();
-    // }
-    // }
 
     // Reset the relative encoders if you press B button
     if (xboxDriver.getRawButtonPressed(ENCODER_RESET_B)) {
@@ -254,7 +238,9 @@ public class Robot extends TimedRobot {
       driverOriented = !driverOriented;
     }
 
-    // *******Operator Controls********
+    // *************************
+    // ****Operator Controls****
+    // *************************
 
     // toggle paws open and closed
     if (xboxOperator.getRawButtonPressed(PAWS_TOGGLEBOTH_A)) {
@@ -271,17 +257,33 @@ public class Robot extends TimedRobot {
       }
     }
 
-    if (Math.abs((xboxOperator.getRawAxis(0))) > JOYSTK_DZONE) {
-      armPivot.armPivotVariable(xboxOperator.getRawAxis(0) / 8);
-    } else {
-      armPivot.setPivotStop();
+    if (xboxOperator.getRawButton(TOGGLE_LL_PIPELINE_RB)) {
+      if (limelight.isLimelightOnAprilTagMode() == true) {
+        limelight.setLimelightPipeToRetroTape();
+      } else {
+        limelight.setLimelightPipeToAprilTag();
+      }
     }
 
-    if (Math.abs((xboxOperator.getRawAxis(4))) > JOYSTK_DZONE) {
-      armExtend.armExtendVariable(xboxOperator.getRawAxis(4));
-    } else {
-      armExtend.armExtendVariable(0);
+    if (xboxOperator.getRawButton(2)) {
+      armExtend.setExtendSetpoint(ArmSetpoint.Two);
     }
+
+    if (xboxOperator.getRawButton(1)) {
+      armExtend.setExtendSetpoint(ArmSetpoint.One);
+    }
+
+    // if (Math.abs((xboxOperator.getRawAxis(0))) > JOYSTK_DZONE) {
+    //   armPivot.armPivotVariable(xboxOperator.getRawAxis(0) / 8);
+    // } else {
+    //   armPivot.setPivotStop();
+    // }
+
+    // if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
+    //   armExtend.armExtendVariable(xboxOperator.getRawAxis(1));
+    // } else {
+    //   armExtend.armExtendVariable(0);
+    // }t
 
     // if (xboxOperator.getRawButtonPressed(SWAP_LL_PIPELINE_LB))
 

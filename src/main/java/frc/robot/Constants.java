@@ -16,19 +16,19 @@ public class Constants {
     public static final double RELATIVE_ENC_TO_FT = 7.4; //0.660715;//7.928591; //0.03666658; // converts relative encoder units on neo to inches
 
     //Sensor Ranges/Setpoints
-    public static final double ARM_EXTEND_CENTER_1 = 1; //center point for arm extension setpoints
-    public static final double ARM_EXTEND_CENTER_2 = 1; //TODO find these values on 2023 bot
-    public static final double ARM_EXTEND_CENTER_3 = 1;
-    public static final double ARM_EXTEND_CENTER_4 = 1;
-    public static final double ARM_EXTEND_CENTER_5 = 1;
-    public static final double ARM_EXTEND_SLOP = 1;    //acceptable range for arm extension setpoints
+    public static final double ARM_EXTEND_CENTER_1 = 100; //center point for arm extension setpoints
+    public static final double ARM_EXTEND_CENTER_2 = 200; //TODO find these values on 2023 bot
+    public static final double ARM_EXTEND_CENTER_3 = 300;
+    public static final double ARM_EXTEND_CENTER_4 = 400;
+    public static final double ARM_EXTEND_CENTER_5 = 500;
+    public static final double ARM_EXTEND_SLOP = 10;    //acceptable range for arm extension setpoints
 
-    public static final double ARM_PIVOT_CENTER_1 = 1; //center point for arm extension setpoints
-    public static final double ARM_PIVOT_CENTER_2 = 1; //TODO find these values on 2023 bot
-    public static final double ARM_PIVOT_CENTER_3 = 1;
-    public static final double ARM_PIVOT_CENTER_4 = 1;
-    public static final double ARM_PIVOT_CENTER_5 = 1;
-    public static final double ARM_PIVOT_SLOP = 1;    //acceptable range for arm extension setpoints
+    public static final double ARM_PIVOT_CENTER_1 = 100; //center point for arm extension setpoints
+    public static final double ARM_PIVOT_CENTER_2 = 200; //TODO find these values on 2023 bot
+    public static final double ARM_PIVOT_CENTER_3 = 300;
+    public static final double ARM_PIVOT_CENTER_4 = 400;
+    public static final double ARM_PIVOT_CENTER_5 = 500;
+    public static final double ARM_PIVOT_SLOP = 10;    //acceptable range for arm extension setpoints
 
     public enum ArmSetpoint {
         One, Two, Three, Four, Five
@@ -78,6 +78,6 @@ public class Constants {
     public static final int PAW_TOGGLELEFT_B = 2;
     public static final int PAW_TOGGLERIGHT_X = 3;
     public static final int TEST_TOGGLE_LL_CAM_MODE_Y = 4;
-    public static final int SWITCH_LLRETROTAP_LB = 5;
-    public static final int SWITCH_LLAPRILTAG_RB = 6;
+    // public static final int SWITCH_LLRETROTAP_LB = 5;
+    public static final int TOGGLE_LL_PIPELINE_RB = 6;
 }
