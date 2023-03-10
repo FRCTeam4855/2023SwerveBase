@@ -1,9 +1,9 @@
 package frc.robot.Subsystems;
 //2 neos, 1 through bour encoder, 1 IMU
+
 //2 limit switches, one for each end
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -13,86 +13,93 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmSetpoint;
 import static frc.robot.Constants.*;
 
-public class ArmPivot extends SubsystemBase{
+public class ArmPivot extends SubsystemBase {
   double pivotSetpoint;
   CANSparkMax armPivotOne = new CANSparkMax(11, MotorType.kBrushless);
   CANSparkMax armPivotTwo = new CANSparkMax(12, MotorType.kBrushless);
   SparkMaxPIDController pivotPIDController = armPivotOne.getPIDController();
-  
-  //TODO ADD A NUMBER TO CHANNEL
+
+  // TODO ADD A NUMBER TO CHANNEL
 
   public void setPivotDirectionForward() {
     armPivotOne.set(1);
     armPivotTwo.set(1);
   }
+
   public void setPivotDirectionBackward() {
     armPivotOne.set(-1);
     armPivotTwo.set(-1);
   }
+
   public void setPivotStop() {
     armPivotOne.set(0);
     armPivotTwo.set(0);
   }
+
   public void armPivotVariable(double speed) {
     armPivotOne.set(speed);
     armPivotTwo.set(speed);
   }
 
-  public RelativeEncoder getPivotEncoder() {
-    return armPivotOne.getEncoder();
-  }
-
   public double getPivotPostion() {
-    return getPivotEncoder().getPosition();
+    return armPivotOne.getEncoder().getPosition();
   }
 
-  public void resetPivotEncoder(){
+  public void resetPivotEncoderZero() {
     armPivotOne.getEncoder().setPosition(0);
-   }
-  
-  public void initPivot(){
+  }
+
+  public void resetPivotEncoderVariable(double value) {
+    armPivotOne.getEncoder().setPosition(value);
+  }
+
+  public void initPivot() {
     // PID coefficients
-  armPivotOne.restoreFactoryDefaults();
-  armPivotOne.restoreFactoryDefaults();
-  armPivotOne.setIdleMode(IdleMode.kBrake);
-  armPivotTwo.setIdleMode(IdleMode.kBrake);
-  armPivotTwo.follow(armPivotOne);
-  armPivotOne.getEncoder().setPosition(0);
-  double kP = 0.2; 
-  double kI = .0004;
-  double kD = 1.2; 
-  double kIz = 0; 
-  double kFF = 0; 
-  double kMaxOutput = .1; 
-  double kMinOutput = -.1;
-  pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
-  pivotPIDController.setP(kP);
-  pivotPIDController.setI(kI);
-  pivotPIDController.setD(kD);
-  pivotPIDController.setIZone(kIz);
-  pivotPIDController.setFF(kFF);
-  pivotPIDController.setOutputRange(kMinOutput, kMaxOutput);
-}
-
-
+    armPivotOne.restoreFactoryDefaults();
+    armPivotOne.restoreFactoryDefaults();
+    armPivotOne.setIdleMode(IdleMode.kBrake);
+    armPivotTwo.setIdleMode(IdleMode.kBrake);
+    armPivotTwo.follow(armPivotOne);
+    armPivotOne.getEncoder().setPosition(0);
+    double kP = 0.2;
+    double kI = .0004;
+    double kD = 1.2;
+    double kIz = 0;
+    double kFF = 0;
+    double kMaxOutput = .1;
+    double kMinOutput = -.1;
+    pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
+    pivotPIDController.setP(kP);
+    pivotPIDController.setI(kI);
+    pivotPIDController.setD(kD);
+    pivotPIDController.setIZone(kIz);
+    pivotPIDController.setFF(kFF);
+    pivotPIDController.setOutputRange(kMinOutput, kMaxOutput);
+  }
 
   public void setPivotSetpoint(ArmSetpoint armSetpoint) {
-    if (armSetpoint == ArmSetpoint.One) pivotSetpoint = ARM_PIVOT_CENTER_1;
-    if (armSetpoint == ArmSetpoint.Two) pivotSetpoint = ARM_PIVOT_CENTER_2;
-    if (armSetpoint == ArmSetpoint.Three) pivotSetpoint = ARM_PIVOT_CENTER_3;
-    if (armSetpoint == ArmSetpoint.Four) pivotSetpoint = ARM_PIVOT_CENTER_4;
-    if (armSetpoint == ArmSetpoint.Five) pivotSetpoint = ARM_PIVOT_CENTER_5;
-    
-}
-  public boolean isPivotAtSetpoint(){
-    return getPivotPostion() - pivotSetpoint <= ARM_PIVOT_SLOP; //TODO verify working on 2023 robot
+    if (armSetpoint == ArmSetpoint.One)
+      pivotSetpoint = ARM_PIVOT_CENTER_1;
+    if (armSetpoint == ArmSetpoint.Two)
+      pivotSetpoint = ARM_PIVOT_CENTER_2;
+    if (armSetpoint == ArmSetpoint.Three)
+      pivotSetpoint = ARM_PIVOT_CENTER_3;
+    if (armSetpoint == ArmSetpoint.Four)
+      pivotSetpoint = ARM_PIVOT_CENTER_4;
+    if (armSetpoint == ArmSetpoint.Five)
+      pivotSetpoint = ARM_PIVOT_CENTER_5;
+
   }
 
-  public void pivotDaArm(){
+  public boolean isPivotAtSetpoint() {
+    return getPivotPostion() - pivotSetpoint <= ARM_PIVOT_SLOP; // TODO verify working on 2023 robot
+  }
+
+  public void pivotDaArm() {
     // set PID coefficients
     pivotPIDController.setReference(pivotSetpoint, CANSparkMax.ControlType.kPosition);
     SmartDashboard.putNumber("PivotSetPoint", pivotSetpoint);
-    SmartDashboard.putNumber("PivotVariable", getPivotEncoder().getPosition());
+    SmartDashboard.putNumber("PivotVariable", getPivotPostion());
 
-}
+  }
 }

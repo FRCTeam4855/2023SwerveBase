@@ -1,10 +1,7 @@
 package frc.robot.Subsystems;
 
-import com.revrobotics.AbsoluteEncoder;
 
-import edu.wpi.first.hal.simulation.DIODataJNI;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
 
 // import static frc.robot.Constants.*;
 
@@ -13,7 +10,7 @@ import frc.robot.Constants;
 
 public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSystem{
     
-    private DigitalInput DIO10 = new DigitalInput(10);
+    private DigitalInput DIO10 = new DigitalInput(10); //Input on cRamageddon MXP 0-3 {10-13}
     private DigitalInput DIO11 = new DigitalInput(11);
     private DigitalInput DIO12 = new DigitalInput(12);
     private DigitalInput DIO13 = new DigitalInput(13);
@@ -24,14 +21,6 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
     public Wheel wheelBL = new Wheel(3, 4, DIO11, -0.454); //defines the back left wheel //-0.053
     public Wheel wheelBR = new Wheel(5, 6, DIO12, -0.143); //defines the back right wheel //-0.337
     public Wheel wheelFR = new Wheel(7, 8, DIO13, -0.077); //defines the front right wheel //0.153
-
-    // LEXI!!!!
-    //public Wheel wheelFL = new Wheel(1, 2, 0, -0.225); //defines the front left wheel //-0.225
-    //public Wheel wheelBL = new Wheel(3, 4, 1, -0.053); //defines the back left wheel //-0.053
-    //public Wheel wheelBR = new Wheel(5, 6, 2, -0.337); //defines the back right wheel //-0.337
-    //public Wheel wheelFR = new Wheel(7, 8, 3, -0.850); //defines the front right wheel //0.153
-
-
     // Wheel Values: driveControllerID, steerControllerID, absolutePort(encoder), offSet1
 
     private void moveWheels(SwerveOutput swerve) {

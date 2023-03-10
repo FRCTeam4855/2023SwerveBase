@@ -2,7 +2,6 @@ package frc.robot.Subsystems;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.DigitalOutput;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -13,11 +12,8 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder; //CANEncoder
 import static frc.robot.Constants.*;
 
-import edu.wpi.first.wpilibj.Joystick;
 
 public class Wheel {
-
-    Joystick joystick = new Joystick(0);
 
     CANSparkMax driveController; //defines the motor controller for the wheel speeds
     CANSparkMax steerController; //defines the motor cotrollers for the wheel angles

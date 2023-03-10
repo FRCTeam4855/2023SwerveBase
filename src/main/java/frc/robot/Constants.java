@@ -1,15 +1,14 @@
 package frc.robot;
 
-import edu.wpi.first.math.MathUtil;
-
 public class Constants {
     //Constants ++++++++++++
     public static final double JOYSTK_DZONE = .17;                  // global deadzone for all controllers
-    public static final double DRIVE_DEFAULT_SPD = 0.50;               // multiplier
-    public static final double DRIVE_SLOW_SPD = 0.35;               // multiplier
+    public static final double DRIVE_DEFAULT_SPD = 0.60;               // multiplier
+    public static final double DRIVE_SLOW_SPD = 0.30;               // multiplier
     public static final double DRIVE_TURBO_SPD = 0.80;               // multiplier
     //TODO arrange with drive team what these values are on 2023 bot
-    //math for robot
+
+
     public static final double DIST_BETWEEN_WHEELS = 27; // in inches  
 
     // Conversions +++++++++
@@ -21,14 +20,14 @@ public class Constants {
     public static final double ARM_EXTEND_CENTER_3 = -30;
     public static final double ARM_EXTEND_CENTER_4 = 4;
     public static final double ARM_EXTEND_CENTER_5 = 5;
-    public static final double ARM_EXTEND_SLOP = 1;    //acceptable range for arm extension setpoints
+    public static final double ARM_EXTEND_SLOP = 3;    //acceptable range for arm extension setpoints
 
     public static final double ARM_PIVOT_CENTER_1 = 0; //center point for arm extension setpoints
     public static final double ARM_PIVOT_CENTER_2 = 8; //TODO find these values on 2023 bot
     public static final double ARM_PIVOT_CENTER_3 = 12;
     public static final double ARM_PIVOT_CENTER_4 = 4;
     public static final double ARM_PIVOT_CENTER_5 = 5;
-    public static final double ARM_PIVOT_SLOP = 1;    //acceptable range for arm extension setpoints
+    public static final double ARM_PIVOT_SLOP = 3;    //acceptable range for arm extension setpoints
 
     public enum ArmSetpoint {
         One, Two, Three, Four, Five
@@ -64,7 +63,8 @@ public class Constants {
     public static final int GYRO_RESET_Y = 4; //Y
     public static final int ENCODER_RESET_B = 2; //B
     public static final int ORIENTATION_TOGGLE_X = 3; //X
-    public static final int DRV_SPD_LIMITER_RB = 6;
+    public static final int DRV_SPD_TURBO_RB = 6;
+    public static final int DRV_SPD_PRECISE_LB = 7;   
     public static final int TEST_PID_ROTATE_A = 1;
 
     public static final int SCHEDULE_INITIAL_COMMAND_LB = 5;
