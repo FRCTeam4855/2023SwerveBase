@@ -3,9 +3,12 @@ package frc.robot.Subsystems;
 //2 limit switches, one for each end
 
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmSetpoint;
 import static frc.robot.Constants.*;
@@ -14,7 +17,8 @@ public class ArmPivot extends SubsystemBase{
   double pivotSetpoint;
   CANSparkMax armPivotOne = new CANSparkMax(11, MotorType.kBrushless);
   CANSparkMax armPivotTwo = new CANSparkMax(12, MotorType.kBrushless);
-  DutyCycleEncoder armAbsEncoder = new DutyCycleEncoder(4); // placeholder number
+  SparkMaxPIDController pivotPIDController = armPivotOne.getPIDController();
+  
   //TODO ADD A NUMBER TO CHANNEL
 
   public void setPivotDirectionForward() {
@@ -34,9 +38,43 @@ public class ArmPivot extends SubsystemBase{
     armPivotTwo.set(speed);
   }
 
-  public double getCurrentPivot(){
-    return armAbsEncoder.getAbsolutePosition(); //TODO need to do some tests on 2023 robot to find positions and negatives to work with below boolean
+  public RelativeEncoder getPivotEncoder() {
+    return armPivotOne.getEncoder();
   }
+
+  public double getPivotPostion() {
+    return getPivotEncoder().getPosition();
+  }
+
+  public void resetPivotEncoder(){
+    armPivotOne.getEncoder().setPosition(0);
+   }
+  
+  public void initPivot(){
+    // PID coefficients
+  armPivotOne.restoreFactoryDefaults();
+  armPivotOne.restoreFactoryDefaults();
+  armPivotOne.setIdleMode(IdleMode.kBrake);
+  armPivotTwo.setIdleMode(IdleMode.kBrake);
+  armPivotTwo.follow(armPivotOne);
+  armPivotOne.getEncoder().setPosition(0);
+  double kP = 0.2; 
+  double kI = .0004;
+  double kD = 1.2; 
+  double kIz = 0; 
+  double kFF = 0; 
+  double kMaxOutput = .1; 
+  double kMinOutput = -.1;
+  pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
+  pivotPIDController.setP(kP);
+  pivotPIDController.setI(kI);
+  pivotPIDController.setD(kD);
+  pivotPIDController.setIZone(kIz);
+  pivotPIDController.setFF(kFF);
+  pivotPIDController.setOutputRange(kMinOutput, kMaxOutput);
+}
+
+
 
   public void setPivotSetpoint(ArmSetpoint armSetpoint) {
     if (armSetpoint == ArmSetpoint.One) pivotSetpoint = ARM_PIVOT_CENTER_1;
@@ -47,6 +85,14 @@ public class ArmPivot extends SubsystemBase{
     
 }
   public boolean isPivotAtSetpoint(){
-    return getCurrentPivot() - pivotSetpoint <= ARM_PIVOT_SLOP; //TODO verify working on 2023 robot
+    return getPivotPostion() - pivotSetpoint <= ARM_PIVOT_SLOP; //TODO verify working on 2023 robot
   }
+
+  public void pivotDaArm(){
+    // set PID coefficients
+    pivotPIDController.setReference(pivotSetpoint, CANSparkMax.ControlType.kPosition);
+    SmartDashboard.putNumber("PivotSetPoint", pivotSetpoint);
+    SmartDashboard.putNumber("PivotVariable", getPivotEncoder().getPosition());
+
+}
 }

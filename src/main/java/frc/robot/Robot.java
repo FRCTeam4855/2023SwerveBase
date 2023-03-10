@@ -77,7 +77,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
-
+    armExtend.initExtend();
+    armPivot.initPivot();
     intakePaws.setRightPawOpen();
     intakePaws.setLeftPawOpen();
     m_chooser.setDefaultOption("Leave Tarmac", kAuton1);
@@ -99,7 +100,6 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     limelight.updateDashboard(); // runs block in limeight subsystem for periodic update
-    armExtend.getExtensionPostion();
     SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Displays Front Left Wheel Encoder
                                                                                     // Values
     SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); // Displays Back Left Wheel Encoder
@@ -185,10 +185,15 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     driveSystem.resetRelativeEncoders();
+    armExtend.resetExtendEncoder();
+    armPivot.resetPivotEncoder();
     gyro.reset();
     gyro.zeroYaw();
     prettyLights1.setLEDs(PrettyLights.BPM_RAINBOWPALETTE);
-    armExtend.initExtend();
+    armExtend.setExtendSetpoint(ArmSetpoint.One);
+    armPivot.setPivotSetpoint(ArmSetpoint.One);
+    intakePaws.setRightPawClose();
+    intakePaws.setLeftPawClose();
   }
 
   // *************************
@@ -198,7 +203,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    armExtend.extendDaArm();
+
+    SmartDashboard.putNumber("ProcessVariable", armExtend.getExtensionEncoder().getPosition());
+    SmartDashboard.putNumber("ProcessVariable", armPivot.getPivotEncoder().getPosition());
     double x1 = xboxDriver.getRawAxis(0); // connects the left and right drive movements to the drive controllers left
                                           // x-axis
     double x2 = xboxDriver.getRawAxis(4); // connects the spinning drive movements to the drive controllers right x-axis
@@ -243,7 +250,7 @@ public class Robot extends TimedRobot {
     // *************************
 
     // toggle paws open and closed
-    if (xboxOperator.getRawButtonPressed(PAWS_TOGGLEBOTH_A)) {
+    if (xboxOperator.getRawButtonPressed(PAWS_TOGGLEBOTH_SELECT)) {
       if (intakePaws.isRightPawOpen() && intakePaws.isLeftPawOpen()) {
         intakePaws.setRightPawClose();
         intakePaws.setLeftPawClose();
@@ -265,26 +272,38 @@ public class Robot extends TimedRobot {
       }
     }
 
-    if (xboxOperator.getRawButton(2)) {
-      armExtend.setExtendSetpoint(ArmSetpoint.Two);
-    }
-
-    if (xboxOperator.getRawButton(1)) {
+    if (xboxOperator.getRawButton(ARM_SETPOINT1_A)) {
       armExtend.setExtendSetpoint(ArmSetpoint.One);
+      armPivot.setPivotSetpoint(ArmSetpoint.One);
     }
 
-    // if (Math.abs((xboxOperator.getRawAxis(0))) > JOYSTK_DZONE) {
-    //   armPivot.armPivotVariable(xboxOperator.getRawAxis(0) / 8);
-    // } else {
-    //   armPivot.setPivotStop();
-    // }
+    if (xboxOperator.getRawButton(ARM_SETPOINT2_B)) {
+      armExtend.setExtendSetpoint(ArmSetpoint.Two);
+      armPivot.setPivotSetpoint(ArmSetpoint.Two);
+    }
 
-    // if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
-    //   armExtend.armExtendVariable(xboxOperator.getRawAxis(1));
-    // } else {
-    //   armExtend.armExtendVariable(0);
-    // }t
+    if (xboxOperator.getRawButton(ARM_SETPOINT3_X)) {
+      armExtend.setExtendSetpoint(ArmSetpoint.Three);
+      armPivot.setPivotSetpoint(ArmSetpoint.Three);
+    }
 
+    if (xboxOperator.getRawButton(8)) {
+      armExtend.extendDaArm();
+      armPivot.pivotDaArm();
+    }
+    if (xboxOperator.getPOV() == 0) {
+      if (Math.abs((xboxOperator.getRawAxis(0))) > JOYSTK_DZONE) {
+        armPivot.armPivotVariable(xboxOperator.getRawAxis(0) / 8);
+      } else {
+        armPivot.setPivotStop();
+      }
+
+      if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
+        armExtend.armExtendVariable(xboxOperator.getRawAxis(1));
+      } else {
+        armExtend.armExtendVariable(0);
+      }
+    }
     // if (xboxOperator.getRawButtonPressed(SWAP_LL_PIPELINE_LB))
 
     // if (xboxOperator.getRawButtonPressed(PAW_TOGGLELEFT_B)) {

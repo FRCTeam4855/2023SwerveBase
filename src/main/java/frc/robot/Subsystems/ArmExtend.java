@@ -6,7 +6,6 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmSetpoint;
@@ -24,13 +23,14 @@ public class ArmExtend extends SubsystemBase {
       // PID coefficients
     armExtend.restoreFactoryDefaults();
     armExtend.setIdleMode(IdleMode.kBrake);
-    double kP = 0.12; 
+    armExtend.getEncoder().setPosition(0);
+    double kP = 0.2; 
     double kI = .0004;
     double kD = 1.2; 
-    double kIz = 10; 
+    double kIz = 0; 
     double kFF = 0; 
-    double kMaxOutput = .4; 
-    double kMinOutput = -.4;
+    double kMaxOutput = .2; 
+    double kMinOutput = -.2;
     extendPIDController.setFeedbackDevice(armExtend.getEncoder());
     extendPIDController.setP(kP);
     extendPIDController.setI(kI);
@@ -40,6 +40,9 @@ public class ArmExtend extends SubsystemBase {
     extendPIDController.setOutputRange(kMinOutput, kMaxOutput);
  }
  
+ public void resetExtendEncoder(){
+  armExtend.getEncoder().setPosition(0);
+ }
 
   public void setExtendStop() {
     armExtend.set(0);
@@ -55,7 +58,6 @@ public class ArmExtend extends SubsystemBase {
   }
 
   public double getExtensionPostion() {
-    SmartDashboard.getNumber("Arm Encoder", getExtensionEncoder().getPosition());
     return getExtensionEncoder().getPosition();
   }
 
@@ -65,7 +67,6 @@ public class ArmExtend extends SubsystemBase {
     if (armSetpoint == ArmSetpoint.Three) extendSetpoint = ARM_EXTEND_CENTER_3;
     if (armSetpoint == ArmSetpoint.Four)  extendSetpoint = ARM_EXTEND_CENTER_4;
     if (armSetpoint == ArmSetpoint.Five)  extendSetpoint = ARM_EXTEND_CENTER_5;
-
   }
   
   public boolean isPivotAtSetpoint() {
@@ -75,14 +76,11 @@ public class ArmExtend extends SubsystemBase {
   public void extendDaArm(){
         // set PID coefficients
         extendPIDController.setReference(extendSetpoint, CANSparkMax.ControlType.kPosition);
-        SmartDashboard.putNumber("SetPoint", extendSetpoint);
-        SmartDashboard.putNumber("ProcessVariable", getExtensionEncoder().getPosition());
+        SmartDashboard.putNumber("ExtendSetPoint", extendSetpoint);
+        SmartDashboard.putNumber("ExtendVariable", getExtensionEncoder().getPosition());
 
   }
 
 }
 
 
-
-
-// // TODO make boolean methods for setpoints (???done???)
