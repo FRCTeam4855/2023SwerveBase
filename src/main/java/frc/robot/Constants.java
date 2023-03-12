@@ -3,9 +3,9 @@ package frc.robot;
 public class Constants {
     //Constants ++++++++++++
     public static final double JOYSTK_DZONE = .17;                  // global deadzone for all controllers
-    public static final double DRIVE_DEFAULT_SPD = 0.60;               // multiplier
-    public static final double DRIVE_SLOW_SPD = 0.30;               // multiplier
-    public static final double DRIVE_TURBO_SPD = 0.80;               // multiplier
+    public static final double DRIVE_DEFAULT_SPD = 0.50;               // multiplier
+    public static final double DRIVE_SLOW_SPD = 0.3;               // multiplier
+    public static final double DRIVE_TURBO_SPD = 0.60;               // multiplier
     //TODO arrange with drive team what these values are on 2023 bot
 
 
@@ -15,18 +15,21 @@ public class Constants {
     public static final double RELATIVE_ENC_TO_FT = 7.4; //0.660715;//7.928591; //0.03666658; // converts relative encoder units on neo to inches
 
     //Sensor Ranges/Setpoints
-    public static final double ARM_EXTEND_CENTER_1 = 55; //center point for arm extension setpoints
-    public static final double ARM_EXTEND_CENTER_2 = -15; //TODO find these values on 2023 bot
-    public static final double ARM_EXTEND_CENTER_3 = -30;
-    public static final double ARM_EXTEND_CENTER_4 = 4;
-    public static final double ARM_EXTEND_CENTER_5 = 5;
+
+    //center point for arm extension setpoints
+    public static final double ARM_EXTEND_CENTER_1 = 10; //done
+    public static final double ARM_EXTEND_CENTER_2 = 180; //TODO find these values on 2023 bot
+    public static final double ARM_EXTEND_CENTER_3 = 132;
+    public static final double ARM_EXTEND_CENTER_4 = 333;
+    public static final double ARM_EXTEND_CENTER_5 = 50;
     public static final double ARM_EXTEND_SLOP = 3;    //acceptable range for arm extension setpoints
 
-    public static final double ARM_PIVOT_CENTER_1 = 0; //center point for arm extension setpoints
+    //center point for arm extension setpoints
+    public static final double ARM_PIVOT_CENTER_1 = 0; //done
     public static final double ARM_PIVOT_CENTER_2 = 8; //TODO find these values on 2023 bot
-    public static final double ARM_PIVOT_CENTER_3 = 12;
-    public static final double ARM_PIVOT_CENTER_4 = 4;
-    public static final double ARM_PIVOT_CENTER_5 = 5;
+    public static final double ARM_PIVOT_CENTER_3 = 18;
+    public static final double ARM_PIVOT_CENTER_4 = 21;
+    public static final double ARM_PIVOT_CENTER_5 = 0;
     public static final double ARM_PIVOT_SLOP = 3;    //acceptable range for arm extension setpoints
 
     public enum ArmSetpoint {
@@ -64,7 +67,7 @@ public class Constants {
     public static final int ENCODER_RESET_B = 2; //B
     public static final int ORIENTATION_TOGGLE_X = 3; //X
     public static final int DRV_SPD_TURBO_RB = 6;
-    public static final int DRV_SPD_PRECISE_LB = 7;   
+    public static final int DRV_SPD_PRECISE_LB = 5;   
     public static final int TEST_PID_ROTATE_A = 1;
 
     public static final int SCHEDULE_INITIAL_COMMAND_LB = 5;

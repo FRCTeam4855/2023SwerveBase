@@ -17,10 +17,10 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
 
 
     //test drive platform
-    public Wheel wheelFL = new Wheel(1, 2, DIO10, -0.758); //defines the front left wheel //-0.225
-    public Wheel wheelBL = new Wheel(3, 4, DIO11, -0.454); //defines the back left wheel //-0.053
-    public Wheel wheelBR = new Wheel(5, 6, DIO12, -0.143); //defines the back right wheel //-0.337
-    public Wheel wheelFR = new Wheel(7, 8, DIO13, -0.077); //defines the front right wheel //0.153
+    public Wheel wheelFL = new Wheel(1, 2, DIO10, -.3); //defines the front left wheel //-0.225
+    public Wheel wheelBL = new Wheel(3, 4, DIO11, .025); //defines the back left wheel //-0.053
+    public Wheel wheelBR = new Wheel(5, 6, DIO12, -.339); //defines the back right wheel //-0.337
+    public Wheel wheelFR = new Wheel(7, 8, DIO13, .147); //defines the front right wheel //0.153
     // Wheel Values: driveControllerID, steerControllerID, absolutePort(encoder), offSet1
 
     private void moveWheels(SwerveOutput swerve) {

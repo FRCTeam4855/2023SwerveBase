@@ -22,13 +22,13 @@ public class ArmPivot extends SubsystemBase {
   // TODO ADD A NUMBER TO CHANNEL
 
   public void setPivotDirectionForward() {
-    armPivotOne.set(1);
-    armPivotTwo.set(1);
+    armPivotOne.set(-1);
+    armPivotTwo.set(-1);
   }
 
   public void setPivotDirectionBackward() {
-    armPivotOne.set(-1);
-    armPivotTwo.set(-1);
+    armPivotOne.set(1);
+    armPivotTwo.set(1);
   }
 
   public void setPivotStop() {
@@ -38,7 +38,7 @@ public class ArmPivot extends SubsystemBase {
 
   public void armPivotVariable(double speed) {
     armPivotOne.set(speed);
-    armPivotTwo.set(speed);
+    // armPivotTwo.set(speed);
   }
 
   public double getPivotPostion() {
@@ -53,6 +53,11 @@ public class ArmPivot extends SubsystemBase {
     armPivotOne.getEncoder().setPosition(value);
   }
 
+  public void setPivotPositionVariable(){
+    pivotPIDController.setReference(armPivotOne.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
+
+  }
+
   public void initPivot() {
     // PID coefficients
     armPivotOne.restoreFactoryDefaults();
@@ -60,14 +65,13 @@ public class ArmPivot extends SubsystemBase {
     armPivotOne.setIdleMode(IdleMode.kBrake);
     armPivotTwo.setIdleMode(IdleMode.kBrake);
     armPivotTwo.follow(armPivotOne);
-    armPivotOne.getEncoder().setPosition(0);
-    double kP = 0.2;
-    double kI = .0004;
-    double kD = 1.2;
+    double kP = 0.1;
+    double kI = 0; //.0004;
+    double kD = 0; //1.2;
     double kIz = 0;
     double kFF = 0;
-    double kMaxOutput = .1;
-    double kMinOutput = -.1;
+    double kMaxOutput = .08;
+    double kMinOutput = -.08;
     pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
     pivotPIDController.setP(kP);
     pivotPIDController.setI(kI);

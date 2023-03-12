@@ -76,7 +76,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     prettyLights1.setLEDs(PrettyLights.BPM_RAINBOWPALETTE);
-    fieldOriented = true;
+    fieldOriented = false;
     armExtend.initExtend();
     armPivot.initPivot();
     intakePaws.setRightPawOpen();
@@ -86,6 +86,8 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("Shoot High Intake Cargo", kAuton3);
     m_chooser.addOption("Shoot 2 High Leave Tarmac", kAuton4);
     SmartDashboard.putData(m_chooser); // displays the auton options in shuffleboard, put in init block
+    armPivot.resetPivotEncoderZero();
+    armExtend.resetExtendEncoderVariable(50);
 
   }
 
@@ -112,8 +114,8 @@ public class Robot extends TimedRobot {
     SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); // pulls Pitch value
     SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
     SmartDashboard.putBoolean("Balancing", Balancing.isBalancing); // shows true if robot is attempting to balance
-    SmartDashboard.putNumber("ProcessVariable", armExtend.getExtensionPostion());
-    SmartDashboard.putNumber("ProcessVariable", armPivot.getPivotPostion());
+    SmartDashboard.putNumber("ExtendEncoderRead", armExtend.getExtensionPostion());
+    SmartDashboard.putNumber("PivotEncoderRead", armPivot.getPivotPostion());
 
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler
                                           // will never run, and the command framework will not work
@@ -180,8 +182,6 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopInit() {
     driveSystem.resetRelativeEncoders();
-    armExtend.resetExtendEncoderZero();
-    armPivot.resetPivotEncoderZero();
     gyro.reset();
     gyro.zeroYaw();
     prettyLights1.setLEDs(PrettyLights.C1_AND_C2_SINELON);
@@ -197,9 +197,9 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
 
-    double x1 = xboxDriver.getRawAxis(0); // set left and right drive movements to drive controller left x-axis
-    double x2 = xboxDriver.getRawAxis(4); // set rotate drive movements to drive controller right x-axis
-    double y1 = xboxDriver.getRawAxis(1); // set forwards and backwards drive movements to drive controller left y-axis
+    double x1 = -xboxDriver.getRawAxis(0); // set left and right drive movements to drive controller left x-axis
+    double x2 = -xboxDriver.getRawAxis(4); // set rotate drive movements to drive controller right x-axis
+    double y1 = -xboxDriver.getRawAxis(1); // set forwards and backwards drive movements to drive controller left y-axis
 
     // *************************
     // *****Driver Controls*****
@@ -213,11 +213,14 @@ public class Robot extends TimedRobot {
 
     // Drive the robot
     if ((!xboxDriver.getRawButton(DRV_SPD_TURBO_RB)) && (!xboxDriver.getRawButton(DRV_SPD_PRECISE_LB))) {
-      driveSpeed = Wheel.SpeedSetting.NORMAL; // sets speed back to normal every 20ms
-    } else if (xboxDriver.getRawButton(DRV_SPD_TURBO_RB))
+      driveSpeed = Wheel.SpeedSetting.NORMAL;
+     } // sets speed back to normal every 20ms
+    if (xboxDriver.getRawButton(DRV_SPD_TURBO_RB)){
       driveSpeed = Wheel.SpeedSetting.TURBO;
-    else if (xboxDriver.getRawButton(DRV_SPD_PRECISE_LB))
+    }
+    if (xboxDriver.getRawButton(DRV_SPD_PRECISE_LB)){
       driveSpeed = Wheel.SpeedSetting.PRECISE;
+    }
     driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
 
     // Reset the relative encoders if you press B button
@@ -254,13 +257,13 @@ public class Robot extends TimedRobot {
       }
     }
 
-    if (xboxOperator.getRawButton(TOGGLE_LL_PIPELINE_RB)) {
-      if (limelight.isLimelightOnAprilTagMode() == true) {
-        limelight.setLimelightPipeToRetroTape();
-      } else {
-        limelight.setLimelightPipeToAprilTag();
-      }
-    }
+    // if (xboxOperator.getRawButton(TOGGLE_LL_PIPELINE_RB)) {
+    //   if (limelight.isLimelightOnAprilTagMode() == true) {
+    //     limelight.setLimelightPipeToRetroTape();
+    //   } else {
+    //     limelight.setLimelightPipeToAprilTag();
+    //   }
+    // }
 
     if (xboxOperator.getRawButton(ARM_SETPOINT1_A)) {
       armExtend.setExtendSetpoint(ArmSetpoint.One);
@@ -277,58 +280,73 @@ public class Robot extends TimedRobot {
       armPivot.setPivotSetpoint(ArmSetpoint.Three);
     }
 
+    if (xboxOperator.getRawButton(ARM_SETPOINT4_Y)) {
+      armExtend.setExtendSetpoint(ArmSetpoint.Four);
+      armPivot.setPivotSetpoint(ArmSetpoint.Four);
+    }
+
+    if (xboxOperator.getRawButtonPressed(5)){
+      armPivot.resetPivotEncoderZero();
+      armExtend.resetExtendEncoderVariable(50);
+      armExtend.setExtendSetpoint(ArmSetpoint.Five);
+      armPivot.setPivotSetpoint(ArmSetpoint.Five);
+      armExtend.extendDaArm();
+      armPivot.pivotDaArm();
+    }
+
     if (xboxOperator.getRawButton(8)) {
       armExtend.extendDaArm();
       armPivot.pivotDaArm();
     }
-    if (xboxOperator.getPOV() == 0) {
-      if (Math.abs((xboxOperator.getRawAxis(0))) > JOYSTK_DZONE) {
-        armPivot.armPivotVariable(xboxOperator.getRawAxis(0) / 8);
+    
+    if (xboxOperator.getRawButton(6)) {
+      if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
+        armPivot.armPivotVariable(xboxOperator.getRawAxis(1) / -8);
       } else {
         armPivot.setPivotStop();
       }
 
-      if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
-        armExtend.armExtendVariable(xboxOperator.getRawAxis(1));
+      if (Math.abs((xboxOperator.getRawAxis(5))) > JOYSTK_DZONE) {
+        armExtend.armExtendVariable(xboxOperator.getRawAxis(5));
       } else {
-        armExtend.armExtendVariable(0);
+        armExtend.setExtendStop();
       }
     }
 
-    if (xboxDriver.getRawButtonPressed(SCHEDULE_INITIAL_COMMAND_LB)) {
-      Command moveLeft = new SwerveDriveMoveLeft(driveSystem, 3);
-      Command moveFwd = new SwerveDriveMoveForward(driveSystem, 3);
-      Command moveRight = new SwerveDriveMoveRight(driveSystem, 3);
-      Command moveBack = new SwerveDriveMoveBackward(driveSystem, 3);
-      Command turnRight = new SwerveDriveTurnRight(driveSystem, 90);
-      Command turnLeft = new SwerveDriveTurnLeft(driveSystem, 180);
-      Command balance = new Balancing(driveSystem, gyro);
-      Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
-      Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
-      Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
-      Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
-      CommandScheduler.getInstance().schedule(
-          setupPostMoveLights
-              /*
-               * .andThen(new SwerveDriveTurnLeft(driveSystem, 45))
-               * .andThen(new SwerveDriveMoveForward(driveSystem, 10))
-               * .andThen(new SwerveDriveMoveRight(driveSystem, 6))
-               * .andThen(new SwerveDriveTurnRight(driveSystem, 240))
-               * .andThen(new LightsOnCommand(prettyLights1,
-               * PrettyLights.C1_AND_C2_END_TO_END_BLEND))
-               * .andThen(new SwerveDriveMoveForward(driveSystem, 16))
-               * .andThen(new SwerveDriveMoveLeft(driveSystem, 8))
-               * .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
-               * .andThen(new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE))
-               * .andThen(new SwerveDriveMoveRight(driveSystem, 14))
-               */
-              .andThen(new SwerveDriveMoveForward(driveSystem, 15))
-              .andThen(new SwerveDriveTurnLeft(driveSystem, 140))
-              .andThen(new SwerveDriveMoveBackward(driveSystem, 7))
-              .andThen(balance));
+    // if (xboxDriver.getRawButtonPressed(SCHEDULE_INITIAL_COMMAND_LB)) {
+    //   Command moveLeft = new SwerveDriveMoveLeft(driveSystem, 3);
+    //   Command moveFwd = new SwerveDriveMoveForward(driveSystem, 3);
+    //   Command moveRight = new SwerveDriveMoveRight(driveSystem, 3);
+    //   Command moveBack = new SwerveDriveMoveBackward(driveSystem, 3);
+    //   Command turnRight = new SwerveDriveTurnRight(driveSystem, 90);
+    //   Command turnLeft = new SwerveDriveTurnLeft(driveSystem, 180);
+    //   Command balance = new Balancing(driveSystem, gyro);
+    //   Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
+    //   Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
+    //   Command floridaMansLights = new LightsOnCommand(prettyLights1, PrettyLights.C1_AND_C2_END_TO_END_BLEND);
+    //   Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
+    //   CommandScheduler.getInstance().schedule(
+    //       setupPostMoveLights
+    //           /*
+    //            * .andThen(new SwerveDriveTurnLeft(driveSystem, 45))
+    //            * .andThen(new SwerveDriveMoveForward(driveSystem, 10))
+    //            * .andThen(new SwerveDriveMoveRight(driveSystem, 6))
+    //            * .andThen(new SwerveDriveTurnRight(driveSystem, 240))
+    //            * .andThen(new LightsOnCommand(prettyLights1,
+    //            * PrettyLights.C1_AND_C2_END_TO_END_BLEND))
+    //            * .andThen(new SwerveDriveMoveForward(driveSystem, 16))
+    //            * .andThen(new SwerveDriveMoveLeft(driveSystem, 8))
+    //            * .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
+    //            * .andThen(new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE))
+    //            * .andThen(new SwerveDriveMoveRight(driveSystem, 14))
+    //            */
+    //           .andThen(new SwerveDriveMoveForward(driveSystem, 15))
+    //           .andThen(new SwerveDriveTurnLeft(driveSystem, 140))
+    //           .andThen(new SwerveDriveMoveBackward(driveSystem, 7))
+    //           .andThen(balance));
 
-    }
-    ;
+    // }
+    // ;
     // Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
     // Command setupInitialLights = new LightsOnCommand(prettyLights1,
     // PrettyLights.BPM_PARTYPALETTE);

@@ -18,14 +18,13 @@ public class ArmExtend extends SubsystemBase {
     // PID coefficients
     armExtend.restoreFactoryDefaults();
     armExtend.setIdleMode(IdleMode.kBrake);
-    armExtend.getEncoder().setPosition(0);
     double kP = 0.2;
-    double kI = .0004;
-    double kD = 1.2;
+    double kI = 0; //.0004;
+    double kD = 0; //1.2;
     double kIz = 0;
     double kFF = 0;
-    double kMaxOutput = .2;
-    double kMinOutput = -.2;
+    double kMaxOutput = .4;    //extend speed
+    double kMinOutput = -.9;  //retract speed
     extendPIDController.setFeedbackDevice(armExtend.getEncoder());
     extendPIDController.setP(kP);
     extendPIDController.setI(kI);
@@ -48,11 +47,16 @@ public class ArmExtend extends SubsystemBase {
   }
 
   public void armExtendVariable(double speed) {
-    armExtend.set(speed);
+    armExtend.set(-speed);
   }
 
   public double getExtensionPostion() {
     return armExtend.getEncoder().getPosition();
+  }
+
+  public void setExtendPositionVariable(){
+    extendPIDController.setReference(armExtend.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
+
   }
 
   public void setExtendSetpoint(ArmSetpoint armSetpoint) {
