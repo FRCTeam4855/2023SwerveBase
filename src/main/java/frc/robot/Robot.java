@@ -94,10 +94,10 @@ public class Robot extends TimedRobot {
     armPivot.initPivot();
     intakePaws.setRightPawOpen();
     intakePaws.setLeftPawOpen();
-    m_chooser.setDefaultOption("Leave Tarmac", kAuton1);
-    m_chooser.addOption("Shoot High Leave Tarmac", kAuton2);
-    m_chooser.addOption("Shoot High Intake Cargo", kAuton3);
-    m_chooser.addOption("Shoot 2 High Leave Tarmac", kAuton4);
+    m_chooser.setDefaultOption("pick up cone inside robot and drive out of comm", kAuton1);
+    m_chooser.addOption("Drop cone on high and drive out of comm", kAuton2);
+    m_chooser.addOption("Drop cone on high, drive out of comm, and drive onto power station", kAuton3);
+    m_chooser.addOption("WIP DO NOT USE", kAuton4);
     SmartDashboard.putData(m_chooser); // displays the auton options in shuffleboard, put in init block
     armPivot.resetPivotEncoderZero();
     armExtend.resetExtendEncoderVariable(50);
