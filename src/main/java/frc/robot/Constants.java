@@ -9,6 +9,10 @@ public class Constants {
     //TODO arrange with drive team what these values are on 2023 bot
 
 
+    // distance drive var
+    public static final double ATON_DIST_ONE = 5;
+    public static final double ATON_DIST_TWO = 5;
+
     public static final double DIST_BETWEEN_WHEELS = 27; // in inches  
 
     // Conversions +++++++++

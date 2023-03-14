@@ -19,8 +19,6 @@ public class ArmPivot extends SubsystemBase {
   CANSparkMax armPivotTwo = new CANSparkMax(12, MotorType.kBrushless);
   SparkMaxPIDController pivotPIDController = armPivotOne.getPIDController();
 
-  // TODO ADD A NUMBER TO CHANNEL
-
   public void setPivotDirectionForward() {
     armPivotOne.set(-1);
     armPivotTwo.set(-1);
