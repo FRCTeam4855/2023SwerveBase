@@ -19,7 +19,7 @@ public class ArmExtend extends SubsystemBase {
     armExtend.restoreFactoryDefaults();
     armExtend.setIdleMode(IdleMode.kBrake);
     double kP = 0.2; // slot 0 static setpoints
-    double kP2 = 0.5; // slot 2 manual adjustment
+    double kP2 = 0.2; // slot 2 manual adjustment
     double kI = 0; // .0004;
     double kD = 0; // 1.2;
     double kIz = 0;

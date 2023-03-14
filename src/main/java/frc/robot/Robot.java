@@ -223,6 +223,24 @@ public class Robot extends TimedRobot {
         );
         break;
       case kAuton4:
+      CommandScheduler.getInstance().schedule(
+       initLights
+        .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One))
+        .andThen(closePaws)
+        .andThen(new SwerveDriveTurnLeft(driveSystem, 45))
+        .andThen(new SwerveDriveMoveForward(driveSystem, 10))
+        .andThen(moveArmToThree)
+        .andThen(new SwerveDriveMoveRight(driveSystem, 6))
+        .andThen(new SwerveDriveTurnRight(driveSystem, 240))
+        .andThen(new LightsOnCommand(prettyLights1,PrettyLights.C1_AND_C2_END_TO_END_BLEND))
+        .andThen(moveArmToTwo)
+        .andThen(new SwerveDriveMoveForward(driveSystem, 16))
+        .andThen(new SwerveDriveMoveLeft(driveSystem, 8))
+        .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
+        .andThen(moveArmToThree)
+        .andThen(new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE))
+        .andThen(new SwerveDriveMoveRight(driveSystem, 14))
+      );
         break;
     }
     // driveSystem.moveManual(autox1, autoy1, autox2, 0);
@@ -344,7 +362,7 @@ public class Robot extends TimedRobot {
     }
 
     // reset encoders while on cone (teleop testing)
-    if (xboxOperator.getRawButtonPressed(5)) {
+    if (xboxOperator.getRawButton(5)) {
       armPivot.resetPivotEncoderZero();
       armExtend.resetExtendEncoderVariable(50);
       armExtend.setExtendSetpoint(ArmSetpoint.Five);
@@ -360,22 +378,24 @@ public class Robot extends TimedRobot {
 
     if (Math.abs((xboxOperator.getRawAxis(5))) > JOYSTK_DZONE) {
       if (xboxOperator.getRawAxis(5) > JOYSTK_DZONE) {
-        armExtend.setExtendPositionVariable(armExtend.getExtensionPostion() + .8);
+        armExtend.setExtendPositionVariable(armExtend.getExtensionPostion() + 8);
+        SmartDashboard.putNumber("manual Extend setpoint", armExtend.getExtensionPostion()+ 8);
       }
       if (xboxOperator.getRawAxis(5) < -JOYSTK_DZONE) {
-        armExtend.setExtendPositionVariable(armExtend.getExtensionPostion() - .8);
+        armExtend.setExtendPositionVariable(armExtend.getExtensionPostion() - 8);
+        SmartDashboard.putNumber("manual Extend setpoint", armExtend.getExtensionPostion() - 8);
       }
-      armExtend.extendDaArm();
     }
 
     if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
       if (xboxOperator.getRawAxis(1) > JOYSTK_DZONE) {
         armPivot.setPivotPositionVariable(armPivot.getPivotPostion() + .1);
+        SmartDashboard.putNumber("manual pivot setpoint", (armPivot.getPivotPostion() + .1));
       }
       if (xboxOperator.getRawAxis(1) < -JOYSTK_DZONE) {
         armPivot.setPivotPositionVariable(armPivot.getPivotPostion() - .1);
+        SmartDashboard.putNumber("manual pivot setpoint", (armPivot.getPivotPostion() - .1));
       }
-      armPivot.pivotDaArm();
     }
 
     // *******OLD JOYSTICK COMMANDS
