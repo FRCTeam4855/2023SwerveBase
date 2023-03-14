@@ -25,9 +25,9 @@ public class Swerve {
         y1 = -y1;
         x2 = -x2;
 
-        SmartDashboard.putNumber("x1", x1); //displays the x1 values on SmartDashboard
-        SmartDashboard.putNumber("y1", y1); //displays the y1 values on SmartDashboard
-        SmartDashboard.putNumber("x2", x2); //displays the x2 values on SmartDashboard
+        // SmartDashboard.putNumber("x1", x1); //displays the x1 values on SmartDashboard
+        // SmartDashboard.putNumber("y1", y1); //displays the y1 values on SmartDashboard
+        // SmartDashboard.putNumber("x2", x2); //displays the x2 values on SmartDashboard
 
         //a lot of math that we do not mess with
         double A = x1 - x2 * (L/R);

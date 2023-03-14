@@ -19,7 +19,7 @@ public class PneumaticsBase extends SubsystemBase  {
         compressor.enableDigital();
     }
 
-    public boolean getCompressorStatus() {
+    public boolean isCompressorOn() {
         return compressor.isEnabled();
     }
 

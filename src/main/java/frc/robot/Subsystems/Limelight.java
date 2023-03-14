@@ -8,6 +8,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class Limelight extends SubsystemBase {
 
+
+  ///********************************************************
+  ///PLEASE KEEP ALL COMMENTED LINES FOR POSSIBLE FUTURE USE
+  ///********************************************************
+
   public boolean isLimelightLampOn(){
     if (NetworkTableInstance.getDefault().getTable("limelight-rams").getEntry("ledMode").getDouble(0) == 1){ //also the full way to pull a networktable entry as a double
       return true;
@@ -44,8 +49,6 @@ public class Limelight extends SubsystemBase {
       return false;
     }
 }
-
-//TODO set options, buttons, and logic to change between pipelines 0 and 1
 
   public void setLimelightPipeToAprilTag() {
     NetworkTableInstance inst = NetworkTableInstance.getDefault();
@@ -111,8 +114,6 @@ public class Limelight extends SubsystemBase {
     SmartDashboard.putBoolean("Limelight in AprilTag Mode", isLimelightOnAprilTagMode());
   }
 
-  // // // TODO : add button options for lamps
-  // //TODO set options, buttons, and logic to change between pipelines 0 and 1
   // public void pipelineButtons() {
   //   if (XboxController.getRawButtonPressed(button)) {
   //     turnONLamp

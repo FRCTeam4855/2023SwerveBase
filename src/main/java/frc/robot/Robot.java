@@ -25,11 +25,11 @@ import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
 import frc.robot.Subsystems.Limelight;
 import frc.robot.Commands.Balancing;
-import frc.robot.Commands.ClosePaws;
 // import frc.robot.Commands.CenterToLimelight;
 import frc.robot.Commands.LightsOnCommand;
 import frc.robot.Commands.MoveArmToSetpoint;
 import frc.robot.Commands.OpenPaws;
+import frc.robot.Commands.ClosePaws;
 import frc.robot.Commands.SwerveDriveMoveBackward;
 import frc.robot.Commands.SwerveDriveMoveForward;
 import frc.robot.Commands.SwerveDriveMoveLeft;
@@ -39,37 +39,34 @@ import frc.robot.Commands.SwerveDriveTurnRight;
 
 public class Robot extends TimedRobot {
 
-  boolean fieldOriented; // robot is in field oriented or robot oriented
-  double theta_radians; // gyro angle offset field oriented zero vs robot zero (front) for swerve calcs
-  Wheel.SpeedSetting driveSpeed = Wheel.SpeedSetting.NORMAL;
+  private boolean fieldOriented; // robot is in field oriented or robot oriented
+  private double theta_radians; // gyro angle offset field oriented zero vs robot zero (front) for swerve calcs
+  private Wheel.SpeedSetting driveSpeed = Wheel.SpeedSetting.NORMAL;
 
-  private static final String kAuton1 = "Leave Tarmac";
-  private static final String kAuton2 = "Shoot High Leave Tarmac";
-  private static final String kAuton3 = "Shoot High Intake Cargo";
-  private static final String kAuton4 = "Shoot 2 High Leave Tarmac";
+  private static final String kAuton1 = "1. Drive Forward";
+  private static final String kAuton2 = "2. Back, Drop, Forward";
+  private static final String kAuton3 = "3. B, D, F, B, Balance";
+  private static final String kAuton4 = "Unused";
 
   private String m_autoSelected; // This selects between the two autonomous
   public SendableChooser<String> m_chooser = new SendableChooser<>(); // creates the ability to switch between autons on
                                                                       // SmartDashboard
-  XboxController xboxDriver = new XboxController(0);
-  XboxController xboxOperator = new XboxController(1);
-  AHRS gyro = new AHRS(SerialPort.Port.kUSB); // defines the gyro
-  SwerveDriveSystem driveSystem = new SwerveDriveSystem();
-  IntakePaws intakePaws = new IntakePaws();
+  private XboxController xboxDriver = new XboxController(0);
+  private XboxController xboxOperator = new XboxController(1);
+  private AHRS gyro = new AHRS(SerialPort.Port.kUSB); // defines the gyro
+  private SwerveDriveSystem driveSystem = new SwerveDriveSystem();
+  private IntakePaws intakePaws = new IntakePaws();
   private Limelight limelight = new Limelight();
-  double autox1 = 0; // defines left and right movement for auton
-  double autox2 = 0; // defines spinning movement for auton
-  double autoy1 = 0; // defines forward and backward movement for auton
-  ArmPivot armPivot = new ArmPivot();
-  public ArmExtend armExtend = new ArmExtend();
+  private ArmPivot armPivot = new ArmPivot();
+  private ArmExtend armExtend = new ArmExtend();
+  private PrettyLights prettyLights1 = new PrettyLights();
 
   // command related declarations
-  private PrettyLights prettyLights1 = new PrettyLights();
   Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
-  Command setupInitialLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
-  Command setupPostMoveLights = new LightsOnCommand(prettyLights1, PrettyLights.LARSONSCAN_RED);
-  Command middleLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
-  Command lightsAtTheEnd = new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE);
+  Command initLights = new LightsOnCommand(prettyLights1, PrettyLights.BPM_PARTYPALETTE);
+  Command autonLights = new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER);
+  Command teleopLights = new LightsOnCommand(prettyLights1, PrettyLights.BLUE_GREEN);
+  Command unbalancedLights = new LightsOnCommand(prettyLights1, PrettyLights.COLORWAVES_LAVAPALETTE);
   Command moveArmToOne = new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One);
   Command moveArmToTwo = new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Two);
   Command moveArmToThree = new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three);
@@ -113,19 +110,26 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     limelight.updateDashboard(); // runs block in limeight subsystem for periodic update
-    SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Front Left Wheel Encoder Values
-    SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); // Back Left Wheel Encoder Values
-    SmartDashboard.putNumber("Encoder BR", driveSystem.wheelBR.getAbsoluteValue()); // Back Right Wheel Encoder Values
-    SmartDashboard.putNumber("Encoder FR", driveSystem.wheelFR.getAbsoluteValue()); // Front Right Wheel Encoder Values
-    SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
 
+    //Driving Subsystem Dashboard
+    // SmartDashboard.putNumber("Encoder FL", driveSystem.wheelFL.getAbsoluteValue()); // Front Left Wheel Encoder Values
+    // SmartDashboard.putNumber("Encoder BL", driveSystem.wheelBL.getAbsoluteValue()); // Back Left Wheel Encoder Values
+    // SmartDashboard.putNumber("Encoder BR", driveSystem.wheelBR.getAbsoluteValue()); // Back Right Wheel Encoder Values
+    // SmartDashboard.putNumber("Encoder FR", driveSystem.wheelFR.getAbsoluteValue()); // Front Right Wheel Encoder Values
+    SmartDashboard.putNumber("DriveEncoder FL", driveSystem.getEncoderFL());
+    SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
+
+    //Arm Subsystem Dashboard
+    SmartDashboard.putNumber("ExtendEncoderRead", armExtend.getExtensionPostion());
+    SmartDashboard.putNumber("PivotEncoderRead", armPivot.getPivotPostion());
+
+    //Misc and Sensor Dashboard
     SmartDashboard.putBoolean("Field Oriented", fieldOriented); // shows true/false for driver oriented
     SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); // pulls yaw value
     SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); // pulls Pitch value
-    SmartDashboard.putNumber("Encoder FL FT", driveSystem.getRelativeEncoderFT());
     SmartDashboard.putBoolean("Balancing", Balancing.isBalancing); // shows true if robot is attempting to balance
-    SmartDashboard.putNumber("ExtendEncoderRead", armExtend.getExtensionPostion());
-    SmartDashboard.putNumber("PivotEncoderRead", armPivot.getPivotPostion());
+
+
 
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler
                                           // will never run, and the command framework will not work
@@ -147,9 +151,9 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     driveSystem.resetRelativeEncoders();
+    gyro.reset();
     m_autoSelected = m_chooser.getSelected(); // pulls auton option selected from shuffleboard
     SmartDashboard.putString("Current Auton:", m_autoSelected); // displays which auton is currently running
-    gyro.reset();
   }
 
   // *************************
@@ -166,11 +170,11 @@ public class Robot extends TimedRobot {
       case kAuton1:
 
         CommandScheduler.getInstance().schedule(
-            setupInitialLights
+            initLights
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One))
                 .andThen(closePaws)
                 .andThen(new SwerveDriveMoveForward(driveSystem, 3)));
-        // setupInitialLights, moveForward,
+        // initLights, moveForward,
         // .andThen(new WaitCommand(2))
         // .andThen(setupPostMoveLights)
         // .andThen(new WaitCommand(2))
@@ -184,7 +188,7 @@ public class Robot extends TimedRobot {
         break;
       case kAuton2:
         CommandScheduler.getInstance().schedule(
-            setupInitialLights
+            initLights
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One))
                 .andThen(closePaws)
                 // dropping cone
@@ -196,7 +200,7 @@ public class Robot extends TimedRobot {
         break;
       case kAuton3:
         CommandScheduler.getInstance().schedule(
-            setupInitialLights
+            initLights
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One))
                 .andThen(closePaws)
                 // dropping cone
@@ -434,7 +438,7 @@ public class Robot extends TimedRobot {
     }
     ;
     // Command moveForward = new SwerveDriveMoveForward(driveSystem, 10);
-    // Command setupInitialLights = new LightsOnCommand(prettyLights1,
+    // Command initLights = new LightsOnCommand(prettyLights1,
     // PrettyLights.BPM_PARTYPALETTE);
     // Command setupPostMoveLights = new LightsOnCommand(prettyLights1,
     // PrettyLights.LARSONSCAN_RED);
@@ -446,7 +450,7 @@ public class Robot extends TimedRobot {
     // PrettyLights.HEARTBEAT_BLUE);
 
     // CommandScheduler.getInstance().schedule(
-    // setupInitialLights
+    // initLights
     // .andThen(new WaitCommand(2))
     // .andThen(setupPostMoveLights)
     // .andThen(new WaitCommand(2))

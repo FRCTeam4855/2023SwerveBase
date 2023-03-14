@@ -47,18 +47,18 @@ public class ArmPivot extends SubsystemBase {
     armPivotOne.getEncoder().setPosition(0);
   }
 
-  public void resetPivotEncoderVariable(double value) {
+  public void resetPivotEncoderVariable(double value, double slotID) {
     armPivotOne.getEncoder().setPosition(value);
   }
 
+  //Old manual control, but it resets the zero point so DO NOT USE
   // public void setPivotPositionVariable(){
   //   pivotPIDController.setReference(armPivotOne.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
-
   // }
 
+  //set reference encoder position manually BUT uses PID slot 2 on sparkmax (static setpoints use slot 0)
   public void setPivotPositionVariable(double position){
-    pivotPIDController.setReference(position, CANSparkMax.ControlType.kPosition);
-
+    pivotPIDController.setReference(position, CANSparkMax.ControlType.kPosition, 2);
   }
 
   public void initPivot() {
@@ -68,20 +68,25 @@ public class ArmPivot extends SubsystemBase {
     armPivotOne.setIdleMode(IdleMode.kBrake);
     armPivotTwo.setIdleMode(IdleMode.kBrake);
     armPivotTwo.follow(armPivotOne);
-    double kP = 0.1;
+    double kP = 0.1;  //slot 0 static setpoints
+    double kP2 = 0.2; //slot 2 manual adjustment
     double kI = 0; //.0004;
     double kD = 0; //1.2;
     double kIz = 0;
     double kFF = 0;
-    double kMaxOutput = .08;
-    double kMinOutput = -.08;
+    double kMaxOutput = .08; // slot 0 pivot speed max
+    double kMaxOutput2 = .08; // slot 2 pivot speed max
+    double kMinOutput = -.08; 
+    double kMinOutput2 = -.08;
     pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
     pivotPIDController.setP(kP);
+    pivotPIDController.setP(kP2, 2);
     pivotPIDController.setI(kI);
     pivotPIDController.setD(kD);
     pivotPIDController.setIZone(kIz);
     pivotPIDController.setFF(kFF);
     pivotPIDController.setOutputRange(kMinOutput, kMaxOutput);
+    pivotPIDController.setOutputRange(kMinOutput2, kMaxOutput2, 2);
   }
 
   public void setPivotSetpoint(ArmSetpoint armSetpoint) {
@@ -99,7 +104,7 @@ public class ArmPivot extends SubsystemBase {
   }
 
   public boolean isPivotAtSetpoint() {
-    return getPivotPostion() - pivotSetpoint <= ARM_PIVOT_SLOP; // TODO verify working on 2023 robot
+    return getPivotPostion() - pivotSetpoint <= ARM_PIVOT_SLOP; 
   }
 
   public void pivotDaArm() {

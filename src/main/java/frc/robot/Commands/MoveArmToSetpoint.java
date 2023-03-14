@@ -40,7 +40,6 @@ public class MoveArmToSetpoint extends CommandBase {
   @Override
   public void end(boolean interrupted) {
   }
-  // TODO joystick interrupts
 
   // Returns true when the command should end.
   @Override

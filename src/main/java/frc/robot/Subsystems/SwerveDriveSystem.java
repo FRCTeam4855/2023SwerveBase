@@ -2,9 +2,6 @@ package frc.robot.Subsystems;
 
 
 import edu.wpi.first.wpilibj.DigitalInput;
-
-// import static frc.robot.Constants.*;
-
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
@@ -23,17 +20,23 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
     public Wheel wheelFR = new Wheel(7, 8, DIO13, .147); //defines the front right wheel //0.153
     // Wheel Values: driveControllerID, steerControllerID, absolutePort(encoder), offSet1
 
+    //swervebot offsets:
+    // public Wheel wheelFL = new Wheel(1, 2, DIO10, -0.225); //defines the front left wheel
+    // public Wheel wheelBL = new Wheel(3, 4, DIO11, -0.053); //defines the back left wheel
+    // public Wheel wheelBR = new Wheel(5, 6, DIO12, -0.337); //defines the back right wheel
+    // public Wheel wheelFR = new Wheel(7, 8, DIO13, 0.153); //defines the front right wheel
+
     private void moveWheels(SwerveOutput swerve) {
         wheelFL.set(swerve.wheelAngles[0], swerve.wheelSpeeds[0]); //grabs information from the arrays and feeds it to the wheels 
-        wheelFR.set(swerve.wheelAngles[1], swerve.wheelSpeeds[1]); //grabs information from the arrays and feeds it to the wheels 
-        wheelBR.set(swerve.wheelAngles[2], swerve.wheelSpeeds[2]); //grabs information from the arrays and feeds it to the wheels 
+        wheelFR.set(swerve.wheelAngles[1], swerve.wheelSpeeds[1]);  
+        wheelBR.set(swerve.wheelAngles[2], swerve.wheelSpeeds[2]); 
         wheelBL.set(swerve.wheelAngles[3], swerve.wheelSpeeds[3]);
     }
 
     private void moveWheels(SwerveOutput swerve, Wheel.SpeedSetting speed) {
         wheelFL.set(swerve.wheelAngles[0], swerve.wheelSpeeds[0], speed); //grabs information from the arrays and feeds it to the wheels 
-        wheelFR.set(swerve.wheelAngles[1], swerve.wheelSpeeds[1], speed); //grabs information from the arrays and feeds it to the wheels 
-        wheelBR.set(swerve.wheelAngles[2], swerve.wheelSpeeds[2], speed); //grabs information from the arrays and feeds it to the wheels 
+        wheelFR.set(swerve.wheelAngles[1], swerve.wheelSpeeds[1], speed);  
+        wheelBR.set(swerve.wheelAngles[2], swerve.wheelSpeeds[2], speed); 
         wheelBL.set(swerve.wheelAngles[3], swerve.wheelSpeeds[3], speed);
     }
 
@@ -120,8 +123,8 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
     @Override
     public void stop() {
         wheelFL.set(0,0); //grabs information from the arrays and feeds it to the wheels 
-        wheelFR.set(0,0); //grabs information from the arrays and feeds it to the wheels 
-        wheelBR.set(0,0); //grabs information from the arrays and feeds it to the wheels 
+        wheelFR.set(0,0);  
+        wheelBR.set(0,0); 
         wheelBL.set(0,0);
     }
 
