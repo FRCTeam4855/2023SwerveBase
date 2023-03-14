@@ -51,8 +51,13 @@ public class ArmPivot extends SubsystemBase {
     armPivotOne.getEncoder().setPosition(value);
   }
 
-  public void setPivotPositionVariable(){
-    pivotPIDController.setReference(armPivotOne.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
+  // public void setPivotPositionVariable(){
+  //   pivotPIDController.setReference(armPivotOne.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
+
+  // }
+
+  public void setPivotPositionVariable(double position){
+    pivotPIDController.setReference(position, CANSparkMax.ControlType.kPosition);
 
   }
 

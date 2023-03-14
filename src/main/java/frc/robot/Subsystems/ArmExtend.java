@@ -54,8 +54,13 @@ public class ArmExtend extends SubsystemBase {
     return armExtend.getEncoder().getPosition();
   }
 
-  public void setExtendPositionVariable(){
-    extendPIDController.setReference(armExtend.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
+  // public void setExtendPositionVariable(){
+  //   extendPIDController.setReference(armExtend.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
+
+  // }
+
+  public void setExtendPositionVariable(double position){
+    extendPIDController.setReference(position, CANSparkMax.ControlType.kPosition);
 
   }
 
