@@ -26,12 +26,12 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
     // public Wheel wheelBR = new Wheel(5, 6, DIO12, -0.337); //defines the back right wheel
     // public Wheel wheelFR = new Wheel(7, 8, DIO13, 0.153); //defines the front right wheel
 
-    private void moveWheels(SwerveOutput swerve) {
-        wheelFL.set(swerve.wheelAngles[0], swerve.wheelSpeeds[0]); //grabs information from the arrays and feeds it to the wheels 
-        wheelFR.set(swerve.wheelAngles[1], swerve.wheelSpeeds[1]);  
-        wheelBR.set(swerve.wheelAngles[2], swerve.wheelSpeeds[2]); 
-        wheelBL.set(swerve.wheelAngles[3], swerve.wheelSpeeds[3]);
-    }
+    // private void moveWheels(SwerveOutput swerve) {
+    //     wheelFL.set(swerve.wheelAngles[0], swerve.wheelSpeeds[0]); //grabs information from the arrays and feeds it to the wheels 
+    //     wheelFR.set(swerve.wheelAngles[1], swerve.wheelSpeeds[1]);  
+    //     wheelBR.set(swerve.wheelAngles[2], swerve.wheelSpeeds[2]); 
+    //     wheelBL.set(swerve.wheelAngles[3], swerve.wheelSpeeds[3]);
+    // }
 
     private void moveWheels(SwerveOutput swerve, Wheel.SpeedSetting speed) {
         wheelFL.set(swerve.wheelAngles[0], swerve.wheelSpeeds[0], speed); //grabs information from the arrays and feeds it to the wheels 

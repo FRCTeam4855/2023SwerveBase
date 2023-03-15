@@ -4,7 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmSetpoint;
 import static frc.robot.Constants.*;
@@ -92,8 +92,8 @@ public class ArmExtend extends SubsystemBase {
   public void extendDaArm() {
     // set PID coefficients
     extendPIDController.setReference(extendSetpoint, CANSparkMax.ControlType.kPosition);
-    SmartDashboard.putNumber("ExtendSetPoint", extendSetpoint);
-    SmartDashboard.putNumber("ExtendVariable", getExtensionPostion());
+    // SmartDashboard.putNumber("ExtendSetPoint", extendSetpoint);
+    // SmartDashboard.putNumber("ExtendVariable", getExtensionPostion());
 
   }
 

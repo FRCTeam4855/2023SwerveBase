@@ -7,8 +7,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+// import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmSetpoint;
 import static frc.robot.Constants.*;
@@ -74,10 +73,10 @@ public class ArmPivot extends SubsystemBase {
     double kD = 0; //1.2;
     double kIz = 0;
     double kFF = 0;
-    double kMaxOutput = .08; // slot 0 pivot speed max
-    double kMaxOutput2 = .6; // slot 2 pivot speed max
-    double kMinOutput = -.08; 
-    double kMinOutput2 = -.6;
+    double kMaxOutput = .14; // slot 0 pivot speed max
+    double kMaxOutput2 = .4; // slot 2 pivot speed max
+    double kMinOutput = -.14; 
+    double kMinOutput2 = -.4;
     pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
     pivotPIDController.setP(kP);
     pivotPIDController.setP(kP2, 2);
@@ -110,8 +109,8 @@ public class ArmPivot extends SubsystemBase {
   public void pivotDaArm() {
     // set PID coefficients
     pivotPIDController.setReference(pivotSetpoint, CANSparkMax.ControlType.kPosition);
-    SmartDashboard.putNumber("PivotSetPoint", pivotSetpoint);
-    SmartDashboard.putNumber("PivotVariable", getPivotPostion());
+    // SmartDashboard.putNumber("PivotSetPoint", pivotSetpoint);
+    // SmartDashboard.putNumber("PivotVariable", getPivotPostion());
 
   }
 }

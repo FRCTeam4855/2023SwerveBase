@@ -25,7 +25,7 @@ public class Constants {
     public static final double ARM_EXTEND_CENTER_2 = 180; //TODO find these values on 2023 bot
     public static final double ARM_EXTEND_CENTER_3 = 132;
     public static final double ARM_EXTEND_CENTER_4 = 333;
-    public static final double ARM_EXTEND_CENTER_5 = 50;
+    public static final double ARM_EXTEND_CENTER_5 = 10;
     public static final double ARM_EXTEND_SLOP = 3;    //acceptable range for arm extension setpoints
 
     //center point for arm extension setpoints
@@ -33,7 +33,7 @@ public class Constants {
     public static final double ARM_PIVOT_CENTER_2 = 8; //TODO find these values on 2023 bot
     public static final double ARM_PIVOT_CENTER_3 = 18;
     public static final double ARM_PIVOT_CENTER_4 = 21;
-    public static final double ARM_PIVOT_CENTER_5 = 0;
+    public static final double ARM_PIVOT_CENTER_5 = 18;
     public static final double ARM_PIVOT_SLOP = 3;    //acceptable range for arm extension setpoints
 
     public enum ArmSetpoint {
@@ -72,7 +72,7 @@ public class Constants {
     public static final int ORIENTATION_TOGGLE_X = 3; //X
     public static final int DRV_SPD_TURBO_RB = 6;
     public static final int DRV_SPD_PRECISE_LB = 5;   
-    public static final int TEST_PID_ROTATE_A = 1;
+    // public static final int TEST_PID_ROTATE_A = 1;
 
     public static final int SCHEDULE_INITIAL_COMMAND_LB = 5;
     
