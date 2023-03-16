@@ -12,11 +12,13 @@ import frc.robot.Constants.ArmSetpoint;
 import frc.robot.Subsystems.ArmExtend;
 import frc.robot.Subsystems.ArmPivot;
 
+
 public class MoveArmToSetpoint extends CommandBase {
   private final ArmExtend armExtend;
   private final ArmPivot armPivot;
   private final Constants.ArmSetpoint setpointToUse;
   private final Constants.ArmSetpoint currentSetpoint;
+  
   // WaitCommand pivotDelay = new WaitCommand(3);
 
   public MoveArmToSetpoint(ArmExtend extendToUse, ArmPivot pivotToUse, ArmSetpoint newArmSetpoint, ArmSetpoint oldArmSetpoint) {

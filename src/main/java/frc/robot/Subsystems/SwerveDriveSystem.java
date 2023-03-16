@@ -89,35 +89,35 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
 
     @Override
     public void moveForward() { 
-        SwerveOutput swerve = Swerve.convertControllerToSwerve(0, -1, 0, 0);
-        this.moveWheels(swerve, Wheel.SpeedSetting.PRECISE);
+        SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 1, 0, 0);
+        this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL);
     }
 
     
     @Override
     public void moveBackward() {
-        SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 1, 0, 0);
-        this.moveWheels(swerve, Wheel.SpeedSetting.PRECISE);
+        SwerveOutput swerve = Swerve.convertControllerToSwerve(0, -1, 0, 0);
+        this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL);
     }
     @Override
     public void moveLeft() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(1, 0, 0, 0);
-        this.moveWheels(swerve, Wheel.SpeedSetting.PRECISE);
+        this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL);
     }
     @Override
     public void moveRight() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(-1, 0, 0, 0);
-        this.moveWheels(swerve, Wheel.SpeedSetting.PRECISE);
+        this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL);
     }
     @Override
     public void spinClockwise() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, -1, 0);
-        this.moveWheels(swerve, Wheel.SpeedSetting.PRECISE); 
+        this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL); 
     }
     @Override
     public void spinCounterclockwise() {
         SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, 1, 0);
-        this.moveWheels(swerve, Wheel.SpeedSetting.PRECISE);
+        this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL);
     }
 
     @Override

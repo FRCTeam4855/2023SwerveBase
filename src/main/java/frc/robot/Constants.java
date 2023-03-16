@@ -23,21 +23,23 @@ public class Constants {
     //center point for arm extension setpoints
     public static final double ARM_EXTEND_CENTER_1 = 10; //done
     public static final double ARM_EXTEND_CENTER_2 = 180; //TODO find these values on 2023 bot
-    public static final double ARM_EXTEND_CENTER_3 = 132;
+    public static final double ARM_EXTEND_CENTER_3 = 100;
     public static final double ARM_EXTEND_CENTER_4 = 333;
     public static final double ARM_EXTEND_CENTER_5 = 10;
+    public static final double ARM_EXTEND_CENTER_6 = 10; //super high for auton
     public static final double ARM_EXTEND_SLOP = 3;    //acceptable range for arm extension setpoints
 
     //center point for arm extension setpoints
     public static final double ARM_PIVOT_CENTER_1 = 0; //done
     public static final double ARM_PIVOT_CENTER_2 = 8; //TODO find these values on 2023 bot
-    public static final double ARM_PIVOT_CENTER_3 = 18;
+    public static final double ARM_PIVOT_CENTER_3 = 18.3;
     public static final double ARM_PIVOT_CENTER_4 = 21;
-    public static final double ARM_PIVOT_CENTER_5 = 18;
+    public static final double ARM_PIVOT_CENTER_5 = 17;
+    public static final double ARM_PIVOT_CENTER_6 = 30; //super high but for auton
     public static final double ARM_PIVOT_SLOP = 3;    //acceptable range for arm extension setpoints
 
     public enum ArmSetpoint {
-        One, Two, Three, Four, Five
+        One, Two, Three, Four, Five, Six
     }
 
     //One = Interior bot, holding + traveling position
@@ -72,9 +74,8 @@ public class Constants {
     public static final int ORIENTATION_TOGGLE_X = 3; //X
     public static final int DRV_SPD_TURBO_RB = 6;
     public static final int DRV_SPD_PRECISE_LB = 5;   
-    // public static final int TEST_PID_ROTATE_A = 1;
-
     public static final int SCHEDULE_INITIAL_COMMAND_LB = 5;
+    public static final int DRIVER_BALANCE_BCK = 7;
     
     
     
