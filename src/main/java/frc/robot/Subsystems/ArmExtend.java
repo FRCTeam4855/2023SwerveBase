@@ -83,6 +83,8 @@ public class ArmExtend extends SubsystemBase {
       extendSetpoint = ARM_EXTEND_CENTER_4;
     if (armSetpoint == ArmSetpoint.Five)
       extendSetpoint = ARM_EXTEND_CENTER_5;
+      if (armSetpoint == ArmSetpoint.Six)
+      extendSetpoint = ARM_EXTEND_CENTER_6;
   }
 
   public boolean isPivotAtSetpoint() {

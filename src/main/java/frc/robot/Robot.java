@@ -175,6 +175,11 @@ public class Robot extends TimedRobot {
     gyro.reset();
     m_autoSelected = m_chooser.getSelected(); // pulls auton option selected from shuffleboard
     SmartDashboard.putString("Current Auton:", m_autoSelected); // displays which auton is currently running
+        armExtend.setExtendSetpoint(ArmSetpoint.One);
+    armPivot.setPivotSetpoint(ArmSetpoint.One);
+    armExtend.extendDaArm();
+    armPivot.pivotDaArm();
+    
     switch (m_autoSelected) {
 
       case kAuton1:
@@ -213,27 +218,52 @@ public class Robot extends TimedRobot {
         break;
 
       case kAuton3:
-        CommandScheduler.getInstance().schedule(
-            new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                .andThen(new ClosePaws(intakePaws))
-                // dropping cone
-                .andThen(new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Four, currentSetpoint))
-                .andThen(new OpenPaws(intakePaws))
-                // moving out of community
-                .andThen(new SwerveDriveMoveForward(driveSystem, ATON_DIST_ONE))
-                // moving onto platform
-                .andThen(new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
-                // // or, depending on where we are...
-                // .andThen( new SwerveDriveMoveLeft(driveSystem, 20))
-                // .andThen( new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
-                // // or we could have
-                // .andThen( new SwerveDriveMoveRight(driveSystem, 20))
-                // .andThen( new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
-                // // end them all with balancing
-                .andThen(new Balancing(driveSystem, gyro))
-                .andThen(new SwerveDriveStop(driveSystem)));
+
+      CommandScheduler.getInstance().schedule(
+        new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
+            // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+            // .andThen(new WaitCommand(.2))
+            .andThen(new ClosePaws(intakePaws))
+            .andThen(new WaitCommand(.2))
+            // dropping cone
+            .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Six, currentSetpoint))
+            .andThen(new WaitCommand(.6))
+            .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
+            .andThen(new WaitCommand(2.5))
+            .andThen(new OpenPaws(intakePaws))
+            .andThen(new WaitCommand(.2))
+            .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+            // moving out of community
+            .andThen(new SwerveDriveMoveBackward(driveSystem, 13))
+            .andThen(new SwerveDriveMoveRight(driveSystem, 7))
+            .andThen(new SwerveDriveMoveForward(driveSystem, 13))
+            .andThen(new SwerveDriveStop(driveSystem)));
+
+
+
+
+      // save this, auton 3:
+        // CommandScheduler.getInstance().schedule(
+        //     new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
+        //         .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+        //         .andThen(new ClosePaws(intakePaws))
+        //         // dropping cone
+        //         .andThen(new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
+        //         .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Four, currentSetpoint))
+        //         .andThen(new OpenPaws(intakePaws))
+        //         // moving out of community
+        //         .andThen(new SwerveDriveMoveForward(driveSystem, ATON_DIST_ONE))
+        //         // moving onto platform
+        //         .andThen(new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
+        //         // // or, depending on where we are...
+        //         // .andThen( new SwerveDriveMoveLeft(driveSystem, 20))
+        //         // .andThen( new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
+        //         // // or we could have
+        //         // .andThen( new SwerveDriveMoveRight(driveSystem, 20))
+        //         // .andThen( new SwerveDriveMoveBackward(driveSystem, ATON_DIST_TWO))
+        //         // // end them all with balancing
+        //         .andThen(new Balancing(driveSystem, gyro))
+        //         .andThen(new SwerveDriveStop(driveSystem)));
         break;
 
       case kAuton4:

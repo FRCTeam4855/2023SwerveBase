@@ -26,7 +26,7 @@ public class Constants {
     public static final double ARM_EXTEND_CENTER_3 = 100;
     public static final double ARM_EXTEND_CENTER_4 = 333;
     public static final double ARM_EXTEND_CENTER_5 = 10;
-    public static final double ARM_EXTEND_CENTER_6 = 10; //super high for auton
+    public static final double ARM_EXTEND_CENTER_6 = 5; //super high for auton
     public static final double ARM_EXTEND_SLOP = 3;    //acceptable range for arm extension setpoints
 
     //center point for arm extension setpoints
@@ -35,7 +35,7 @@ public class Constants {
     public static final double ARM_PIVOT_CENTER_3 = 18.3;
     public static final double ARM_PIVOT_CENTER_4 = 21;
     public static final double ARM_PIVOT_CENTER_5 = 17;
-    public static final double ARM_PIVOT_CENTER_6 = 30; //super high but for auton
+    public static final double ARM_PIVOT_CENTER_6 = 24; //super high but for auton
     public static final double ARM_PIVOT_SLOP = 3;    //acceptable range for arm extension setpoints
 
     public enum ArmSetpoint {
