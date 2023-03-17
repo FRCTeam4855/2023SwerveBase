@@ -100,8 +100,8 @@ public class Robot extends TimedRobot {
     armPivot.initPivot();
     intakePaws.setRightPawOpen();
     intakePaws.setLeftPawOpen();
-    m_chooser.setDefaultOption("1. pick up cone inside robot and drive out of comm", kAuton1);
-    m_chooser.addOption("2. Drop cone on mid and drive out of comm", kAuton2);
+    m_chooser.addOption("1. pick up cone inside robot and drive out of comm", kAuton1);
+    m_chooser.setDefaultOption("2. Drop cone on mid and drive out of comm", kAuton2);
     m_chooser.addOption("3. Drop cone on mid, drive out of comm, and drive onto power station", kAuton3);
     m_chooser.addOption("4. WIP DO NOT USE", kAuton4);
     m_chooser.addOption("5. ZZZ KEEP UNUSED", kAuton5);
@@ -464,14 +464,14 @@ public class Robot extends TimedRobot {
       currentSetpoint = ArmSetpoint.Five;
     }
 
-    // reset encoders while on cone (teleop testing)
-    if (xboxOperator.getRawButton(5)) {
-      armPivot.resetPivotEncoderZero();
-      // armExtend.resetExtendEncoderZero();
-      armExtend.resetExtendEncoderVariable(50);
-      // armExtend.extendDaArm();
-      // armPivot.pivotDaArm();
-    }
+    // reset encoders while on cone (teleop testing) //TODO TAKE OUT FOR GAME
+    // if (xboxOperator.getRawButton(5)) {
+    //   armPivot.resetPivotEncoderZero();
+    //   // armExtend.resetExtendEncoderZero();
+    //   armExtend.resetExtendEncoderVariable(50);
+    //   // armExtend.extendDaArm();
+    //   // armPivot.pivotDaArm();
+    // }
 
     // if (xboxOperator.getRawButton(8)) {
     // armExtend.extendDaArm();

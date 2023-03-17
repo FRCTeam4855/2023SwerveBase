@@ -4,7 +4,7 @@ public class Constants {
     //Constants ++++++++++++
     public static final double JOYSTK_DZONE = .17;                  // global deadzone for all controllers
     public static final double DRIVE_DEFAULT_SPD = 0.50;               // multiplier
-    public static final double DRIVE_SLOW_SPD = 0.3;               // multiplier
+    public static final double DRIVE_SLOW_SPD = 0.15;               // multiplier
     public static final double DRIVE_TURBO_SPD = 0.60;               // multiplier
     //TODO arrange with drive team what these values are on 2023 bot
 
