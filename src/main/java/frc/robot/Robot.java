@@ -8,17 +8,13 @@
 package frc.robot;
 
 import static frc.robot.Constants.*;
-
-import com.fasterxml.jackson.annotation.Nulls;
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Subsystems.ArmExtend;
@@ -53,6 +49,7 @@ public class Robot extends TimedRobot {
   private static final String kAuton2 = "2. Back, Drop, Forward";
   private static final String kAuton3 = "3. B, D, F, B, Balance";
   private static final String kAuton4 = "Unused";
+  private static final String kAuton5 = "ZZZ KKEP UNUSED";
 
   private String m_autoSelected; // This selects between the two autonomous
   public SendableChooser<String> m_chooser = new SendableChooser<>(); // creates the ability to switch between autons on
@@ -104,9 +101,12 @@ public class Robot extends TimedRobot {
     intakePaws.setRightPawOpen();
     intakePaws.setLeftPawOpen();
     m_chooser.setDefaultOption("1. pick up cone inside robot and drive out of comm", kAuton1);
-    m_chooser.addOption("2. Drop cone on high and drive out of comm", kAuton2);
-    m_chooser.addOption("3. Drop cone on high, drive out of comm, and drive onto power station", kAuton3);
+    m_chooser.addOption("2. Drop cone on mid and drive out of comm", kAuton2);
+    m_chooser.addOption("3. Drop cone on mid, drive out of comm, and drive onto power station", kAuton3);
     m_chooser.addOption("4. WIP DO NOT USE", kAuton4);
+    m_chooser.addOption("5. ZZZ KEEP UNUSED", kAuton5);
+    
+
     SmartDashboard.putData(m_chooser); // displays the auton options in shuffleboard, put in init block
     armPivot.resetPivotEncoderZero();
     armExtend.resetExtendEncoderVariable(50);
@@ -175,7 +175,7 @@ public class Robot extends TimedRobot {
     gyro.reset();
     m_autoSelected = m_chooser.getSelected(); // pulls auton option selected from shuffleboard
     SmartDashboard.putString("Current Auton:", m_autoSelected); // displays which auton is currently running
-        armExtend.setExtendSetpoint(ArmSetpoint.One);
+    armExtend.setExtendSetpoint(ArmSetpoint.One);
     armPivot.setPivotSetpoint(ArmSetpoint.One);
     armExtend.extendDaArm();
     armPivot.pivotDaArm();
@@ -211,8 +211,8 @@ public class Robot extends TimedRobot {
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
                 // moving out of community
                 .andThen(new SwerveDriveMoveBackward(driveSystem, 13))
-                .andThen(new SwerveDriveMoveRight(driveSystem, 7))
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
+                // .andThen(new SwerveDriveMoveRight(driveSystem, 7))
+                // .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
                 .andThen(new SwerveDriveStop(driveSystem)));
 
         break;
@@ -286,6 +286,10 @@ public class Robot extends TimedRobot {
                 .andThen(new SwerveDriveMoveRight(driveSystem, 1))
                 .andThen(new SwerveDriveStop(driveSystem)));
         break;
+
+        case kAuton5:
+        CommandScheduler.getInstance().schedule((new WaitCommand(.5)));
+        break;
     }
   }
 
@@ -299,11 +303,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    armExtend.setExtendSetpoint(null);// TODO TAKE OUT FOR GAME
-    armPivot.setPivotSetpoint(null);
+    // armExtend.setExtendSetpoint(null);// TODO TAKE OUT FOR GAME
+    // armPivot.setPivotSetpoint(null);// TODO TAKE OUT FOR GAME
     driveSystem.resetRelativeEncoders();
-    gyro.reset();
-    gyro.zeroYaw();
+    // gyro.reset();// TODO TAKE OUT FOR GAME
+    // gyro.zeroYaw();// TODO TAKE OUT FOR GAME
     prettyLights1.setLEDs(PrettyLights.C1_AND_C2_SINELON);
     armExtend.setExtendSetpoint(ArmSetpoint.One);
     armPivot.setPivotSetpoint(ArmSetpoint.One);
