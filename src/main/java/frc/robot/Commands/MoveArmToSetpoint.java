@@ -40,9 +40,9 @@ public class MoveArmToSetpoint extends CommandBase {
   public void execute() {
 
   if (setpointToUse == ArmSetpoint.One){
-    if (currentSetpoint == ArmSetpoint.Five)
-        armPivot.setPivotPositionVariable(21);
-        Timer.delay(.5);
+    // if (currentSetpoint == ArmSetpoint.Five)
+    //     armPivot.setPivotPositionVariable(21);
+    //     Timer.delay(.5);
     armExtend.setExtendSetpoint(setpointToUse);    
     armExtend.extendDaArm();
     Timer.delay(.5);

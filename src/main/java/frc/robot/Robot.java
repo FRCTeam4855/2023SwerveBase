@@ -29,6 +29,7 @@ import frc.robot.Commands.Balancing;
 import frc.robot.Commands.LightsOnCommand;
 import frc.robot.Commands.MoveArmToSetpoint;
 import frc.robot.Commands.OpenPaws;
+import frc.robot.Commands.StrafeByAlliance;
 import frc.robot.Commands.ClosePaws;
 import frc.robot.Commands.SwerveDriveMoveBackward;
 import frc.robot.Commands.SwerveDriveMoveForward;
@@ -187,7 +188,7 @@ public class Robot extends TimedRobot {
             new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
                 .andThen(new ClosePaws(intakePaws))
-                .andThen(new SwerveDriveMoveForward(driveSystem, 20))
+                .andThen(new SwerveDriveMoveBackward(driveSystem, 20))
                 .andThen(new SwerveDriveStop(driveSystem)));
       default:
         break;
@@ -210,7 +211,8 @@ public class Robot extends TimedRobot {
                 .andThen(new WaitCommand(1))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
                 // moving out of community
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 13))
+                .andThen (new StrafeByAlliance(driveSystem, .75))
+                .andThen(new SwerveDriveMoveBackward(driveSystem, 10))
                 // .andThen(new SwerveDriveMoveRight(driveSystem, 7))
                 // .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
                 .andThen(new SwerveDriveStop(driveSystem)));
