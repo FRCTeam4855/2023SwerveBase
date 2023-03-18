@@ -12,16 +12,16 @@ import frc.robot.Constants.ArmSetpoint;
 import frc.robot.Subsystems.ArmExtend;
 import frc.robot.Subsystems.ArmPivot;
 
-
 public class MoveArmToSetpoint extends CommandBase {
   private final ArmExtend armExtend;
   private final ArmPivot armPivot;
   private final Constants.ArmSetpoint setpointToUse;
   private final Constants.ArmSetpoint currentSetpoint;
-  
+  private double startTime;
   // WaitCommand pivotDelay = new WaitCommand(3);
 
-  public MoveArmToSetpoint(ArmExtend extendToUse, ArmPivot pivotToUse, ArmSetpoint newArmSetpoint, ArmSetpoint oldArmSetpoint) {
+  public MoveArmToSetpoint(ArmExtend extendToUse, ArmPivot pivotToUse, ArmSetpoint newArmSetpoint,
+      ArmSetpoint oldArmSetpoint) {
     armExtend = extendToUse;
     armPivot = pivotToUse;
     currentSetpoint = oldArmSetpoint;
@@ -32,35 +32,49 @@ public class MoveArmToSetpoint extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
+    // OLD DELAY, DO NOT USE
+    // if (setpointToUse == ArmSetpoint.One){
+    // // if (currentSetpoint == ArmSetpoint.Five)
+    // // armPivot.setPivotPositionVariable(21);
+    // // Timer.delay(.5);
+    // armExtend.setExtendSetpoint(setpointToUse);
+    // armExtend.extendDaArm();
+    // Timer.delay(.5);
+    // armPivot.setPivotSetpoint(setpointToUse);
+    // armPivot.pivotDaArm();
+    // }
+    // if (setpointToUse != ArmSetpoint.One){
+    // armPivot.setPivotSetpoint(setpointToUse);
+    // armPivot.pivotDaArm();
+    // Timer.delay(.5);
+    // armExtend.setExtendSetpoint(setpointToUse);
+    // armExtend.extendDaArm();
+    // }
 
-  if (setpointToUse == ArmSetpoint.One){
-    // if (currentSetpoint == ArmSetpoint.Five)
-    //     armPivot.setPivotPositionVariable(21);
-    //     Timer.delay(.5);
-    armExtend.setExtendSetpoint(setpointToUse);    
-    armExtend.extendDaArm();
-    Timer.delay(.5);
-    armPivot.setPivotSetpoint(setpointToUse);
-    armPivot.pivotDaArm();
-  }
+    //New timer version
+    if (setpointToUse == ArmSetpoint.One) {
+      armExtend.setExtendSetpoint(setpointToUse);
+      armExtend.extendDaArm();
+      if (Timer.getFPGATimestamp() - startTime > .5) {
+        armPivot.setPivotSetpoint(setpointToUse);
+        armPivot.pivotDaArm();
+      }
+    }
 
-
-
-  if (setpointToUse != ArmSetpoint.One){
-    armPivot.setPivotSetpoint(setpointToUse);
-    armPivot.pivotDaArm();
-    Timer.delay(.5);
-    armExtend.setExtendSetpoint(setpointToUse);    
-    armExtend.extendDaArm();
-  }
-
-
+    if (setpointToUse != ArmSetpoint.One) {
+      armPivot.setPivotSetpoint(setpointToUse);
+      armPivot.pivotDaArm();
+      if (Timer.getFPGATimestamp() - startTime > .5) {
+        armExtend.setExtendSetpoint(setpointToUse);
+        armExtend.extendDaArm();
+      }
+    }
   }
 
   // Called once the command ends or is interrupted.
@@ -71,6 +85,10 @@ public class MoveArmToSetpoint extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    if (Timer.getFPGATimestamp() - startTime > .5) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

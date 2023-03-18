@@ -14,7 +14,7 @@ public class Limelight extends SubsystemBase {
   ///********************************************************
 
   public boolean isLimelightLampOn(){
-    if (NetworkTableInstance.getDefault().getTable("limelight-rams").getEntry("ledMode").getDouble(0) == 1){ //also the full way to pull a networktable entry as a double
+    if (NetworkTableInstance.getDefault().getTable("limelight-rams").getEntry("ledMode").getDouble(0) == 1){ //inline way to pull a networktable entry as a double
       return true;
     } else { 
       return false;
