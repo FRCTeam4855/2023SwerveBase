@@ -4,74 +4,59 @@
 
 package frc.robot.Commands;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.Constants;
 import frc.robot.Constants.ArmSetpoint;
 import frc.robot.Subsystems.ArmExtend;
 import frc.robot.Subsystems.ArmPivot;
 
 public class MoveArmToSetpoint extends CommandBase {
-  private final ArmExtend armExtend;
-  private final ArmPivot armPivot;
-  private final Constants.ArmSetpoint setpointToUse;
-  private final Constants.ArmSetpoint currentSetpoint;
-  private double startTime;
-  // WaitCommand pivotDelay = new WaitCommand(3);
 
-  public MoveArmToSetpoint(ArmExtend extendToUse, ArmPivot pivotToUse, ArmSetpoint newArmSetpoint,
-      ArmSetpoint oldArmSetpoint) {
-    armExtend = extendToUse;
-    armPivot = pivotToUse;
-    currentSetpoint = oldArmSetpoint;
-    setpointToUse = newArmSetpoint;
-    addRequirements(pivotToUse, extendToUse);
+  private ArmExtend armExtend;
+  private ArmPivot armPivot;
+  private double startExtendEncoderSetpoint; 
+  private double goalExtendEncoderSetpoint; 
+  private double startPivotEncoderSetpoint; 
+  private double goalPivotEncoderSetpoint;
+  private ArmSetpoint startArmSetpoint;
+  private ArmSetpoint goalArmSetpoint; 
+
+  public MoveArmToSetpoint(ArmExtend armExtend, ArmPivot armPivot, ArmSetpoint goalArmSetpoint, ArmSetpoint startArmSetpoint) {
+    this.armExtend = armExtend;
+    this.armPivot = armPivot;
+    this.startArmSetpoint = startArmSetpoint;
+    this.goalArmSetpoint = goalArmSetpoint;
+    addRequirements(armExtend, armPivot);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startTime = Timer.getFPGATimestamp();
+    startExtendEncoderSetpoint = armExtend.getExtensionPostion();
+    // goalExtendEncoderSetpoint = armExtend.getExtendSetpointPosition();
+    startPivotEncoderSetpoint = armPivot.getPivotPostion();
+    // goalPivotEncoderSetpoint = armPivot.getPivotSetpointPosition();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    // OLD DELAY, DO NOT USE
-    // if (setpointToUse == ArmSetpoint.One){
-    // // if (currentSetpoint == ArmSetpoint.Five)
-    // // armPivot.setPivotPositionVariable(21);
-    // // Timer.delay(.5);
-    // armExtend.setExtendSetpoint(setpointToUse);
-    // armExtend.extendDaArm();
-    // Timer.delay(.5);
-    // armPivot.setPivotSetpoint(setpointToUse);
-    // armPivot.pivotDaArm();
-    // }
-    // if (setpointToUse != ArmSetpoint.One){
-    // armPivot.setPivotSetpoint(setpointToUse);
-    // armPivot.pivotDaArm();
-    // Timer.delay(.5);
-    // armExtend.setExtendSetpoint(setpointToUse);
-    // armExtend.extendDaArm();
-    // }
 
     //New timer version
-    if (setpointToUse == ArmSetpoint.One) {
-      armExtend.setExtendSetpoint(setpointToUse);
+    if (goalArmSetpoint == ArmSetpoint.One) {
+      armExtend.setExtendSetpoint(goalArmSetpoint);
       armExtend.extendDaArm();
-      if (Timer.getFPGATimestamp() - startTime > .5) {
-        armPivot.setPivotSetpoint(setpointToUse);
+      goalExtendEncoderSetpoint = armExtend.getExtendSetpointPosition();
+      if (Math.abs(startExtendEncoderSetpoint - armExtend.getExtensionPostion()) > Math.abs(startExtendEncoderSetpoint - goalExtendEncoderSetpoint)/2)  {
+        armPivot.setPivotSetpoint(goalArmSetpoint);
         armPivot.pivotDaArm();
       }
     }
 
-    if (setpointToUse != ArmSetpoint.One) {
-      armPivot.setPivotSetpoint(setpointToUse);
+    if (goalArmSetpoint != ArmSetpoint.One) {
+      armPivot.setPivotSetpoint(goalArmSetpoint);
       armPivot.pivotDaArm();
-      if (Timer.getFPGATimestamp() - startTime > .5) {
-        armExtend.setExtendSetpoint(setpointToUse);
+      if (Math.abs(startPivotEncoderSetpoint - armPivot.getPivotPostion()) > Math.abs(startPivotEncoderSetpoint - goalPivotEncoderSetpoint)/2)  {
+        armExtend.setExtendSetpoint(goalArmSetpoint);
         armExtend.extendDaArm();
       }
     }
@@ -85,10 +70,9 @@ public class MoveArmToSetpoint extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Timer.getFPGATimestamp() - startTime > .5) {
+    if (armPivot.isPivotAtSetpoint() == true && armExtend.isExtendAtSetpoint() == true){
       return true;
-    } else {
-      return false;
     }
+      return false;
   }
 }

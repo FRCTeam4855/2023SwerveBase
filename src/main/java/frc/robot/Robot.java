@@ -196,14 +196,14 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(
             new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
+                // .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
                 .andThen(new ClosePaws(intakePaws))
-                .andThen(new WaitCommand(.5))
+                // .andThen(new WaitCommand(.5))
                 // dropping cone
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Five, currentSetpoint))
-                .andThen(new WaitCommand(1))
+                // .andThen(new WaitCommand(1))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                .andThen(new WaitCommand(.5))
+                // .andThen(new WaitCommand(.5))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
                 .andThen(new WaitCommand(4))
                 .andThen(new OpenPaws(intakePaws))

@@ -50,13 +50,15 @@ public class ArmPivot extends SubsystemBase {
     armPivotOne.getEncoder().setPosition(value);
   }
 
-  //Old manual control, but it resets the zero point so DO NOT USE
+  // Old manual control, but it resets the zero point so DO NOT USE
   // public void setPivotPositionVariable(){
-  //   pivotPIDController.setReference(armPivotOne.getEncoder().getPosition(), CANSparkMax.ControlType.kPosition);
+  // pivotPIDController.setReference(armPivotOne.getEncoder().getPosition(),
+  // CANSparkMax.ControlType.kPosition);
   // }
 
-  //set reference encoder position manually BUT uses PID slot 2 on sparkmax (static setpoints use slot 0)
-  public void setPivotPositionVariable(double position){
+  // set reference encoder position manually BUT uses PID slot 2 on sparkmax
+  // (static setpoints use slot 0)
+  public void setPivotPositionVariable(double position) {
     pivotPIDController.setReference(position, CANSparkMax.ControlType.kPosition, 2);
   }
 
@@ -67,15 +69,15 @@ public class ArmPivot extends SubsystemBase {
     armPivotOne.setIdleMode(IdleMode.kBrake);
     armPivotTwo.setIdleMode(IdleMode.kBrake);
     armPivotTwo.follow(armPivotOne);
-    double kP = 0.1;  //slot 0 static setpoints
-    double kP2 = 0.2; //slot 2 manual adjustment
-    double kI = 0; //.0004;
-    double kD = 0; //1.2;
+    double kP = 0.1; // slot 0 static setpoints
+    double kP2 = 0.2; // slot 2 manual adjustment
+    double kI = 0; // .0004;
+    double kD = 0; // 1.2;
     double kIz = 0;
     double kFF = 0;
     double kMaxOutput = .14; // slot 0 pivot speed max
     double kMaxOutput2 = .4; // slot 2 pivot speed max
-    double kMinOutput = -.14; 
+    double kMinOutput = -.14;
     double kMinOutput2 = -.4;
     pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
     pivotPIDController.setP(kP);
@@ -99,13 +101,16 @@ public class ArmPivot extends SubsystemBase {
       pivotSetpoint = ARM_PIVOT_CENTER_4;
     if (armSetpoint == ArmSetpoint.Five)
       pivotSetpoint = ARM_PIVOT_CENTER_5;
-      if (armSetpoint == ArmSetpoint.Six)
+    if (armSetpoint == ArmSetpoint.Six)
       pivotSetpoint = ARM_PIVOT_CENTER_6;
+  }
 
+  public double getPivotSetpointPosition() {
+    return pivotSetpoint;
   }
 
   public boolean isPivotAtSetpoint() {
-    return getPivotPostion() - pivotSetpoint <= ARM_PIVOT_SLOP; 
+    return getPivotPostion() - pivotSetpoint <= ARM_PIVOT_SLOP;
   }
 
   public void pivotDaArm() {

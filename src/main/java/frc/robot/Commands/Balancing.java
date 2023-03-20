@@ -29,9 +29,7 @@ public class Balancing extends CommandBase {
             driveSystem.moveManual(0, (gyro.getPitch() / -30 + (gyro.getPitch()/Math.abs(gyro.getPitch()) *-.1)), 0, 0, Wheel.SpeedSetting.PRECISE);
         }
         SmartDashboard.putBoolean("Balancing", isBalancing);
-        // if (gyro.getPitch() < -2) {
-        //     driveSystem.moveManual(0, (gyro.getPitch() / -30 - .1), 0, 0, Wheel.SpeedSetting.PRECISE);
-        // }
+
     }
 
     @Override
@@ -50,12 +48,5 @@ public class Balancing extends CommandBase {
         isBalancing = true;
         return false;
         }
-    // if (xboxDriver.getRawButton(TEST_PID_ROTATE_A) && Math.abs(gyro.getPitch()) >
-    // 2){
-    // isBalancing = true;
-    // driveSystem.moveManual(0, (gyro.getPitch()/-40), 0 , theta_radians,
-    // driveSpeed);
-    // } else {
-    // isBalancing = false;
-    // }
+
 }

@@ -16,35 +16,30 @@ public class BasicMovements extends SubsystemBase implements GenericDriveSystem 
 
     @Override
     public void moveBackward() {
-
     }
 
     @Override
     public void moveLeft() {
-
     }
 
     @Override
     public void moveRight() {
-
     }
 
     @Override
     public void spinClockwise() {
-
     }
 
     @Override
     public void spinCounterclockwise() {
-
     }
 
     @Override
     public void stop() {
     }
-        @Override
-        public void stay() {
 
+    @Override
+    public void stay() {
     }
 
 }

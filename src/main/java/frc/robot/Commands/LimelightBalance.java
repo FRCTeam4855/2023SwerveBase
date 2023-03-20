@@ -8,10 +8,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Subsystems.Limelight;
 import frc.robot.Subsystems.SwerveDriveSystem;
 
-
 public class LimelightBalance extends CommandBase {
 
-    SwerveDriveSystem swerveDriveSystem = new SwerveDriveSystem();
+  SwerveDriveSystem swerveDriveSystem = new SwerveDriveSystem();
+  public double aprilTagDistance;
 
   public LimelightBalance() {
     NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
@@ -31,7 +31,7 @@ public class LimelightBalance extends CommandBase {
     double angleToGoalRadians = angleToGoalDegrees * (3.14159 / 180.0);
 
     // calculate distance
-    double distanceFromLimelightToGoalInches = (goalHeightInches - limelightLensHeightInches)
+    aprilTagDistance = (goalHeightInches - limelightLensHeightInches)
         / Math.tan(angleToGoalRadians);
   }
 
@@ -43,7 +43,10 @@ public class LimelightBalance extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    swerveDriveSystem.moveForward();
+    if (aprilTagDistance < 10) {
+      swerveDriveSystem.moveForward();
+
+    }
 
   }
 
