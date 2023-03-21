@@ -11,10 +11,9 @@ public class LightsFlashCommand extends CommandBase {
     private double oldColor;
     private double startTime;
 
-    public LightsFlashCommand(PrettyLights prettyLights, double newColor, double oldColor) {
+    public LightsFlashCommand(PrettyLights prettyLights, double newColor) {
         this.prettyLights = prettyLights;
         this.newColor = newColor;
-        this.oldColor = oldColor;
         addRequirements(prettyLights);
     }
 

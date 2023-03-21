@@ -31,6 +31,7 @@ import frc.robot.Commands.MoveArmToSetpoint;
 import frc.robot.Commands.OpenPaws;
 import frc.robot.Commands.StrafeByAlliance;
 import frc.robot.Commands.ClosePaws;
+import frc.robot.Commands.LightsFlashCommand;
 import frc.robot.Commands.SwerveDriveMoveBackward;
 import frc.robot.Commands.SwerveDriveMoveForward;
 import frc.robot.Commands.SwerveDriveMoveLeft;
@@ -421,10 +422,12 @@ public class Robot extends TimedRobot {
       if (intakePaws.isRightPawOpen() && intakePaws.isLeftPawOpen()) {
         intakePaws.setRightPawClose();
         intakePaws.setLeftPawClose();
+        CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.RED));
       } else {
         if (intakePaws.isRightPawClose() && intakePaws.isLeftPawClose()) {
           intakePaws.setRightPawOpen();
           intakePaws.setLeftPawOpen();
+          CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.GREEN));
         }
       }
     }

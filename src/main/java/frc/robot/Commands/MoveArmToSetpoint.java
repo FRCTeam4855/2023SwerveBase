@@ -46,7 +46,7 @@ public class MoveArmToSetpoint extends CommandBase {
       armExtend.setExtendSetpoint(goalArmSetpoint);
       armExtend.extendDaArm();
       goalExtendEncoderSetpoint = armExtend.getExtendSetpointPosition();
-      if (Math.abs(startExtendEncoderSetpoint - armExtend.getExtensionPostion()) > Math.abs(startExtendEncoderSetpoint - goalExtendEncoderSetpoint)/2)  {
+      if (Math.abs(startExtendEncoderSetpoint - armExtend.getExtensionPostion()) > Math.abs(goalExtendEncoderSetpoint - startExtendEncoderSetpoint)/2)  {
         armPivot.setPivotSetpoint(goalArmSetpoint);
         armPivot.pivotDaArm();
       }
@@ -55,7 +55,8 @@ public class MoveArmToSetpoint extends CommandBase {
     if (goalArmSetpoint != ArmSetpoint.One) {
       armPivot.setPivotSetpoint(goalArmSetpoint);
       armPivot.pivotDaArm();
-      if (Math.abs(startPivotEncoderSetpoint - armPivot.getPivotPostion()) > Math.abs(startPivotEncoderSetpoint - goalPivotEncoderSetpoint)/2)  {
+      goalPivotEncoderSetpoint = armPivot.getPivotSetpointPosition();
+      if (Math.abs(startPivotEncoderSetpoint - armPivot.getPivotPostion()) > Math.abs(goalPivotEncoderSetpoint - startPivotEncoderSetpoint)/2)  {
         armExtend.setExtendSetpoint(goalArmSetpoint);
         armExtend.extendDaArm();
       }
@@ -70,9 +71,9 @@ public class MoveArmToSetpoint extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (armPivot.isPivotAtSetpoint() == true && armExtend.isExtendAtSetpoint() == true){
+    // if (armPivot.isPivotAtSetpoint() == true && armExtend.isExtendAtSetpoint() == true){
       return true;
-    }
-      return false;
+    // }
+      // return false;
   }
 }

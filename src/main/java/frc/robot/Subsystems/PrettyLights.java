@@ -1,5 +1,6 @@
 package frc.robot.Subsystems;
 
+import edu.wpi.first.wpilibj.PWM;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -105,10 +106,11 @@ public class PrettyLights extends SubsystemBase {
     public final static double GRAY = .95;
     public final static double DARK_GRAY = .97;
     public final static double BLACK = .99;
+    // private int PWM18 = new PWM(18);
     
     double pattern = PrettyLights.C1_AND_C2_SINELON;
 
-    public Spark leds = new Spark(8);
+    public Spark leds = new Spark(19);
     
 
       

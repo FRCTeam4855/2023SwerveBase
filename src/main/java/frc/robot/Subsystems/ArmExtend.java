@@ -24,9 +24,9 @@ public class ArmExtend extends SubsystemBase {
     double kD = 0; // 1.2;
     double kIz = 0;
     double kFF = 0;
-    double kMaxOutput = .4; // slot 0 extend speed max
+    double kMaxOutput = .5; // slot 0 extend speed max
     double kMaxOutput2 = .4; // slot 2 extend speed max
-    double kMinOutput = -.9; // slot 0 retract speed max
+    double kMinOutput = -1; // slot 0 retract speed max
     double kMinOutput2 = -.9; // slot 2 retract speed max
     extendPIDController.setFeedbackDevice(armExtend.getEncoder());
     extendPIDController.setP(kP);
