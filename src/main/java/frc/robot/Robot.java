@@ -110,7 +110,7 @@ public class Robot extends TimedRobot {
 
     SmartDashboard.putData(m_chooser); // displays the auton options in shuffleboard, put in init block
     armPivot.resetPivotEncoderZero();
-    armExtend.resetExtendEncoderVariable(95);
+    armExtend.resetExtendEncoderVariable(ZERO_DISTANCE);
     CameraServer.startAutomaticCapture(); // starts the usb cameras
     CameraServer.startAutomaticCapture();
 
@@ -171,7 +171,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     armPivot.resetPivotEncoderZero();
-    armExtend.resetExtendEncoderVariable(95);
+    armExtend.resetExtendEncoderVariable(ZERO_DISTANCE);
     driveSystem.resetRelativeEncoders();
     gyro.reset();
     m_autoSelected = m_chooser.getSelected(); // pulls auton option selected from shuffleboard

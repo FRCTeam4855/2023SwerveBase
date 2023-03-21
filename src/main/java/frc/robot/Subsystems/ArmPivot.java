@@ -75,9 +75,9 @@ public class ArmPivot extends SubsystemBase {
     double kD = 0; // 1.2;
     double kIz = 0;
     double kFF = 0;
-    double kMaxOutput = .14; // slot 0 pivot speed max
+    double kMaxOutput = .3; // slot 0 pivot speed max
     double kMaxOutput2 = .4; // slot 2 pivot speed max
-    double kMinOutput = -.14;
+    double kMinOutput = -.3;
     double kMinOutput2 = -.4;
     pivotPIDController.setFeedbackDevice(armPivotOne.getEncoder());
     pivotPIDController.setP(kP);
