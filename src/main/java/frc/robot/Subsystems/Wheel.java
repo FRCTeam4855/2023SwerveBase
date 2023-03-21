@@ -25,7 +25,7 @@ public class Wheel {
     double flipOffset = 0; //determines whether the wheel should go left or right when flipping
     double previousAngle = 0; //previous angle before the wheel was flipped
     
-    PIDController pid = new PIDController(2, 0, 0); //sets up the PID loop, if you don't know what that is look it up
+    PIDController pid = new PIDController(2, 0, 0); //sets up the PID loop
 
     public enum SpeedSetting {
         PRECISE, NORMAL, TURBO

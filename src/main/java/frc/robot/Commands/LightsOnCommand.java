@@ -6,13 +6,12 @@ import frc.robot.Subsystems.PrettyLights;
 public class LightsOnCommand extends CommandBase{
     
     private PrettyLights prettyLights;
-    private double color;
+    private double newColor;
 
-    public LightsOnCommand(PrettyLights newLightsToUse, double newColorToUse){
-        super();
-        prettyLights = newLightsToUse;
-        color = newColorToUse;
-        addRequirements(newLightsToUse);
+    public LightsOnCommand(PrettyLights prettyLights, double newColor){
+        this.prettyLights = prettyLights;
+        this.newColor = newColor;
+        addRequirements(prettyLights);
     }
 
     @Override
@@ -22,7 +21,7 @@ public class LightsOnCommand extends CommandBase{
 
     @Override
     public void execute() {
-       prettyLights.setLEDs(color);
+       prettyLights.setLEDs(newColor);
     }
 
     @Override
