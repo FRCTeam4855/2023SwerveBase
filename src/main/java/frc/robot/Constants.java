@@ -95,4 +95,6 @@ public class Constants {
     // public static final int TEST_TOGGLE_LL_CAM_MODE_Y = ;
     // public static final int SWITCH_LLRETROTAP_LB = 5;
     public static final int TOGGLE_LL_PIPELINE_RB = 6;
+    public static final int SWITCH_PLIGHT_PURPLE_START = 8;
+    public static final int SWITCH_PLIGHT_YELLOW_START = 8;
 }

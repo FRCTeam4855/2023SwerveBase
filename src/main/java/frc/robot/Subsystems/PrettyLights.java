@@ -110,7 +110,7 @@ public class PrettyLights extends SubsystemBase {
     
     double pattern = PrettyLights.C1_AND_C2_SINELON;
 
-    public Spark leds = new Spark(8);
+    public Spark leds = new Spark(0);
     
 
       

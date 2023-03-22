@@ -422,15 +422,21 @@ public class Robot extends TimedRobot {
       if (intakePaws.isRightPawOpen() && intakePaws.isLeftPawOpen()) {
         intakePaws.setRightPawClose();
         intakePaws.setLeftPawClose();
-        CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.RED));
+        CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.GREEN));
       } else {
         if (intakePaws.isRightPawClose() && intakePaws.isLeftPawClose()) {
           intakePaws.setRightPawOpen();
           intakePaws.setLeftPawOpen();
-          CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.GREEN));
         }
       }
     }
+// if (xboxOperator.getRawButtonPressed(SWITCH_PLIGHT_COLOR_START)){
+//   CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.C1_STROBE));
+// }
+
+// if (xboxOperator.getRawButtonPressed(SWITCH_PLIGHT_COLOR_START)){
+//   CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.C2_STROBE));
+// }
 
     // if (xboxOperator.getRawButton(TOGGLE_LL_PIPELINE_RB)) {
     // if (limelight.isLimelightOnAprilTagMode() == true) {
