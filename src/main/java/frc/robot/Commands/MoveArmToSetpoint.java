@@ -38,41 +38,28 @@ public class MoveArmToSetpoint extends CommandBase {
     // goalExtendEncoderSetpoint = armExtend.getExtendSetpointPosition();
     startPivotEncoderSetpoint = armPivot.getPivotPostion();
     // goalPivotEncoderSetpoint = armPivot.getPivotSetpointPosition();
+    armPivot.setPivotSetpoint(goalArmSetpoint);
+    armExtend.setExtendSetpoint(goalArmSetpoint);
     startTime = Timer.getFPGATimestamp();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-
-    // if setpoint one, extend/retract first first
     if (goalArmSetpoint == ArmSetpoint.One) {
-      // set the setpoints based on constructorbut does not move yet
-      armPivot.setPivotSetpoint(goalArmSetpoint);
       armExtend.setExtendSetpoint(goalArmSetpoint);
-      // extends arm
       armExtend.extendDaArm();
-      // sets goal setpoint for extend to use in if statement to begin pivot after
-      // extend/retract is over 50% to goal
-      goalExtendEncoderSetpoint = armExtend.getExtendSetpointPosition();
-      if ((Math.abs(goalExtendEncoderSetpoint - startExtendEncoderSetpoint) / 2) <= (Math
-          .abs(startExtendEncoderSetpoint - armExtend.getExtensionPostion()))) {
+      if (Timer.getFPGATimestamp() - startTime > .3) {
+        armPivot.setPivotSetpoint(goalArmSetpoint);
         armPivot.pivotDaArm();
       }
     }
 
-    // if NOT setpoint one, pivot first
     if (goalArmSetpoint != ArmSetpoint.One) {
-      // set the setpoints based on constructor but does not move yet
       armPivot.setPivotSetpoint(goalArmSetpoint);
-      armExtend.setExtendSetpoint(goalArmSetpoint);
-      // begin pivot
       armPivot.pivotDaArm();
-      // sets goal setpoint for pivot to use in if statement to begin extend/retract
-      // after pivot is 50% to goal
-      goalPivotEncoderSetpoint = armPivot.getPivotSetpointPosition();
-      if ((Math.abs(goalPivotEncoderSetpoint - startPivotEncoderSetpoint) / 2) <= (Math
-          .abs(startPivotEncoderSetpoint - armPivot.getPivotPostion()))) {
+      if (Timer.getFPGATimestamp() - startTime > .3) {
+        armExtend.setExtendSetpoint(goalArmSetpoint);
         armExtend.extendDaArm();
       }
     }
@@ -86,14 +73,63 @@ public class MoveArmToSetpoint extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Timer.getFPGATimestamp() - startTime > .5) {
-      // if (armPivot.isPivotAtSetpoint() == true && armExtend.isExtendAtSetpoint() ==
-      // true){
+    if (Timer.getFPGATimestamp() - startTime > .3) {
       return true;
     } else {
       return false;
     }
-    // }
-    // return false;
   }
 }
+
+    //work in progress
+  //   // if setpoint one, extend/retract first first
+  //   if (goalArmSetpoint == ArmSetpoint.One) {
+  //     // set the setpoints based on constructorbut does not move yet
+  //     // armPivot.setPivotSetpoint(goalArmSetpoint);
+  //     // armExtend.setExtendSetpoint(goalArmSetpoint);
+  //     // extends arm
+  //     armExtend.extendDaArm();
+  //     // sets goal setpoint for extend to use in if statement to begin pivot after
+  //     // extend/retract is over 50% to goal
+  //     goalExtendEncoderSetpoint = armExtend.getExtendSetpointPosition();
+  //     if ((Math.abs(goalExtendEncoderSetpoint - startExtendEncoderSetpoint) / 2) <= (Math
+  //         .abs(startExtendEncoderSetpoint - armExtend.getExtensionPostion()))) {
+  //       armPivot.pivotDaArm();
+  //     }
+  //   }
+
+  //   // if NOT setpoint one, pivot first
+  //   if (goalArmSetpoint != ArmSetpoint.One) {
+  //     // set the setpoints based on constructor but does not move yet
+  //     // armPivot.setPivotSetpoint(goalArmSetpoint);
+  //     // armExtend.setExtendSetpoint(goalArmSetpoint);
+  //     // begin pivot
+  //     armPivot.pivotDaArm();
+  //     // sets goal setpoint for pivot to use in if statement to begin extend/retract
+  //     // after pivot is 50% to goal
+  //     goalPivotEncoderSetpoint = armPivot.getPivotSetpointPosition();
+  //     if ((Math.abs(goalPivotEncoderSetpoint - startPivotEncoderSetpoint) / 2) <= (Math
+  //         .abs(startPivotEncoderSetpoint - armPivot.getPivotPostion()))) {
+  //       armExtend.extendDaArm();
+  //     }
+  //   }
+  // }
+
+//   // Called once the command ends or is interrupted.
+//   @Override
+//   public void end(boolean interrupted) {
+//   }
+
+//   // Returns true when the command should end.
+//   @Override
+//   public boolean isFinished() {
+//     // if (Timer.getFPGATimestamp() - startTime > 2) {
+//     if (armPivot.isPivotAtSetpoint() == true && armExtend.isExtendAtSetpoint() == true) {
+//       return true;
+//     } else {
+//       return false;
+//     }
+//     // }
+//     // return false;
+//   }
+// }

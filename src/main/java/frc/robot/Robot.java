@@ -96,15 +96,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    prettyLights1.setLEDs(PrettyLights.BPM_RAINBOWPALETTE);
-    fieldOriented = false;
+    fieldOriented = true;
     armExtend.initExtend();
     armPivot.initPivot();
     intakePaws.setRightPawClose();
     intakePaws.setLeftPawClose();
     m_chooser.addOption("1. pick up cone inside robot and drive out of comm", kAuton1);
     m_chooser.setDefaultOption("2. Drop cone on mid and drive out of comm", kAuton2);
-    m_chooser.addOption("3. Drop cone on mid, drive out of comm, and drive onto power station", kAuton3);
+    m_chooser.addOption("3. Drop cone on mid, drive and balance on charge station", kAuton3);
     m_chooser.addOption("4. WIP DO NOT USE", kAuton4);
     m_chooser.addOption("5. ZZZ KEEP UNUSED", kAuton5);
 
@@ -174,6 +173,7 @@ public class Robot extends TimedRobot {
     armExtend.resetExtendEncoderVariable(95);
     driveSystem.resetRelativeEncoders();
     gyro.reset();
+    gyro.setAngleAdjustment(180);
     m_autoSelected = m_chooser.getSelected(); // pulls auton option selected from shuffleboard
     SmartDashboard.putString("Current Auton:", m_autoSelected); // displays which auton is currently running
     armExtend.setExtendSetpoint(ArmSetpoint.One);
@@ -197,14 +197,14 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(
             new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                // .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
+                .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
                 .andThen(new ClosePaws(intakePaws))
-                // .andThen(new WaitCommand(.5))
+                .andThen(new WaitCommand(.5))
                 // dropping cone
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Five, currentSetpoint))
-                // .andThen(new WaitCommand(1))
+                .andThen(new WaitCommand(1))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                // .andThen(new WaitCommand(.5))
+                .andThen(new WaitCommand(.5))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
                 .andThen(new WaitCommand(4))
                 .andThen(new OpenPaws(intakePaws))
@@ -222,24 +222,26 @@ public class Robot extends TimedRobot {
       case kAuton3:
 
         CommandScheduler.getInstance().schedule(
-            new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
-                // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One,
-                // currentSetpoint))
-                // .andThen(new WaitCommand(.2))
-                .andThen(new ClosePaws(intakePaws))
-                .andThen(new WaitCommand(.2))
-                // dropping cone
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Six, currentSetpoint))
-                .andThen(new WaitCommand(.6))
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
-                .andThen(new WaitCommand(2.5))
-                .andThen(new OpenPaws(intakePaws))
-                .andThen(new WaitCommand(.2))
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                // moving out of community
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 10))
-                .andThen(new SwerveDriveMoveRight(driveSystem, 6))
-                .andThen(new SwerveDriveMoveForward(driveSystem, 4))
+          new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
+          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+          .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
+          .andThen(new ClosePaws(intakePaws))
+          .andThen(new WaitCommand(.5))
+          // dropping cone
+          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Five, currentSetpoint))
+          .andThen(new WaitCommand(1))
+          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+          .andThen(new WaitCommand(.5))
+          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
+          .andThen(new WaitCommand(4))
+          .andThen(new OpenPaws(intakePaws))
+          .andThen(new WaitCommand(1))
+          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+                // moving to charge station
+                .andThen(new SwerveDriveMoveBackward(driveSystem, 1))
+                .andThen(new SwerveDriveTurnLeft(driveSystem, 90))
+                .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
+                .andThen(new Balancing(driveSystem, gyro))
                 .andThen(new SwerveDriveStop(driveSystem)));
 
         // save this, auton 3:
@@ -329,6 +331,10 @@ public class Robot extends TimedRobot {
   public void autonomousPeriodic() {
   }
 
+  // *************************
+  // ********teleopInit*******
+  // *************************
+
   @Override
   public void teleopInit() {
     // armExtend.setExtendSetpoint(null);// TODO TAKE OUT FOR GAME
@@ -336,7 +342,7 @@ public class Robot extends TimedRobot {
     driveSystem.resetRelativeEncoders();
     // gyro.reset();// TODO TAKE OUT FOR GAME
     // gyro.zeroYaw();// TODO TAKE OUT FOR GAME
-    prettyLights1.setLEDs(PrettyLights.C1_AND_C2_SINELON);
+    prettyLights1.setLEDs(PrettyLights.CONFETTI);
     armExtend.setExtendSetpoint(ArmSetpoint.One);
     armPivot.setPivotSetpoint(ArmSetpoint.One);
     fieldOriented = true;
@@ -393,26 +399,26 @@ public class Robot extends TimedRobot {
     // zeros the gyro if you press the Y button
     if (xboxDriver.getRawButtonPressed(GYRO_RESET_Y)) {
       gyro.reset();
+      gyro.setAngleAdjustment(0);
     }
 
     // This toggles field oriented on or off when x is pressed
     if (xboxDriver.getRawButtonPressed(ORIENTATION_TOGGLE_X)) {
       fieldOriented = !fieldOriented;
     }
-    boolean isBalancing;
-    if (xboxDriver.getRawButton(DRIVER_BALANCE_BCK) && Math.abs(gyro.getPitch()) > 2) {
-      isBalancing = true;
-      driveSystem.moveManual(0, (gyro.getPitch() / -40), 0, theta_radians,
-          driveSpeed);
-    } else {
-      isBalancing = false;
-    }
 
-    if (xboxDriver.getPOV() == 0) {
-      driveSystem.stay();
-      currentSetpoint = ArmSetpoint.Five;
+    // boolean isBalancing;
+    // if (xboxDriver.getRawButton(DRIVER_BALANCE_BCK) && Math.abs(gyro.getPitch())
+    // > 2) {
+    // isBalancing = true;
+    // driveSystem.moveManual(0, (gyro.getPitch() / -40), 0, theta_radians,
+    // driveSpeed);
+    // } else {
+    // isBalancing = false;
+    // }
+    if (xboxDriver.getRawButton(DRIVER_BALANCE_BCK)) {
+      CommandScheduler.getInstance().schedule(new Balancing(driveSystem, gyro));
     }
-
     // *************************
     // ****Operator Controls****
     // *************************
@@ -422,57 +428,15 @@ public class Robot extends TimedRobot {
       if (intakePaws.isRightPawOpen() && intakePaws.isLeftPawOpen()) {
         intakePaws.setRightPawClose();
         intakePaws.setLeftPawClose();
-        CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.GREEN));
+        CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.GREEN, .5));
       } else {
         if (intakePaws.isRightPawClose() && intakePaws.isLeftPawClose()) {
           intakePaws.setRightPawOpen();
           intakePaws.setLeftPawOpen();
+          CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.RED, .5));
         }
       }
     }
-// if (xboxOperator.getRawButtonPressed(SWITCH_PLIGHT_COLOR_START)){
-//   CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.C1_STROBE));
-// }
-
-// if (xboxOperator.getRawButtonPressed(SWITCH_PLIGHT_COLOR_START)){
-//   CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.C2_STROBE));
-// }
-
-    // if (xboxOperator.getRawButton(TOGGLE_LL_PIPELINE_RB)) {
-    // if (limelight.isLimelightOnAprilTagMode() == true) {
-    // limelight.setLimelightPipeToRetroTape();
-    // } else {
-    // limelight.setLimelightPipeToAprilTag();
-    // }
-    // }
-
-    // if (xboxOperator.getRawButton(ARM_SETPOINT1_A)) {
-    // armExtend.setExtendSetpoint(ArmSetpoint.One);
-    // armPivot.setPivotSetpoint(ArmSetpoint.One);
-    // armExtend.extendDaArm();
-    // armPivot.pivotDaArm();
-    // }
-
-    // if (xboxOperator.getRawButton(ARM_SETPOINT2_B)) {
-    // armExtend.setExtendSetpoint(ArmSetpoint.Two);
-    // armPivot.setPivotSetpoint(ArmSetpoint.Two);
-    // armExtend.extendDaArm();
-    // armPivot.pivotDaArm();
-    // }
-
-    // if (xboxOperator.getRawButton(ARM_SETPOINT3_X)) {
-    // armExtend.setExtendSetpoint(ArmSetpoint.Three);
-    // armPivot.setPivotSetpoint(ArmSetpoint.Three);
-    // armExtend.extendDaArm();
-    // armPivot.pivotDaArm();
-    // }
-
-    // if (xboxOperator.getRawButton(ARM_SETPOINT4_Y)) {
-    // armExtend.setExtendSetpoint(ArmSetpoint.Four);
-    // armPivot.setPivotSetpoint(ArmSetpoint.Four);
-    // armExtend.extendDaArm();
-    // armPivot.pivotDaArm();
-    // }
 
     if (xboxOperator.getRawButton(ARM_SETPOINT1_A)) {
       CommandScheduler.getInstance()
@@ -505,47 +469,6 @@ public class Robot extends TimedRobot {
       currentSetpoint = ArmSetpoint.Five;
     }
 
-    // reset encoders while on cone (teleop testing) //TODO TAKE OUT FOR GAME
-    // if (xboxOperator.getRawButton(5)) {
-    // armPivot.resetPivotEncoderZero();
-    // // armExtend.resetExtendEncoderZero();
-    // armExtend.resetExtendEncoderVariable(50);
-    // // armExtend.extendDaArm();
-    // // armPivot.pivotDaArm();
-    // }
-
-    // if (xboxOperator.getRawButton(8)) {
-    // armExtend.extendDaArm();
-    // armPivot.pivotDaArm();
-    // }
-
-    // position for arm
-    // if (Math.abs((xboxOperator.getRawAxis(5))) > JOYSTK_DZONE) {
-    // if (xboxOperator.getRawAxis(5) > JOYSTK_DZONE) {
-    // armExtend.setExtendPositionVariable(armExtend.getExtensionPostion() + 8);
-    // SmartDashboard.putNumber("manual Extend setpoint",
-    // armExtend.getExtensionPostion()+ 8);
-    // }
-    // if (xboxOperator.getRawAxis(5) < -JOYSTK_DZONE) {
-    // armExtend.setExtendPositionVariable(armExtend.getExtensionPostion() - 8);
-    // SmartDashboard.putNumber("manual Extend setpoint",
-    // armExtend.getExtensionPostion() - 8);
-    // }
-    // }
-
-    // if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
-    // if (xboxOperator.getRawAxis(1) > JOYSTK_DZONE) {
-    // armPivot.setPivotPositionVariable(armPivot.getPivotPostion() + .1);
-    // SmartDashboard.putNumber("manual pivot setpoint", (armPivot.getPivotPostion()
-    // + .1));
-    // }
-    // if (xboxOperator.getRawAxis(1) < -JOYSTK_DZONE) {
-    // armPivot.setPivotPositionVariable(armPivot.getPivotPostion() - .1);
-    // SmartDashboard.putNumber("manual pivot setpoint", (armPivot.getPivotPostion()
-    // - .1));
-    // }
-    // }
-
     // *******OLD JOYSTICK COMMANDS
     if (xboxOperator.getRawButton(6)) {
       if (Math.abs((xboxOperator.getRawAxis(1))) > JOYSTK_DZONE) {
@@ -559,6 +482,12 @@ public class Robot extends TimedRobot {
       } else {
         armExtend.setExtendStop();
       }
+    }
+    if (xboxOperator.getPOV() == 90) {
+      CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.STROBE_GOLD, .5));
+    }
+    if (xboxOperator.getPOV() == 270) {
+      CommandScheduler.getInstance().schedule(new LightsFlashCommand(prettyLights1, PrettyLights.C2_STROBE, .5));
     }
 
     // if (xboxDriver.getRawButtonPressed(1)) {

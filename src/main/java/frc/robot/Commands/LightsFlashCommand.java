@@ -10,10 +10,12 @@ public class LightsFlashCommand extends CommandBase {
     private double newColor;
     private double oldColor;
     private double startTime;
+    private double seconds;
 
-    public LightsFlashCommand(PrettyLights prettyLights, double newColor) {
+    public LightsFlashCommand(PrettyLights prettyLights, double newColor, double seconds) {
         this.prettyLights = prettyLights;
         this.newColor = newColor;
+        this.seconds = seconds;
         addRequirements(prettyLights);
     }
 
@@ -31,7 +33,7 @@ public class LightsFlashCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        if (Timer.getFPGATimestamp() - startTime > .5) {
+        if (Timer.getFPGATimestamp() - startTime > seconds) {
             prettyLights.setLEDs(oldColor);
 
             return true;
