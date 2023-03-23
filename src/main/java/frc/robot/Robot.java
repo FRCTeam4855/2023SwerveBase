@@ -35,6 +35,7 @@ import frc.robot.Commands.LightsFlashCommand;
 import frc.robot.Commands.SwerveDriveMoveBackward;
 import frc.robot.Commands.SwerveDriveMoveForward;
 import frc.robot.Commands.SwerveDriveMoveLeft;
+import frc.robot.Commands.SwerveDriveMoveManual;
 import frc.robot.Commands.SwerveDriveMoveRight;
 import frc.robot.Commands.SwerveDriveStop;
 import frc.robot.Commands.SwerveDriveTurnLeft;
@@ -173,7 +174,8 @@ public class Robot extends TimedRobot {
     armExtend.resetExtendEncoderVariable(95);
     driveSystem.resetRelativeEncoders();
     gyro.reset();
-    gyro.setAngleAdjustment(180);
+    fieldOriented = true;
+    // gyro.setAngleAdjustment(180);
     m_autoSelected = m_chooser.getSelected(); // pulls auton option selected from shuffleboard
     SmartDashboard.putString("Current Auton:", m_autoSelected); // displays which auton is currently running
     armExtend.setExtendSetpoint(ArmSetpoint.One);
@@ -198,8 +200,6 @@ public class Robot extends TimedRobot {
             new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
                 .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
-                .andThen(new ClosePaws(intakePaws))
-                .andThen(new WaitCommand(.5))
                 // dropping cone
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Five, currentSetpoint))
                 .andThen(new WaitCommand(1))
@@ -222,25 +222,21 @@ public class Robot extends TimedRobot {
       case kAuton3:
 
         CommandScheduler.getInstance().schedule(
-          new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
-          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-          .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
-          .andThen(new ClosePaws(intakePaws))
-          .andThen(new WaitCommand(.5))
-          // dropping cone
-          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Five, currentSetpoint))
-          .andThen(new WaitCommand(1))
-          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-          .andThen(new WaitCommand(.5))
-          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
-          .andThen(new WaitCommand(4))
-          .andThen(new OpenPaws(intakePaws))
-          .andThen(new WaitCommand(1))
-          .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+            new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
+                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+                // .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
+                // .andThen(new ClosePaws(intakePaws))
+                // .andThen(new WaitCommand(.5))
+                // dropping cone
+                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
+                .andThen(new WaitCommand(1))
+                .andThen(new OpenPaws(intakePaws))
+                .andThen(new WaitCommand(.5))
+                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
                 // moving to charge station
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 1))
-                .andThen(new SwerveDriveTurnLeft(driveSystem, 90))
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
+                .andThen(new SwerveDriveMoveBackward(driveSystem, 9))
+                // .andThen(new SwerveDriveTurnLeft(driveSystem, 15))
+                // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
                 .andThen(new Balancing(driveSystem, gyro))
                 .andThen(new SwerveDriveStop(driveSystem)));
 
@@ -417,7 +413,12 @@ public class Robot extends TimedRobot {
     // isBalancing = false;
     // }
     if (xboxDriver.getRawButton(DRIVER_BALANCE_BCK)) {
-      CommandScheduler.getInstance().schedule(new Balancing(driveSystem, gyro));
+      // CommandScheduler.getInstance().schedule(new Balancing(driveSystem, gyro));
+      if (Math.abs(gyro.getPitch()) > 2) {
+        double pitchAngleRadians = gyro.getPitch() * (Math.PI / 180.0);
+        double yAxisRate = Math.sin(pitchAngleRadians) * -1.8;
+        driveSystem.moveManual(0, yAxisRate, 0, 0, Wheel.SpeedSetting.NORMAL);
+    }
     }
     // *************************
     // ****Operator Controls****

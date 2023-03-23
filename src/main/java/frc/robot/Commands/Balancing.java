@@ -12,11 +12,12 @@ public class Balancing extends CommandBase {
     public static boolean isBalancing;
     private AHRS gyro; // defines the gyro
     private long balanceTime = -1;
-    private double pitchAngleDegrees = gyro.getPitch();
+    private double pitchAngleDegrees;
 
     public Balancing(SwerveDriveSystem initialDriveSystem, AHRS initialGyro) {
         driveSystem = initialDriveSystem;
         gyro = initialGyro;
+        pitchAngleDegrees = gyro.getPitch();
     };
 
     @Override
@@ -34,8 +35,8 @@ public class Balancing extends CommandBase {
         // SmartDashboard.putBoolean("Balancing", isBalancing);
         if (Math.abs(gyro.getPitch()) > 2) {
             double pitchAngleRadians = pitchAngleDegrees * (Math.PI / 180.0);
-            double yAxisRate = Math.sin(pitchAngleRadians) * -1;
-            driveSystem.moveManual(0, yAxisRate, 0, 0, Wheel.SpeedSetting.PRECISE);
+            double yAxisRate = Math.sin(pitchAngleRadians) * -1.8;
+            driveSystem.moveManual(0, yAxisRate, 0, 0, Wheel.SpeedSetting.NORMAL);
         }
         SmartDashboard.putBoolean("Balancing", isBalancing);
     }

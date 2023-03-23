@@ -34,12 +34,10 @@ public class MoveArmToSetpoint extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    startExtendEncoderSetpoint = armExtend.getExtensionPostion();
+    // startExtendEncoderSetpoint = armExtend.getExtensionPostion();
     // goalExtendEncoderSetpoint = armExtend.getExtendSetpointPosition();
-    startPivotEncoderSetpoint = armPivot.getPivotPostion();
+    // startPivotEncoderSetpoint = armPivot.getPivotPostion();
     // goalPivotEncoderSetpoint = armPivot.getPivotSetpointPosition();
-    armPivot.setPivotSetpoint(goalArmSetpoint);
-    armExtend.setExtendSetpoint(goalArmSetpoint);
     startTime = Timer.getFPGATimestamp();
   }
 
