@@ -47,7 +47,7 @@ public class MoveArmToSetpoint extends CommandBase {
     if (goalArmSetpoint == ArmSetpoint.One) {
       armExtend.setExtendSetpoint(goalArmSetpoint);
       armExtend.extendDaArm();
-      if (Timer.getFPGATimestamp() - startTime > .3) {
+      if (Timer.getFPGATimestamp() - startTime > .4) {
         armPivot.setPivotSetpoint(goalArmSetpoint);
         armPivot.pivotDaArm();
       }
@@ -56,7 +56,7 @@ public class MoveArmToSetpoint extends CommandBase {
     if (goalArmSetpoint != ArmSetpoint.One) {
       armPivot.setPivotSetpoint(goalArmSetpoint);
       armPivot.pivotDaArm();
-      if (Timer.getFPGATimestamp() - startTime > .3) {
+      if (Timer.getFPGATimestamp() - startTime > .4) {
         armExtend.setExtendSetpoint(goalArmSetpoint);
         armExtend.extendDaArm();
       }
@@ -71,7 +71,7 @@ public class MoveArmToSetpoint extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (Timer.getFPGATimestamp() - startTime > .3) {
+    if (Timer.getFPGATimestamp() - startTime > .4) {
       return true;
     } else {
       return false;

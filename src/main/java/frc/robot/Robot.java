@@ -199,20 +199,20 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule(
             new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
+                .andThen(new WaitCommand(1))// manual delays for cone to balance in intake
                 // dropping cone
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Five, currentSetpoint))
-                .andThen(new WaitCommand(1))
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                .andThen(new WaitCommand(.5))
+                // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Five, currentSetpoint))
+                // .andThen(new WaitCommand(1))
+                // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+                // .andThen(new WaitCommand(.5))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
                 .andThen(new WaitCommand(4))
                 .andThen(new OpenPaws(intakePaws))
-                .andThen(new WaitCommand(1))
+                .andThen(new WaitCommand(.5))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
                 // moving out of community
                 .andThen(new StrafeByAlliance(driveSystem, .75))
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 9))
+                .andThen(new SwerveDriveMoveBackward(driveSystem, 9.5))
                 // .andThen(new SwerveDriveMoveRight(driveSystem, 7))
                 // .andThen(new SwerveDriveMoveBackward(driveSystem, 8))
                 .andThen(new SwerveDriveStop(driveSystem)));
@@ -234,11 +234,14 @@ public class Robot extends TimedRobot {
                 .andThen(new WaitCommand(.5))
                 .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
                 // moving to charge station
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 9))
+                .andThen(new SwerveDriveMoveBackward(driveSystem, 1.25))
                 // .andThen(new SwerveDriveTurnLeft(driveSystem, 15))
                 // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
-                .andThen(new Balancing(driveSystem, gyro))
-                .andThen(new SwerveDriveStop(driveSystem)));
+                .andThen(new SwerveDriveTurnRight(driveSystem, 90))
+                //.andThen(new Balancing(driveSystem, gyro))
+                .andThen(new SwerveDriveMoveRight(driveSystem, 8.75))
+                .andThen(new SwerveDriveStop(driveSystem))
+                );
 
         // save this, auton 3:
         // CommandScheduler.getInstance().schedule(

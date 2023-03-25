@@ -5,7 +5,7 @@ public class Constants {
     public static final double JOYSTK_DZONE = .17;                  // global deadzone for all controllers
     public static final double DRIVE_DEFAULT_SPD = 0.50;               // multiplier
     public static final double DRIVE_SLOW_SPD = 0.15;               // multiplier
-    public static final double DRIVE_TURBO_SPD = 0.80;               // multiplier
+    public static final double DRIVE_TURBO_SPD = 0.90;               // multiplier
     //TODO arrange with drive team what these values are on 2023 bot
 
 
@@ -24,7 +24,7 @@ public class Constants {
     public static final double ARM_EXTEND_CENTER_1 = 10; //done
     public static final double ARM_EXTEND_CENTER_2 = 180; //TODO find these values on 2023 bot
     public static final double ARM_EXTEND_CENTER_3 = 100;
-    public static final double ARM_EXTEND_CENTER_4 = 333;
+    public static final double  ARM_EXTEND_CENTER_4 = 333;
     public static final double ARM_EXTEND_CENTER_5 = 10;
     public static final double ARM_EXTEND_CENTER_6 = 5; //super high for auton
     public static final double ARM_EXTEND_SLOP = 5;    //acceptable range for arm extension setpoints
