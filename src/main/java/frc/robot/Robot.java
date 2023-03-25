@@ -240,7 +240,7 @@ public class Robot extends TimedRobot {
                 // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
                 .andThen(new SwerveDriveTurnRight(driveSystem, 90))
                 //.andThen(new Balancing(driveSystem, gyro))
-                .andThen(new SwerveDriveMoveRight(driveSystem, 8.8))
+                .andThen(new SwerveDriveMoveRight(driveSystem, 8.75))
                 .andThen(new SwerveDriveStop(driveSystem))
                 );
 
@@ -285,15 +285,15 @@ public class Robot extends TimedRobot {
             .andThen(new OpenPaws(intakePaws))
             .andThen(new WaitCommand(.5))
             .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-            // moving to charge station
-            .andThen(new SwerveDriveMoveBackward(driveSystem, 1.25))
-            // .andThen(new SwerveDriveTurnLeft(driveSystem, 15))
-            // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
-            .andThen(new SwerveDriveTurnRight(driveSystem, 90))
-            //.andThen(new Balancing(driveSystem, gyro))
-            .andThen(new SwerveDriveMoveRight(driveSystem, 8.75))
-            .andThen(new DriveUntilBalanced(driveSystem, gyro))
-            .andThen(new SwerveDriveStop(driveSystem))
+            // // moving to charge station
+            // .andThen(new SwerveDriveMoveBackward(driveSystem, 1.25))
+            // // .andThen(new SwerveDriveTurnLeft(driveSystem, 15))
+            // // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
+            // .andThen(new SwerveDriveTurnRight(driveSystem, 90))
+            // //.andThen(new Balancing(driveSystem, gyro))
+            // .andThen(new SwerveDriveMoveRight(driveSystem, 8.75))
+            // .andThen(new DriveUntilBalanced(driveSystem, gyro))
+            // .andThen(new SwerveDriveStop(driveSystem))
             );
 
         // CommandScheduler.getInstance().schedule(

@@ -21,7 +21,7 @@ public class Constants {
     //Sensor Ranges/Setpoints
 
     //center point for arm extension setpoints
-    public static final double ARM_EXTEND_CENTER_1 = 10; //done
+    public static final double ARM_EXTEND_CENTER_1 = 12; //done
     public static final double ARM_EXTEND_CENTER_2 = 180; //TODO find these values on 2023 bot
     public static final double ARM_EXTEND_CENTER_3 = 100;
     public static final double  ARM_EXTEND_CENTER_4 = 333;
