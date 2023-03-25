@@ -10,6 +10,8 @@ import edu.wpi.first.math.MathUtil;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.RelativeEncoder; //CANEncoder
+import com.revrobotics.CANSparkMax.IdleMode;
+
 import static frc.robot.Constants.*;
 
 
@@ -115,5 +117,10 @@ public class Wheel {
 
     public double getAbsoluteValue() {
         return absoluteEncoder.get();
+    }
+
+    public void setBrakeEnable(boolean brake){
+        IdleMode idleMode = brake ? IdleMode.kBrake : IdleMode.kCoast;
+        driveController.setIdleMode(idleMode);
     }
 }

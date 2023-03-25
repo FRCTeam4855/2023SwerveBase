@@ -31,6 +31,7 @@ import frc.robot.Commands.MoveArmToSetpoint;
 import frc.robot.Commands.OpenPaws;
 import frc.robot.Commands.StrafeByAlliance;
 import frc.robot.Commands.ClosePaws;
+import frc.robot.Commands.DriveUntilBalanced;
 import frc.robot.Commands.LightsFlashCommand;
 import frc.robot.Commands.SwerveDriveMoveBackward;
 import frc.robot.Commands.SwerveDriveMoveForward;
@@ -149,7 +150,7 @@ public class Robot extends TimedRobot {
     SmartDashboard.putBoolean("Field Oriented", fieldOriented); // shows true/false for driver oriented
     SmartDashboard.putNumber("Gyro Get Yaw", gyro.getYaw()); // pulls yaw value
     SmartDashboard.putNumber("Gyro Get Pitch", gyro.getPitch()); // pulls Pitch value
-    SmartDashboard.putBoolean("Balancing", Balancing.isBalancing); // shows true if robot is attempting to balance
+    // SmartDashboard.putBoolean("Balancing", Balancing.isBalancing); // shows true if robot is attempting to balance
 
     CommandScheduler.getInstance().run(); // must be called from the robotPeriodic() method Robot class or the scheduler
                                           // will never run, and the command framework will not work
@@ -239,7 +240,7 @@ public class Robot extends TimedRobot {
                 // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
                 .andThen(new SwerveDriveTurnRight(driveSystem, 90))
                 //.andThen(new Balancing(driveSystem, gyro))
-                .andThen(new SwerveDriveMoveRight(driveSystem, 8.75))
+                .andThen(new SwerveDriveMoveRight(driveSystem, 8.8))
                 .andThen(new SwerveDriveStop(driveSystem))
                 );
 
@@ -271,50 +272,74 @@ public class Robot extends TimedRobot {
 
       case kAuton4:
 
-        CommandScheduler.getInstance().schedule(
-            new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
-                // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One,
-                // currentSetpoint))
-                // .andThen(new WaitCommand(.2))
-                .andThen(new ClosePaws(intakePaws))
-                .andThen(new WaitCommand(.2))
-                // dropping cone
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Six, currentSetpoint))
-                .andThen(new WaitCommand(.6))
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
-                .andThen(new WaitCommand(2.5))
-                .andThen(new OpenPaws(intakePaws))
-                .andThen(new WaitCommand(.2))
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                // moving out of community
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 13))
-                .andThen(new SwerveDriveMoveLeft(driveSystem, 7))
-                .andThen(new SwerveDriveMoveForward(driveSystem, 8))
-                .andThen(new SwerveDriveStop(driveSystem)));
+
+      CommandScheduler.getInstance().schedule(
+        new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
+            .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+            // .andThen(new WaitCommand(.5))// manual delays for cone to balance in intake
+            // .andThen(new ClosePaws(intakePaws))
+            // .andThen(new WaitCommand(.5))
+            // dropping cone
+            .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
+            .andThen(new WaitCommand(1))
+            .andThen(new OpenPaws(intakePaws))
+            .andThen(new WaitCommand(.5))
+            .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+            // moving to charge station
+            .andThen(new SwerveDriveMoveBackward(driveSystem, 1.25))
+            // .andThen(new SwerveDriveTurnLeft(driveSystem, 15))
+            // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
+            .andThen(new SwerveDriveTurnRight(driveSystem, 90))
+            //.andThen(new Balancing(driveSystem, gyro))
+            .andThen(new SwerveDriveMoveRight(driveSystem, 8.75))
+            .andThen(new DriveUntilBalanced(driveSystem, gyro))
+            .andThen(new SwerveDriveStop(driveSystem))
+            );
+
         // CommandScheduler.getInstance().schedule(
-        // new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
-        // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One,
-        // currentSetpoint))
-        // .andThen(new ClosePaws(intakePaws))
-        // .andThen(new SwerveDriveTurnLeft(driveSystem, 45))
-        // .andThen(new SwerveDriveMoveForward(driveSystem, 5))
-        // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three,
-        // currentSetpoint))
-        // .andThen(new SwerveDriveMoveRight(driveSystem, 5))
-        // .andThen(new SwerveDriveTurnRight(driveSystem, 240))
-        // .andThen(new LightsOnCommand(prettyLights1,
-        // PrettyLights.C1_AND_C2_END_TO_END_BLEND))
-        // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Two,
-        // currentSetpoint))
-        // .andThen(new SwerveDriveMoveForward(driveSystem, 5))
-        // .andThen(new SwerveDriveMoveLeft(driveSystem, 5))
-        // .andThen(new SwerveDriveMoveBackward(driveSystem, 5))
-        // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three,
-        // currentSetpoint))
-        // .andThen(new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE))
-        // .andThen(new SwerveDriveMoveRight(driveSystem, 1))
-        // .andThen(new SwerveDriveStop(driveSystem)));
-        // break;
+        //     new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
+        //         // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One,
+        //         // currentSetpoint))
+        //         // .andThen(new WaitCommand(.2))
+        //         .andThen(new ClosePaws(intakePaws))
+        //         .andThen(new WaitCommand(.2))
+        //         // dropping cone
+        //         .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Six, currentSetpoint))
+        //         .andThen(new WaitCommand(.6))
+        //         .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three, currentSetpoint))
+        //         .andThen(new WaitCommand(2.5))
+        //         .andThen(new OpenPaws(intakePaws))
+        //         .andThen(new WaitCommand(.2))
+        //         .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+        //         // moving out of community
+        //         .andThen(new SwerveDriveMoveBackward(driveSystem, 13))
+        //         .andThen(new SwerveDriveMoveLeft(driveSystem, 7))
+        //         .andThen(new SwerveDriveMoveForward(driveSystem, 8))
+        //         .andThen(new SwerveDriveStop(driveSystem)));
+        // // CommandScheduler.getInstance().schedule(
+        // // new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
+        // // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One,
+        // // currentSetpoint))
+        // // .andThen(new ClosePaws(intakePaws))
+        // // .andThen(new SwerveDriveTurnLeft(driveSystem, 45))
+        // // .andThen(new SwerveDriveMoveForward(driveSystem, 5))
+        // // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three,
+        // // currentSetpoint))
+        // // .andThen(new SwerveDriveMoveRight(driveSystem, 5))
+        // // .andThen(new SwerveDriveTurnRight(driveSystem, 240))
+        // // .andThen(new LightsOnCommand(prettyLights1,
+        // // PrettyLights.C1_AND_C2_END_TO_END_BLEND))
+        // // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Two,
+        // // currentSetpoint))
+        // // .andThen(new SwerveDriveMoveForward(driveSystem, 5))
+        // // .andThen(new SwerveDriveMoveLeft(driveSystem, 5))
+        // // .andThen(new SwerveDriveMoveBackward(driveSystem, 5))
+        // // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.Three,
+        // // currentSetpoint))
+        // // .andThen(new LightsOnCommand(prettyLights1, PrettyLights.HEARTBEAT_BLUE))
+        // // .andThen(new SwerveDriveMoveRight(driveSystem, 1))
+        // // .andThen(new SwerveDriveStop(driveSystem)));
+        // // break;
 
       case kAuton5:
         CommandScheduler.getInstance().schedule((new WaitCommand(.5)));
@@ -388,7 +413,12 @@ public class Robot extends TimedRobot {
     if (xboxDriver.getRawButton(DRV_SPD_PRECISE_LB)) {
       driveSpeed = Wheel.SpeedSetting.PRECISE;
     }
-    driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
+
+    // if(xboxDriver.getAButton()){
+    //   driveSystem.setX();
+    // } else {
+      driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
+    // }
 
     // Reset the relative encoders if you press B button
     if (xboxDriver.getRawButtonPressed(ENCODER_RESET_B)) {

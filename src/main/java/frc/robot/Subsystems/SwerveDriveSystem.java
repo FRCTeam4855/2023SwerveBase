@@ -128,6 +128,13 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
         wheelBL.set(0,0);
     }
 
+    public void setX() {
+        wheelFL.set(45,0); //grabs information from the arrays and feeds it to the wheels 
+        wheelFR.set(45,0);  
+        wheelBR.set(45,0); 
+        wheelBL.set(45,0);
+    }
+
     @Override
     public void stay() {
             SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, .001, 0);
