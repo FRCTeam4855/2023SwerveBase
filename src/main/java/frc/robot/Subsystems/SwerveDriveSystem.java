@@ -40,6 +40,13 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
         wheelBL.set(swerve.wheelAngles[3], swerve.wheelSpeeds[3], speed);
     }
 
+    private void stayWheels(SwerveOutput swerve, Wheel.SpeedSetting speed) {
+        wheelFL.set(1.875, swerve.wheelSpeeds[0], speed); //grabs information from the arrays and feeds it to the wheels 
+        wheelFR.set(-1.875, swerve.wheelSpeeds[1], speed);  
+        wheelBR.set(1.875, swerve.wheelSpeeds[2], speed); 
+        wheelBL.set(-1.875, swerve.wheelSpeeds[3], speed);
+    }
+
     public double getEncoderFL() {
         return wheelFL.getDriveRelativeEncoderValue();
     }
@@ -128,11 +135,9 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
         wheelBL.set(0,0);
     }
 
-    public void setX() {
-        wheelFL.set(45,0); //grabs information from the arrays and feeds it to the wheels 
-        wheelFR.set(45,0);  
-        wheelBR.set(45,0); 
-        wheelBL.set(45,0);
+    public void setStay() {
+        SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, 0, 0);
+        this.stayWheels(swerve, Wheel.SpeedSetting.NORMAL);
     }
 
     @Override

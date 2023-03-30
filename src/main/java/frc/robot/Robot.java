@@ -108,6 +108,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("3. Drop cone on mid, drive and balance on charge station", kAuton3);
     m_chooser.addOption("4. WIP DO NOT USE", kAuton4);
     m_chooser.addOption("5. ZZZ KEEP UNUSED", kAuton5);
+    prettyLights1.setLEDs(.01);
 
     SmartDashboard.putData(m_chooser); // displays the auton options in shuffleboard, put in init block
     armPivot.resetPivotEncoderZero();
@@ -240,7 +241,7 @@ public class Robot extends TimedRobot {
                 // .andThen(new SwerveDriveMoveManual(driveSystem, 8, theta_radians))
                 .andThen(new SwerveDriveTurnRight(driveSystem, 90))
                 //.andThen(new Balancing(driveSystem, gyro))
-                .andThen(new SwerveDriveMoveRight(driveSystem, 8.75))
+                .andThen(new SwerveDriveMoveRight(driveSystem, 8.85))//but super not 8.8
                 .andThen(new SwerveDriveStop(driveSystem))
                 );
 
@@ -271,8 +272,6 @@ public class Robot extends TimedRobot {
         break;
 
       case kAuton4:
-
-
       CommandScheduler.getInstance().schedule(
         new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
             .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
@@ -295,7 +294,7 @@ public class Robot extends TimedRobot {
             // .andThen(new DriveUntilBalanced(driveSystem, gyro))
             // .andThen(new SwerveDriveStop(driveSystem))
             );
-
+            // new Balancing(driveSystem, gyro);
         // CommandScheduler.getInstance().schedule(
         //     new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
         //         // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One,
@@ -414,11 +413,11 @@ public class Robot extends TimedRobot {
       driveSpeed = Wheel.SpeedSetting.PRECISE;
     }
 
-    // if(xboxDriver.getAButton()){
-    //   driveSystem.setX();
-    // } else {
+    if(xboxDriver.getAButton()){
+      driveSystem.setStay();
+    } else {
       driveSystem.moveManual(x1, y1, x2, theta_radians, driveSpeed);
-    // }
+    }
 
     // Reset the relative encoders if you press B button
     if (xboxDriver.getRawButtonPressed(ENCODER_RESET_B)) {

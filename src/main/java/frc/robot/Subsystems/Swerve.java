@@ -55,6 +55,7 @@ public class Swerve {
         output.wheelAngles[1] = wa2 / 360;
         output.wheelAngles[2] = wa3 / 360;
         output.wheelAngles[3] = wa4 / 360;
+       
 
         //returns the outpouts
         return output;

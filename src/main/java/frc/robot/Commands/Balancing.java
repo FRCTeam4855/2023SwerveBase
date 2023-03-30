@@ -35,8 +35,8 @@ public class Balancing extends CommandBase {
     @Override
     public void execute() {
         // if (Math.abs gyro.getPitch()) > 2) {
-        // driveSystem.moveManual(0,  gyro.getPitch() / -30 +
-        //  gyro.getPitch()/Math.abs gyro.getPitch()) *-.1)), 0, 0,
+        // driveSystem.moveManual(0, gyro.getPitch() / -30 +
+        // gyro.getPitch()/Math.abs gyro.getPitch()) *-.1)), 0, 0,
         // Wheel.SpeedSetting.PRECISE);
         // }
         // SmartDashboard.putBoolean("Balancing", isBalancing);
@@ -55,11 +55,12 @@ public class Balancing extends CommandBase {
         if (Math.abs(gyro.getRoll()) <= 2) {
             if (balanceTime < 0) {
                 balanceTime = System.currentTimeMillis();
-            } else if (System.currentTimeMillis() - balanceTime > 1000) {
-                driveSystem.stop(); // if balanced, start counting. Reset if becomes unbalanced. finished if able to
-                                    // remain balanced for one full second.
-                isBalancing = false;
-                return true;
+                if (System.currentTimeMillis() - balanceTime > 1000) {
+                    driveSystem.stop(); // if balanced, start counting. Reset if becomes unbalanced. finished if able to
+                                        // remain balanced for one full second.
+                    isBalancing = false;
+                    return true;
+                }
             }
         } else {
             balanceTime = -1;
@@ -68,10 +69,9 @@ public class Balancing extends CommandBase {
         return false;
 
         // if (Timer.getFPGATimestamp() - startTime > 5) {
-        //     return true;}
-        //     else {return false;}
+        // return true;}
+        // else {return false;}
         // }
-        
+
     }
 }
-
