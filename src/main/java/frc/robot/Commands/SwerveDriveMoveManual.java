@@ -6,8 +6,7 @@ import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel.SpeedSetting;
 
 public class SwerveDriveMoveManual extends CommandBase {
-        //TODO modify to work with arg:setpoint after BasicMovements is modified to include it
-        //this is a very basic command, and may get rolled into something more advance later
+
     private final SwerveDriveSystem swerveDriveSystem;
     private double distance = 0;
     private double initialEncoderValue = 0;

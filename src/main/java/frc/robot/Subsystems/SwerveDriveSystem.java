@@ -140,14 +140,14 @@ public class SwerveDriveSystem extends SubsystemBase implements GenericDriveSyst
         this.stayWheels(swerve, Wheel.SpeedSetting.NORMAL);
     }
 
-    @Override
-    public void stay() {
-            SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, .001, 0);
-            this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL); 
-        }
+  //  @Override
+    // public void stay() {
+    //         SwerveOutput swerve = Swerve.convertControllerToSwerve(0, 0, .001, 0);
+    //         this.moveWheels(swerve, Wheel.SpeedSetting.NORMAL); 
+    //     }
     
 
-    public void moveManual(double autox1, double autoy1, double autox2, int theta_radians, int i) {
-    }
+    // public void moveManual(double autox1, double autoy1, double autox2, int theta_radians, int i) {
+    // }
     
 }

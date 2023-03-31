@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
 
-public class Balancing extends CommandBase {
+public class BalanceLR extends CommandBase {
 
     // private SwerveDriveSystem driveSystem;
     public static boolean isBalancing;
@@ -18,7 +18,7 @@ public class Balancing extends CommandBase {
     private SwerveDriveSystem driveSystem;
     private double startTime;
 
-    public Balancing(SwerveDriveSystem driveSystem, AHRS gyro) {
+    public BalanceLR(SwerveDriveSystem driveSystem, AHRS gyro) {
         this.driveSystem = driveSystem;
         this.gyro = gyro;
         rollAngleDegrees = gyro.getRoll();

@@ -10,6 +10,7 @@ package frc.robot;
 import static frc.robot.Constants.*;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.XboxController;
@@ -24,11 +25,12 @@ import frc.robot.Subsystems.PrettyLights;
 import frc.robot.Subsystems.SwerveDriveSystem;
 import frc.robot.Subsystems.Wheel;
 import frc.robot.Subsystems.Limelight;
-import frc.robot.Commands.Balancing;
+import frc.robot.Commands.BalanceLR;
 // import frc.robot.Commands.CenterToLimelight;
 import frc.robot.Commands.LightsOnCommand;
 import frc.robot.Commands.MoveArmToSetpoint;
 import frc.robot.Commands.OpenPaws;
+import frc.robot.Commands.Stay;
 import frc.robot.Commands.StrafeByAlliance;
 import frc.robot.Commands.ClosePaws;
 import frc.robot.Commands.DriveUntilBalanced;
@@ -54,6 +56,7 @@ public class Robot extends TimedRobot {
   private static final String kAuton3 = "3. B, D, F, B, Balance";
   private static final String kAuton4 = "Unused";
   private static final String kAuton5 = "ZZZ KKEP UNUSED";
+  private static final String kAuton6 = "balance test";
 
   private String m_autoSelected; // This selects between the two autonomous
   public SendableChooser<String> m_chooser = new SendableChooser<>(); // creates the ability to switch between autons on
@@ -108,6 +111,7 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("3. Drop cone on mid, drive and balance on charge station", kAuton3);
     m_chooser.addOption("4. WIP DO NOT USE", kAuton4);
     m_chooser.addOption("5. ZZZ KEEP UNUSED", kAuton5);
+    m_chooser.addOption("6. balance test", kAuton6);
     prettyLights1.setLEDs(.01);
 
     SmartDashboard.putData(m_chooser); // displays the auton options in shuffleboard, put in init block
@@ -190,10 +194,11 @@ public class Robot extends TimedRobot {
       case kAuton1:
         CommandScheduler.getInstance().schedule(
             new LightsOnCommand(prettyLights1, PrettyLights.RAINBOW_GLITTER)
-                .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
-                .andThen(new ClosePaws(intakePaws))
-                .andThen(new SwerveDriveMoveBackward(driveSystem, 20))
-                .andThen(new SwerveDriveStop(driveSystem)));
+                // .andThen(new MoveArmToSetpoint(armExtend, armPivot, ArmSetpoint.One, currentSetpoint))
+                // .andThen(new ClosePaws(intakePaws))
+                // .andThen(new SwerveDriveMoveBackward(driveSystem, 20))
+                // .andThen(new SwerveDriveStop(driveSystem))
+                .andThen(new Stay(driveSystem)));
       default:
         break;
 
@@ -343,8 +348,14 @@ public class Robot extends TimedRobot {
       case kAuton5:
         CommandScheduler.getInstance().schedule((new WaitCommand(.5)));
         break;
+      
+      case kAuton6:
+        CommandScheduler.getInstance().schedule(
+        new 
+        );
     }
   }
+    
 
   // *************************
   // ***autonomousPeriodic****
@@ -360,11 +371,11 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopInit() {
-    // armExtend.setExtendSetpoint(null);// TODO TAKE OUT FOR GAME
-    // armPivot.setPivotSetpoint(null);// TODO TAKE OUT FOR GAME
+    // armExtend.setExtendSetpoint(null); 
+    // armPivot.setPivotSetpoint(null);
     driveSystem.resetRelativeEncoders();
-    // gyro.reset();// TODO TAKE OUT FOR GAME
-    // gyro.zeroYaw();// TODO TAKE OUT FOR GAME
+    // gyro.reset();
+    // gyro.zeroYaw();
     prettyLights1.setLEDs(PrettyLights.CONFETTI);
     armExtend.setExtendSetpoint(ArmSetpoint.One);
     armPivot.setPivotSetpoint(ArmSetpoint.One);
@@ -381,8 +392,8 @@ public class Robot extends TimedRobot {
 
     double x1 = -xboxDriver.getRawAxis(0) + xboxDriver.getRawAxis(2) - xboxDriver.getRawAxis(3); // set left and right
                                                                                                  // drive movements to
-                                                                                                 // drive controller
-                                                                                                 // left x-axis
+                                                                                                  // drive controller
+                                                                                                  // left x-axis
     double x2 = -xboxDriver.getRawAxis(4); // set rotate drive movements to drive controller right x-axis
     double y1 = -xboxDriver.getRawAxis(1); // set forwards and backwards drive movements to drive controller left y-axis
 

@@ -6,7 +6,7 @@ public class Constants {
     public static final double DRIVE_DEFAULT_SPD = 0.50;               // multiplier
     public static final double DRIVE_SLOW_SPD = 0.15;               // multiplier
     public static final double DRIVE_TURBO_SPD = 0.90;               // multiplier
-    //TODO arrange with drive team what these values are on 2023 bot
+
 
 
     // distance drive var
@@ -22,7 +22,7 @@ public class Constants {
 
     //center point for arm extension setpoints
     public static final double ARM_EXTEND_CENTER_1 = 12; //done
-    public static final double ARM_EXTEND_CENTER_2 = 180; //TODO find these values on 2023 bot
+    public static final double ARM_EXTEND_CENTER_2 = 180; 
     public static final double ARM_EXTEND_CENTER_3 = 100;
     public static final double  ARM_EXTEND_CENTER_4 = 333;
     public static final double ARM_EXTEND_CENTER_5 = 10;
@@ -31,7 +31,7 @@ public class Constants {
 
     //center point for arm extension setpoints
     public static final double ARM_PIVOT_CENTER_1 = 0; //done
-    public static final double ARM_PIVOT_CENTER_2 = 8; //TODO find these values on 2023 bot
+    public static final double ARM_PIVOT_CENTER_2 = 8;
     public static final double ARM_PIVOT_CENTER_3 = 18.3;
     public static final double ARM_PIVOT_CENTER_4 = 21;
     public static final double ARM_PIVOT_CENTER_5 = 17;

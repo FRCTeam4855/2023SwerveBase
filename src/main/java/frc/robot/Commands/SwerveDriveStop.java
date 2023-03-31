@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Subsystems.SwerveDriveSystem;
 
 public class SwerveDriveStop extends CommandBase {
-    //TODO modify to work with arg:setpoint after BasicMovements is modified to include it
+
     private final SwerveDriveSystem swerveDriveSystem;
     public SwerveDriveStop(SwerveDriveSystem initialSwerveDriveSystem) {
         super();

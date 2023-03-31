@@ -28,7 +28,7 @@ public class IntakePaws extends SubsystemBase {
     }
 
     public boolean isLeftPawOpen() {
-        return pawLeft.get() == Value.kForward; //TODO verify if open and closed match with forward reverse on 2023 bot
+        return pawLeft.get() == Value.kForward; 
     }
 
     public boolean isLeftPawClose() {

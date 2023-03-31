@@ -22,7 +22,7 @@ public class LimelightBalance extends CommandBase {
     double limelightMountAngleDegrees = 0.0;
 
     // distance from the center of the Limelight lens to the floor
-    double limelightLensHeightInches = 53.0; // TODO fix
+    double limelightLensHeightInches = 53.0; 
 
     // distance from the target to the floor
     double goalHeightInches = 18.0;
