@@ -8,5 +8,5 @@ public interface GenericDriveSystem {
     void spinClockwise();
     void spinCounterclockwise();
     void stop();
-    void stay();
+    //void stay();
 }

@@ -349,10 +349,10 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().schedule((new WaitCommand(.5)));
         break;
       
-      case kAuton6:
-        CommandScheduler.getInstance().schedule(
-        new 
-        );
+      // case kAuton6:
+      //   CommandScheduler.getInstance().schedule(
+      //   new;
+      //   );
     }
   }
     
